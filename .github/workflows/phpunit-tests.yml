@@ -34,7 +34,6 @@ jobs:
           sudo bash utils/fo-installdeps --everything
           export PATH="/usr/lib/ccache/:$PATH"
           export COMPOSER_HOME="$HOME/.composer/"
-          composer self-update
           sudo update-alternatives --set php "/usr/bin/php${{ matrix.phpstd }}"
           php -v
           composer -v

@@ -9,8 +9,6 @@ jobs:
   phpunit-test:
     strategy:
       matrix:
-        packages:
-          
         include:
           - toolset: php7.0
             os: ubuntu-16.04
@@ -34,7 +32,9 @@ jobs:
             php-xml \
             php-mbstring \
             libspreadsheet-writeexcel-perl \
-            libtext-template-perl
+            libtext-template-perl \
+            libdbd-sqlite3-perl \
+            liblocal-lib-perl
 
       - name: Install Composer Packages
         run:  composer update --ignore-platform-reqs --with-dependencies --prefer-dist --working-dir=src phpunit/phpunit
@@ -49,4 +49,3 @@ jobs:
           phpdbg -qrr src/vendor/bin/phpunit -csrc/phpunit.xml --testsuite="Fossology PhpUnit Test Suite" --colors=always | grep -v 'script>\|c.log'
       - name: After test
         run: php src/vendor/bin/php-coveralls -vv -o coveralls.json -x clover.xml
-        

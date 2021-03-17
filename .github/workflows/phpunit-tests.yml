@@ -19,38 +19,44 @@ jobs:
           - toolset: php7.2
             phpstd: "7.2"
             os: ubuntu-18.04
-          - toolset: php7.3
-            phpstd: "7.3"
+          - toolset: php7.2
+            phpstd: "7.2"
             os: ubuntu-18.04
-          - toolset: php7.4
-            phpstd: "7.4"
-            os: ubuntu-20.04
+            pgsql: true
     runs-on: ${{ matrix.os }}
     steps:
       - uses: actions/checkout@v2
       - name: Install Packages
         run: |
           sudo apt update
-          sudo bash utils/fo-installdeps --everything
+          sudo apt install -y \
+            php${{ matrix.phpstd }}-cli \
+            php${{ matrix.phpstd }}-pgsql \
+            php${{ matrix.phpstd }}-zip \
+            php${{ matrix.phpstd }}-xml \
+            php-mbstring \
+            composer
           export PATH="/usr/lib/ccache/:$PATH"
           export COMPOSER_HOME="$HOME/.composer/"
           sudo update-alternatives --set php "/usr/bin/php${{ matrix.phpstd }}"
-          php -v
-          composer -v
 
-      - name: Install Composer Packages
-        run:  composer update --ignore-platform-reqs --with-dependencies --prefer-dist --working-dir=src phpunit/phpunit
-      
       - name: Set up PostgreSQL
+        if: matrix.pgsql
         run: |
+          sudo apt install -y postgresql-10 postgresql-client-10
+          export PGPORT="5432"
           sudo sed -i 's/port = 5433/port = 5432/' /etc/postgresql/10/main/postgresql.conf
           sudo cp /etc/postgresql/{9.5,10}/main/pg_hba.conf
           sudo service postgresql restart
 
+      - name: Install Composer Packages
+        run:  composer update --ignore-platform-reqs --with-dependencies --prefer-dist --working-dir=src phpunit/phpunit
+      
+
       - name: Prepare Tests
         run: |
           ./utils/prepare-test -afty
-          
+
       - name: Run Tests
         run: |
           set -o pipefail

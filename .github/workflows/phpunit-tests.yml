@@ -9,6 +9,12 @@ jobs:
   phpunit-test:
     strategy:
       matrix:
+        packages:
+          - php-cli
+          - php-pgsql
+          - php-zip
+          - php-xml
+          - php-mbstring
         include:
           - toolset: php7.0
             os: ubuntu-16.04
@@ -25,8 +31,7 @@ jobs:
       - uses: actions/checkout@v2
 
       - name: Install Packages
-        if: matrix.install
-        run: sudo apt install ${{ matrix.install }}
+        run: sudo apt install -y ${{ matrix.packages }} 
 
       - name: Install Composer Packages
         run:  composer update --ignore-platform-reqs --with-dependencies --prefer-dist --working-dir=src phpunit/phpunit

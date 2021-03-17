@@ -21,7 +21,7 @@ jobs:
           #   os: ubuntu-18.04
           - toolset: php7.2
             phpstd: "7.2"
-            os: ubuntu-18.04
+            os: ubuntu-16.04
             pgsql: true
     runs-on: ${{ matrix.os }}
     steps:
@@ -37,15 +37,16 @@ jobs:
             php${{ matrix.phpstd }}-zip \
             php${{ matrix.phpstd }}-xml \
             php-mbstring \
-            composer \
-            libtext-template-perl
+            libmxml-dev curl libxml2-dev libcunit1-dev libicu-dev \
+            build-essential libtext-template-perl subversion rpm librpm-dev \
+            libmagic-dev libglib2.0 libboost-regex-dev \
+            libboost-program-options-dev libpq-dev composer patch devscripts \
+            libdistro-info-perl
           export PATH="/usr/lib/ccache/:$PATH"
           export COMPOSER_HOME="$HOME/.composer/"
           sudo update-alternatives --set php "/usr/bin/php${{ matrix.phpstd }}"
       - name: Install Composer Packages
-        run:  |
-          composer self-update
-          composer update --ignore-platform-reqs --with-dependencies --prefer-dist --working-dir=src phpunit/phpunit
+        run: composer update --ignore-platform-reqs --with-dependencies --prefer-dist --working-dir=src phpunit/phpunit
 
       - name: Set up PostgreSQL
         if: matrix.pgsql

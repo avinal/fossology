@@ -10,11 +10,7 @@ jobs:
     strategy:
       matrix:
         packages:
-          - php-cli
-          - php-pgsql
-          - php-zip
-          - php-xml
-          - php-mbstring
+          
         include:
           - toolset: php7.0
             os: ubuntu-16.04
@@ -29,9 +25,16 @@ jobs:
     runs-on: ${{ matrix.os }}
     steps:
       - uses: actions/checkout@v2
-
       - name: Install Packages
-        run: sudo apt install -y ${{ matrix.packages }} 
+        run: |
+          sudo apt install -y \
+            php-cli \
+            php-pgsql \
+            php-zip \
+            php-xml \
+            php-mbstring \
+            libspreadsheet-writeexcel-perl \
+            libtext-template-perl
 
       - name: Install Composer Packages
         run:  composer update --ignore-platform-reqs --with-dependencies --prefer-dist --working-dir=src phpunit/phpunit
@@ -46,3 +49,4 @@ jobs:
           phpdbg -qrr src/vendor/bin/phpunit -csrc/phpunit.xml --testsuite="Fossology PhpUnit Test Suite" --colors=always | grep -v 'script>\|c.log'
       - name: After test
         run: php src/vendor/bin/php-coveralls -vv -o coveralls.json -x clover.xml
+        

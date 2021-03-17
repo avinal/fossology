@@ -21,7 +21,7 @@ jobs:
           #   os: ubuntu-18.04
           - toolset: php7.2
             phpstd: "7.2"
-            os: ubuntu-16.04
+            os: ubuntu-20.04
             pgsql: true
     runs-on: ${{ matrix.os }}
     steps:
@@ -58,6 +58,7 @@ jobs:
         run: |
           set -o pipefail
           make build-lib VERSIONFILE build-cli
+          echo "here"
           phpdbg -qrr src/vendor/bin/phpunit -csrc/phpunit.xml --testsuite="Fossology PhpUnit Test Suite" --colors=always | grep -v 'script>\|c.log'
       - name: After test
         run: php src/vendor/bin/php-coveralls -vv -o coveralls.json -x clover.xml

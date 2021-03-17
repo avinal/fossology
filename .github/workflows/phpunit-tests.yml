@@ -11,30 +11,27 @@ jobs:
       matrix:
         include:
           - toolset: php7.0
+            phpstd: 7.0
             os: ubuntu-16.04
           - toolset: php7.1
+            phpstd: 7.1
             os: ubuntu-18.04
           - toolset: php7.2
+            phpstd: 7.2
             os: ubuntu-18.04
           - toolset: php7.3
+            phpstd: 7.3
             os: ubuntu-18.04
           - toolset: php7.4
+            phpstd: 7.4
             os: ubuntu-20.04
     runs-on: ${{ matrix.os }}
     steps:
       - uses: actions/checkout@v2
       - name: Install Packages
         run: |
-          sudo apt install -y \
-            php-cli \
-            php-pgsql \
-            php-zip \
-            php-xml \
-            php-mbstring \
-            libspreadsheet-writeexcel-perl \
-            libtext-template-perl \
-            libdbd-sqlite3-perl \
-            liblocal-lib-perl
+          sudo apt update
+          bash utils/fo-installdeps
 
       - name: Install Composer Packages
         run:  composer update --ignore-platform-reqs --with-dependencies --prefer-dist --working-dir=src phpunit/phpunit

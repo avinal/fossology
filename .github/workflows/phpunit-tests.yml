@@ -46,13 +46,12 @@ jobs:
           sudo apt install -y postgresql-10 postgresql-client-10
           export PGPORT="5432"
           sudo sed -i 's/port = 5433/port = 5432/' /etc/postgresql/10/main/postgresql.conf
-          sudo cp /etc/postgresql/{9.5,10}/main/pg_hba.conf
+          sudo cp /etc/postgresql/10/main/pg_hba.conf
           sudo service postgresql restart
 
       - name: Install Composer Packages
         run:  composer update --ignore-platform-reqs --with-dependencies --prefer-dist --working-dir=src phpunit/phpunit
       
-
       - name: Prepare Tests
         run: |
           ./utils/prepare-test -afty

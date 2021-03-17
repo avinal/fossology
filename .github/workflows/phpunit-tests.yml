@@ -1,0 +1,43 @@
+name: PHPUnit Tests
+
+on:
+  push:
+    branches: [ phpunit-tests ]
+    pull_request: [ phpunit-tests ]
+
+jobs:
+  phpunit-test:
+    strategy:
+      matrix:
+        include:
+          - toolset: php7.0
+            os: ubuntu-16.04
+          - toolset: php7.1
+            os: ubuntu-18.04
+          - toolset: php7.2
+            os: ubuntu-18.04
+          - toolset: php7.3
+            os: ubuntu-18.04
+          - toolset: php7.4
+            os: ubuntu-20.04
+    runs-on: ${{ matrix.os }}
+    steps:
+      - uses: actions/checkout@v2
+
+      - name: Install Packages
+        if: matrix.install
+        run: sudo apt install ${{ matrix.install }}
+
+      - name: Install Composer Packages
+        run:  composer update --ignore-platform-reqs --with-dependencies --prefer-dist --working-dir=src phpunit/phpunit
+      - name: Prepare Tests
+        run: |
+          sudo update-alternatives --set php /usr/bin/${{ matrix.toolset }}
+          ./utils/prepare-test -afty
+      - name: Run Tests
+        run: |
+          set -o pipefail
+          make build-lib VERSIONFILE build-cli
+          phpdbg -qrr src/vendor/bin/phpunit -csrc/phpunit.xml --testsuite="Fossology PhpUnit Test Suite" --colors=always | grep -v 'script>\|c.log'
+      - name: After test
+        run: php src/vendor/bin/php-coveralls -vv -o coveralls.json -x clover.xml

@@ -43,7 +43,9 @@ jobs:
           export COMPOSER_HOME="$HOME/.composer/"
           sudo update-alternatives --set php "/usr/bin/php${{ matrix.phpstd }}"
       - name: Install Composer Packages
-        run:  composer update --ignore-platform-reqs --with-dependencies --prefer-dist --working-dir=src phpunit/phpunit
+        run:  |
+          composer self-update
+          composer update --ignore-platform-reqs --with-dependencies --prefer-dist --working-dir=src phpunit/phpunit
 
       - name: Set up PostgreSQL
         if: matrix.pgsql

@@ -31,13 +31,11 @@ jobs:
       - name: Install Packages
         run: |
           sudo apt update
-          sudo apt install --no-install-suggests --no-install-recommends -y \
-            cabextract genisoimage libboost-program-options-dev libboost-regex-dev \ 
-            libboost-system-dev libboost-filesystem-dev libglib2.0-dev libcppunit-dev \
-            libcunit1-dev libdbd-sqlite3-perl libjsoncpp-dev libjson-c-dev liblocal-lib-perl \
-            libmagic-dev librpm-dev libspreadsheet-writeexcel-perl libtext-template-perl \ 
-            php-cli php-pgsql php-zip php-xml php-mbstring poppler-utils p7zip p7zip-full \
-            rpm sleuthkit unrar-free upx-ucl libicu-dev libgcrypt20-dev
+          sudo apt-get install -y libmxml-dev curl libxml2-dev libcunit1-dev libicu-dev \
+            build-essential libtext-template-perl subversion rpm librpm-dev \
+            libmagic-dev libglib2.0 libboost-regex-dev \
+            libboost-program-options-dev libpq-dev composer patch devscripts \
+            libdistro-info-perl php-mbstring php7.2-cli php7.2-xml php7.2-zip
           export PATH="/usr/lib/ccache/:$PATH"
           export COMPOSER_HOME="$HOME/.composer/"
           sudo update-alternatives --set php "/usr/bin/php${{ matrix.phpstd }}"

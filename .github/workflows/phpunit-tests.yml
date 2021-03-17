@@ -31,7 +31,7 @@ jobs:
       - name: Install Packages
         run: |
           sudo apt update
-          bash utils/fo-installdeps
+          sudo bash utils/fo-installdeps --everything
 
       - name: Install Composer Packages
         run:  composer update --ignore-platform-reqs --with-dependencies --prefer-dist --working-dir=src phpunit/phpunit

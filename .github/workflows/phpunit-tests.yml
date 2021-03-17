@@ -34,7 +34,10 @@ jobs:
           sudo bash utils/fo-installdeps --everything
           export PATH="/usr/lib/ccache/:$PATH"
           export COMPOSER_HOME="$HOME/.composer/"
-          sudo update-alternatives --set php "/usr/bin/php${{ matrix.phpstd }}""
+          composer self-update
+          sudo update-alternatives --set php "/usr/bin/php${{ matrix.phpstd }}"
+          php -v
+          composer -v
 
       - name: Install Composer Packages
         run:  composer update --ignore-platform-reqs --with-dependencies --prefer-dist --working-dir=src phpunit/phpunit

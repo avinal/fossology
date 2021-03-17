@@ -10,15 +10,15 @@ jobs:
     strategy:
       matrix:
         include:
-          - toolset: php7.0
-            phpstd: "7.0"
-            os: ubuntu-16.04
-          - toolset: php7.1
-            phpstd: "7.1"
-            os: ubuntu-18.04
-          - toolset: php7.2
-            phpstd: "7.2"
-            os: ubuntu-18.04
+          # - toolset: php7.0
+          #   phpstd: "7.0"
+          #   os: ubuntu-16.04
+          # - toolset: php7.1
+          #   phpstd: "7.1"
+          #   os: ubuntu-18.04
+          # - toolset: php7.2
+          #   phpstd: "7.2"
+          #   os: ubuntu-18.04
           - toolset: php7.2
             phpstd: "7.2"
             os: ubuntu-18.04

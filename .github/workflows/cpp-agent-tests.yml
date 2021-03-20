@@ -1,0 +1,61 @@
+name: C/C++ agent tests
+
+on:
+  push:
+    branches: [ avinal/1913/cpp-agent ]
+
+jobs:
+  tests:
+    strategy:
+      fail-fast: false
+      matrix:
+        include:
+          - toolset: GCC-5
+            os: ubuntu-16.04
+            env:
+              CC: gcc-5
+              CXX: g++-5
+              CFLAGS: -Wall
+          - toolset: GCC-6
+            os: ubuntu-16.04
+            env:
+              CC: gcc-6
+              CXX: g++-6
+              CFLAGS: -Wall
+          - toolset: GCC-7
+            os: ubuntu-18.04
+            env:
+              CC: gcc-7
+              CXX: g++-7
+              CFLAGS: -Wall
+          - toolset: GCC-8
+            os: ubuntu-20.04
+            env:
+              CC: gcc-8
+              CXX: g++-8
+              CFLAGS: -Wall
+            
+    runs-on: ${{ matrix.os }}
+
+    steps:
+      - uses: actions/checkout@v2
+
+      - name: Install packages and set environment
+        run: |
+          sudo apt update
+          sudo apt install -y ${{ matrix.env.CC }} ${{ matrix.env.CXX }}
+          composer install --prefer-dist --working-dir=src
+          ./install/scripts/install-spdx-tools.sh
+          sudo /usr/sbin/update-ccache-symlinks
+          ls /usr/lib/ccache/
+
+      - name: Prepare tests
+        run: ./utils/prepare-test -afty
+
+      - name: Run tests
+        run: make test
+
+      - name: After test
+        run: ccache -s
+  
+  

@@ -43,7 +43,7 @@ jobs:
       - name: Install packages and set environment
         run: |
           sudo apt update
-          sudo apt install -y ${{ matrix.env.CC }} ${{ matrix.env.CXX }}
+          sudo apt install -y ${{ matrix.env.CC }} ${{ matrix.env.CXX }} ccache cabextract genisoimage libboost-program-options-dev libboost-regex-dev libboost-system-dev libboost-filesystem-dev libglib2.0-dev libcppunit-dev libcunit1-dev libdbd-sqlite3-perl libjsoncpp-dev libjson-c-dev liblocal-lib-perl libmagic-dev librpm-dev libspreadsheet-writeexcel-perl libtext-template-perl php-cli php-pgsql php-zip php-xml php-mbstring poppler-utils p7zip p7zip-full rpm sleuthkit unrar-free upx-ucl libicu-dev libgcrypt20-dev
           composer install --prefer-dist --working-dir=src
           ./install/scripts/install-spdx-tools.sh
           sudo /usr/sbin/update-ccache-symlinks

@@ -20,7 +20,7 @@ jobs:
           #   os: ubuntu-18.04
           - toolset: php7.2
             phpstd: "7.2"
-            os: ubuntu-20.04
+            os: ubuntu-18.04
             pgsql: true
     runs-on: ${{ matrix.os }}
     steps:

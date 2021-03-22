@@ -3,7 +3,6 @@ name: PHPUnit Tests
 on:
   push:
     branches: [ phpunit-tests ]
-    pull_request: [ phpunit-tests ]
 
 jobs:
   phpunit-test:

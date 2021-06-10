@@ -174,3 +174,7 @@ install/fossdash/fossdash-publish.py
 
 # Add all the Ubuntu consol log file
 ubuntu-*
+
+# cmake ignore files
+**/build
+**/buildnin

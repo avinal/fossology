@@ -21,7 +21,7 @@ set(FO_PHPLIB_SRC "${FO_SOURCEDIR}/lib/php" CACHE PATH "path to fossology php li
 
 set(FO_CLI_SRC "${FO_SOURCEDIR}/cli" CACHE PATH "path to fossology cli source directory")
 
-set(FO_SCHE)
+set(FO_SCH_SRC "${FO_SOURCEDIR}/scheduler" CACHE PATH "path to fossology scheduler source directory")
 
 
 # common flags and options (always use list for flags)

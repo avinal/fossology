@@ -7,13 +7,13 @@ if(NOT DEFINED ARE_DEFAULTS_SET)
     include(${CMAKE_CURRENT_SOURCE_DIR}/../../../cmake/SetDefaults.cmake)
 endif(NOT DEFINED ARE_DEFAULTS_SET)
 
-set(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} -fPIC -Wall")
+set(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} -Wall")
 add_compile_definitions(
     LOG_DIR="${FO_LOGDIR}"
-    FOSSDB_CONF="${FO_SYSCONFDIR}/${FO_PROJECT}/Db.conf"
+    FOSSDB_CONF="${FO_SYSCONFDIR}/Db.conf"
     PROJECT_USER="${FO_PROJECTUSER}"
     PROJECT_GROUP="${FO_PROJECTGROUP}"
-    CLI_DIR="${FO_DESTDIR}${FO_BINDIR}" 
+    CLI_DIR="${FO_DESTDIR}${FO_BINDIR}"
     DEFAULT_SETUP="${FO_SYSCONFDIR}"
     _FILE_OFFSET_BITS=64
 )
@@ -30,16 +30,18 @@ if(NOT TARGET fossology)
 endif()
 
 include_directories(
+    ${FO_CWD}
     ${glib_INCLUDE_DIRS}
     ${PostgreSQL_INCLUDE_DIRS}
     ${FO_CLIB_SRC}
 )
 
 add_library(scheduler "")
+add_library(scheduler_cov EXCLUDE_FROM_ALL "")
 add_executable(fo_scheduler "")
 add_executable(fo_cli "")
 set(FO_CWD ${CMAKE_CURRENT_SOURCE_DIR})
-foreach(FO_SCH_TARGET scheduler fo_scheduler fo_cli)
+foreach(FO_SCH_TARGET scheduler fo_scheduler fo_cli scheduler_cov)
     if(${FO_SCH_TARGET} MATCHES "^fo_")
         set(SCH_XSRC ${FO_SCH_TARGET}.c)
         target_link_libraries(${FO_SCH_TARGET}
@@ -50,8 +52,11 @@ foreach(FO_SCH_TARGET scheduler fo_scheduler fo_cli)
                 ${gthread_LIBRARIES}
                 ${gio_LIBRARIES}
         )
+        # ASK: PROCESS_NAME is both exe or only one at a time?-- both at the same time
         target_compile_options(${FO_SCH_TARGET}
             PRIVATE "-DPROCESS_NAME=${FO_SCH_TARGET}")
+    else()
+        set(SCH_XSRC "")
     endif() 
     target_sources(${FO_SCH_TARGET}
         PRIVATE
@@ -78,5 +83,14 @@ foreach(FO_SCH_TARGET scheduler fo_scheduler fo_cli)
     )
 endforeach()
 
+target_compile_options(scheduler_cov PRIVATE ${FO_COV_FLAGS})
+
+# HACK: adding target for angled branckes
+# ASK: change angled brackets to quoted
+target_include_directories(scheduler_cov PRIVATE ${FO_CWD})
 target_include_directories(scheduler 
     PUBLIC $<BUILD_INTERFACE:${CMAKE_CURRENT_LIST_DIR}>)
+
+
+# TODO: Add commit and version info
+ 

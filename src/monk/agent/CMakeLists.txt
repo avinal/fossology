@@ -1,11 +1,4 @@
-# set minimum cmake version required
-cmake_minimum_required(VERSION 3.10 FATAL_ERROR)
-project(monk LANGUAGES C)
 set(FO_CWD ${CMAKE_CURRENT_SOURCE_DIR})
-# set defaults
-if(NOT DEFINED ARE_DEFAULTS_SET)
-    include(${CMAKE_CURRENT_SOURCE_DIR}/../../../cmake/SetDefaults.cmake)
-endif(NOT DEFINED ARE_DEFAULTS_SET)
 
 set(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} ${FO_C_FLAGS} -std=c99 -Wextra -fopenmp")
 include(FindPkgConfig)
@@ -19,13 +12,14 @@ include_directories(
 if(NOT TARGET fossology)
     add_subdirectory(${FO_CLIB_SRC} buildc EXCLUDE_FROM_ALL)
 endif()
-
 add_executable(squareBuilder EXCLUDE_FROM_ALL buildSquareVisitor.c)
 target_link_libraries(squareBuilder PRIVATE fossology m magic)
 add_custom_command(
-    OUTPUT ${FO_CWD}/_squareVisitor.c ${FO_CWD}/_squareVisitor.h
-    COMMAND ${FO_CWD}/genSquareVisitor
-    WORKING_DIRECTORY ${FO_CWD}/
+    OUTPUT _squareVisitor.c _squareVisitor.h
+    COMMAND ${CMAKE_COMMAND} -E copy_directory 
+        ${FO_CWD}/generator $<TARGET_FILE_DIR:squareBuilder>
+    COMMAND $<TARGET_FILE_DIR:squareBuilder>/genSquareVisitor
+    WORKING_DIRECTORY $<TARGET_FILE_DIR:squareBuilder>
     DEPENDS squareBuilder
 )
 
@@ -69,15 +63,21 @@ foreach(FO_MONK_TARGET monk monk_exec monk_cov monkbulk)
         ${FO_CWD}/scheduler.h
         ${FO_CWD}/serialize.h
         ${FO_CWD}/${MONK_XSRC}
-        ${FO_CWD}/_squareVisitor.c
-        ${FO_CWD}/_squareVisitor.h
+        $<TARGET_FILE_DIR:squareBuilder>/_squareVisitor.c
+        $<TARGET_FILE_DIR:squareBuilder>/_squareVisitor.h
     )
     target_link_libraries(${FO_MONK_TARGET} PRIVATE fossology magic)
     target_compile_definitions(${FO_MONK_TARGET} PRIVATE _FILE_OFFSET_BITS=64)
+    target_include_directories(${FO_MONK_TARGET} 
+        PRIVATE $<TARGET_FILE_DIR:squareBuilder>)
 endforeach()
 
 set_target_properties(monk_exec
         PROPERTIES OUTPUT_NAME monk)
 
+install(TARGETS monk_exec monkbulk
+    RUNTIME
+    DESTINATION ${FO_MODDIR}/${PROJECT_NAME}/agent 
+    COMPONENT monk-agent)
 
 # TODO: add VERSION and COMMIT ID 

@@ -1,12 +1,4 @@
-# set minimum cmake version required
-cmake_minimum_required(VERSION 3.10 FATAL_ERROR)
-project(schedular LANGUAGES C)
-
-# set defaults
-if(NOT DEFINED ARE_DEFAULTS_SET)
-    include(${CMAKE_CURRENT_SOURCE_DIR}/../../../cmake/SetDefaults.cmake)
-endif(NOT DEFINED ARE_DEFAULTS_SET)
-
+set(FO_CWD ${CMAKE_CURRENT_SOURCE_DIR})
 set(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} -Wall")
 add_compile_definitions(
     LOG_DIR="${FO_LOGDIR}"
@@ -40,7 +32,7 @@ add_library(scheduler "")
 add_library(scheduler_cov EXCLUDE_FROM_ALL "")
 add_executable(fo_scheduler "")
 add_executable(fo_cli "")
-set(FO_CWD ${CMAKE_CURRENT_SOURCE_DIR})
+
 foreach(FO_SCH_TARGET scheduler fo_scheduler fo_cli scheduler_cov)
     if(${FO_SCH_TARGET} MATCHES "^fo_")
         set(SCH_XSRC ${FO_SCH_TARGET}.c)
@@ -91,6 +83,11 @@ target_include_directories(scheduler_cov PRIVATE ${FO_CWD})
 target_include_directories(scheduler 
     PUBLIC $<BUILD_INTERFACE:${CMAKE_CURRENT_LIST_DIR}>)
 
+install(TARGETS fo_cli fo_scheduler
+    RUNTIME
+    DESTINATION ${FO_MODDIR}/${PROJECT_NAME}/agent 
+    COMPONENT scheduler)
 
 # TODO: Add commit and version info
- 
+# TODO: add install for configuration files
+# ASK: what are the configuration files and how they are generared?

@@ -1,11 +1,4 @@
-# set minimum cmake version required
-cmake_minimum_required(VERSION 3.10 FATAL_ERROR)
-project(ojo LANGUAGES CXX)
 set(FO_CWD ${CMAKE_CURRENT_SOURCE_DIR})
-# set defaults
-if(NOT DEFINED ARE_DEFAULTS_SET)
-    include(${CMAKE_CURRENT_SOURCE_DIR}/../../../cmake/SetDefaults.cmake)
-endif(NOT DEFINED ARE_DEFAULTS_SET)
 
 set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} ${FO_CXX_FLAGS} -fopenmp")
 find_package(Boost REQUIRED regex system filesystem program_options)
@@ -62,6 +55,11 @@ foreach(FO_OJO_TARGET ojo ojo_exec ojo_cov ojo_cov_exec)
             PROPERTIES OUTPUT_NAME ${FO_OJO_TARGET_R})
     endif()
 endforeach()
+
+install(TARGETS ojo_exec
+    RUNTIME
+    DESTINATION ${FO_MODDIR}/${PROJECT_NAME}/agent 
+    COMPONENT ojo-agent)
 
 # FIXME: coverage build is failing
 # TODO: add VERSION and COMMIT ID 

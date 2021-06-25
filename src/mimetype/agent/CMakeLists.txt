@@ -1,11 +1,5 @@
-# set minimum cmake version required
-cmake_minimum_required(VERSION 3.10 FATAL_ERROR)
-project(mimetype LANGUAGES C)
+
 set(FO_CWD ${CMAKE_CURRENT_SOURCE_DIR})
-# set defaults
-if(NOT DEFINED ARE_DEFAULTS_SET)
-    include(${CMAKE_CURRENT_SOURCE_DIR}/../../../cmake/SetDefaults.cmake)
-endif(NOT DEFINED ARE_DEFAULTS_SET)
 
 set(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} ${FO_C_FLAGS}")
 include(FindPkgConfig)
@@ -42,4 +36,9 @@ target_sources(mimetype_exec PRIVATE ${FO_CWD}/mimetype.c)
 target_link_libraries(mimetype_exec PRIVATE fossology magic mimetype)
 set_target_properties(mimetype_exec PROPERTIES OUTPUT_NAME mimetype)
 
-# TODO: add VERSION and COMMIT ID 
+
+install(TARGETS mimetype_exec
+    RUNTIME
+    DESTINATION ${FO_MODDIR}/${PROJECT_NAME}/agent 
+    COMPONENT mimetype)
+# TODO: add VERSION and COMMIT ID

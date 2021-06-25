@@ -1,11 +1,4 @@
-# set minimum cmake version required
-cmake_minimum_required(VERSION 3.13)
-project(copyright LANGUAGES CXX)
 set(FO_CWD ${CMAKE_CURRENT_SOURCE_DIR})
-# set defaults
-if(NOT DEFINED ARE_DEFAULTS_SET)
-    include(${CMAKE_CURRENT_SOURCE_DIR}/../../../cmake/SetDefaults.cmake)
-endif(NOT DEFINED ARE_DEFAULTS_SET)
 
 set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} ${FO_CXX_FLAGS} -fopenmp -Wextra")
 
@@ -102,6 +95,19 @@ foreach(FO_COPY_TARGET copyright copyright_exec copyright_cov
 endforeach()
 target_compile_options(copyright_cov PRIVATE ${FO_COV_FLAGS})
 set_target_properties(copyright_exec PROPERTIES OUTPUT_NAME copyright)
+
+install(TARGETS copyright_exec fo_unicode_clean
+    RUNTIME
+    DESTINATION ${FO_MODDIR}/${PROJECT_NAME}/agent 
+    COMPONENT copyright)
+
+foreach(COP ecc keyword)
+    install(TARGETS ${COP}
+        RUNTIME
+        DESTINATION ${FO_MODDIR}/${COP}/agent
+        COMPONENT ${COP})
+endforeach()
+
 
 # TODO: add version and commit info
 # ASK: executable configurations

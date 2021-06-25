@@ -1,12 +1,6 @@
-# set minimum cmake version required
-cmake_minimum_required(VERSION 3.10 FATAL_ERROR)
-project(ununpack LANGUAGES C)
+
 set(FO_CWD ${CMAKE_CURRENT_SOURCE_DIR})
 
-# set defaults
-if(NOT DEFINED ARE_DEFAULTS_SET)
-    include(${CMAKE_CURRENT_SOURCE_DIR}/../../../cmake/SetDefaults.cmake)
-endif(NOT DEFINED ARE_DEFAULTS_SET)
 
 set(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} ${FO_C_FLAGS}")
 include(FindPkgConfig)
@@ -78,6 +72,11 @@ set_target_properties(ununpack_exec PROPERTIES OUTPUT_NAME ununpack)
 
 add_library(checksum OBJECT EXCLUDE_FROM_ALL 
     ${FO_CWD}/checksum.h ${FO_CWD}/checksum.c)
+
+install(TARGETS ununpack_exec departition
+    RUNTIME
+    DESTINATION ${FO_MODDIR}/${PROJECT_NAME}/agent 
+    COMPONENT ununpack)
 
 # TODO: add VERSION and COMMIT ID 
 # FIXME:coverage build is failing

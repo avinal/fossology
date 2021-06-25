@@ -1,11 +1,4 @@
-# set minimum cmake version required
-cmake_minimum_required(VERSION 3.10 FATAL_ERROR)
-project(maintagent LANGUAGES C)
 set(FO_CWD ${CMAKE_CURRENT_SOURCE_DIR})
-# set defaults
-if(NOT DEFINED ARE_DEFAULTS_SET)
-    include(${CMAKE_CURRENT_SOURCE_DIR}/../../../cmake/SetDefaults.cmake)
-endif(NOT DEFINED ARE_DEFAULTS_SET)
 
 set(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} ${FO_C_FLAGS}")
 include(FindPkgConfig)
@@ -37,5 +30,8 @@ target_compile_definitions(maintagent
 )
 target_link_libraries(maintagent PRIVATE fossology)
 
-
-# TODO: add VERSION and COMMIT ID 
+install(TARGETS maintagent
+    RUNTIME
+    DESTINATION ${FO_MODDIR}/${PROJECT_NAME}/agent 
+    COMPONENT maintagent-agent)
+# TODO: add VERSION and COMMIT ID

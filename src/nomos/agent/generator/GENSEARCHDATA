@@ -232,7 +232,7 @@ BEGIN {
 		KSlen = length(keyString);
 		cmd = sprintf("echo %s | ./_STRFILTER > _KTARGET", keyString);
 		system(cmd);
-		cmd = sprintf("./build/encode _KTARGET > _KEY");
+		cmd = sprintf("./encode _KTARGET > _KEY");
 		system(cmd);
 		getline < "_KEY"
 		K=$0
@@ -241,7 +241,7 @@ BEGIN {
 		CSlen = length(encodedString);
 		cmd = sprintf("echo %s | ./_STRFILTER > _STARGET", encodedString);
 		system(cmd);
-		cmd = sprintf("./build/encode _STARGET > _STR");
+		cmd = sprintf("./encode _STARGET > _STR");
 		system(cmd);
 		getline < "_STR"
 		S=$0

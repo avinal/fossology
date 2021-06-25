@@ -1,12 +1,6 @@
-# set minimum cmake version required
-cmake_minimum_required(VERSION 3.10 FATAL_ERROR)
-project(nomos LANGUAGES C)
+
 set(FO_CWD ${CMAKE_CURRENT_SOURCE_DIR})
 
-# set defaults
-if(NOT DEFINED ARE_DEFAULTS_SET)
-    include(${CMAKE_CURRENT_SOURCE_DIR}/../../../cmake/SetDefaults.cmake)
-endif(NOT DEFINED ARE_DEFAULTS_SET)
 
 set(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} ${FO_C_FLAGS}")
 include(FindPkgConfig)
@@ -26,19 +20,21 @@ endif()
 add_executable(encode ${FO_CWD}/encode.c)
 
 add_custom_command(
-    OUTPUT ${FO_CWD}/_autodefs.h ${FO_CWD}/_autodata.c
+    OUTPUT _autodefs.h _autodata.c
+    COMMAND ${CMAKE_COMMAND} -E copy_directory
+        ${FO_CWD}/generator $<TARGET_FILE_DIR:encode>
     COMMAND echo "NOTE: GENSEARCHDATA takes 1-2 minutes to run"
-    COMMAND ${FO_CWD}/GENSEARCHDATA
-    WORKING_DIRECTORY ${FO_CWD}/
+    COMMAND $<TARGET_FILE_DIR:encode>/GENSEARCHDATA
+    WORKING_DIRECTORY $<TARGET_FILE_DIR:encode>
     DEPENDS encode
 )
 
 add_custom_command(
-    OUTPUT ${FO_CWD}/_precheck.c
-    COMMAND ${FO_CWD}/PRECHECK
-    COMMAND ${FO_CWD}/CHECKSTR
-    WORKING_DIRECTORY ${FO_CWD}/
-    DEPENDS ${FO_CWD}/_autodata.c
+    OUTPUT _precheck.c
+    COMMAND $<TARGET_FILE_DIR:encode>/PRECHECK
+    COMMAND $<TARGET_FILE_DIR:encode>/CHECKSTR
+    WORKING_DIRECTORY $<TARGET_FILE_DIR:encode>
+    DEPENDS $<TARGET_FILE_DIR:encode>/_autodata.c
 )
 
 add_library(nomos "")
@@ -71,11 +67,13 @@ foreach(FO_NOM_TARGET nomos nomos_cov nomos_exec nomos_cov_exec)
         ${FO_CWD}/nomos_utils.h
         ${FO_CWD}/doctorBuffer_utils.h
         ${FO_CWD}/json_writer.h
-        ${FO_CWD}/_autodefs.h
-        ${FO_CWD}/_autodata.c
-        ${FO_CWD}/_precheck.c
+        $<TARGET_FILE_DIR:encode>/_autodefs.h
+        $<TARGET_FILE_DIR:encode>/_autodata.c
+        $<TARGET_FILE_DIR:encode>/_precheck.c
     )
     target_compile_definitions(${FO_NOM_TARGET} PRIVATE _FILE_OFFSET_BITS=64)
+    target_include_directories(${FO_NOM_TARGET}
+        PRIVATE $<TARGET_FILE_DIR:encode> ${FO_CWD})
     if(${FO_NOM_TARGET} MATCHES "cov")
         target_compile_options(${FO_NOM_TARGET} PRIVATE ${FO_COV_FLAGS})
     endif()
@@ -94,6 +92,11 @@ foreach(FO_NOM_TARGET nomos nomos_cov nomos_exec nomos_cov_exec)
         add_dependencies(${FO_NOM_TARGET} ${FO_NOM_TARGET_R}) 
     endif()
 endforeach()
+
+install(TARGETS nomos_exec
+    RUNTIME
+    DESTINATION ${FO_MODDIR}/${PROJECT_NAME}/agent 
+    COMPONENT nomos)
 
 # TODO: add VERSION and COMMIT ID 
 # FIXME: nomos coverage not building

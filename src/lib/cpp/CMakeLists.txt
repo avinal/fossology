@@ -49,3 +49,7 @@ target_link_libraries(fossologyCPP PRIVATE fossology)
 
 target_include_directories(fossologyCPP 
     PUBLIC $<BUILD_INTERFACE:${CMAKE_CURRENT_LIST_DIR}>)
+
+install(TARGETS fossologyCPP 
+    DESTINATION ${FO_LIBEXECDIR}
+    COMPONENT lib)

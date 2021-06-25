@@ -7,3 +7,4 @@ endif(NOT DEFINED ARE_DEFAULTS_SET)
 
 add_subdirectory(${CMAKE_CURRENT_SOURCE_DIR}/c)
 add_subdirectory(${CMAKE_CURRENT_SOURCE_DIR}/cpp)
+add_subdirectory(${CMAKE_CURRENT_SOURCE_DIR}/php)

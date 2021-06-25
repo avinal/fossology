@@ -24,7 +24,6 @@ include_directories(
     ${GLIB_INCLUDE_DIRS}
     ${PostgreSQL_INCLUDE_DIRS}
 )
-# link_directories(${GLIB_LIBRARY_DIRS})
 
 add_library(fossology "")
 add_library(fossology_cov EXCLUDE_FROM_ALL "")
@@ -63,3 +62,8 @@ endforeach()
 
 target_include_directories(fossology 
     PUBLIC $<BUILD_INTERFACE:${CMAKE_CURRENT_LIST_DIR}>)
+
+install(TARGETS fossology sqlCopyTest fossconfigTest reppath 
+    RUNTIME DESTINATION ${FO_LIBEXECDIR}
+    ARCHIVE DESTINATION ${FO_LIBEXECDIR}
+    COMPONENT lib)

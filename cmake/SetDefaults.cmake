@@ -9,7 +9,7 @@ set(FO_PROJECTGROUP "fossy" CACHE INTERNAL "group for the project in the system"
 # agents library and source paths
 get_filename_component(FO_BASEDIR ${CMAKE_CURRENT_LIST_DIR}/../ ABSOLUTE CACHE PATH)
 
-list(APPEND CMAKE_MODULE_PATH "${FO_BASEDIR}/cmake")
+set(FO_CMAKEDIR "${FO_BASEDIR}/cmake" CACHE PATH "cmake modules of fossology")
 
 set(FO_SOURCEDIR "${FO_BASEDIR}/src" CACHE PATH "source directory of fossology")
 
@@ -35,7 +35,10 @@ set(FO_COV_FLAGS "-O0;-fprofile-arcs;-ftest-coverage" CACHE INTERNAL "coverage f
 # Install paths
 set(FO_DESTDIR "" CACHE INTERNAL "pseudoroot for packaging purposes")
 
-set(FO_PREFIX "/usr/local" CACHE PATH "base of the program data tree")
+set(CMAKE_INSTALL_PREFIX "~/Desktop/fosstest")
+message(STATUS "Installation path: ${CMAKE_INSTALL_PREFIX}")
+
+set(FO_PREFIX "${CMAKE_INSTALL_PREFIX}" CACHE PATH "base of the program data tree")
 
 set(FO_BINDIR "${FO_PREFIX}/bin" CACHE PATH "executable programs that users run")
 
@@ -75,8 +78,15 @@ set(FO_WEBDIR "${FO_MODDIR}/www" CACHE PATH "webroot")
 
 set(FO_PHPDIR "${FO_MODDIR}/php" CACHE PATH "php root")
 
+set(FO_TWIG_CACHE "<parameter key=\"cache\" type=\"string\">${FO_CACHEDIR}</parameter>" 
+    CACHE INTERNAL "twig cache variable")
 
 set(ARE_DEFAULTS_SET ON CACHE BOOL "flag to check if defaults have been set")
 
+# TEMP
+string(TIMESTAMP FO_BUILD_DATE "%Y/%m/%d %H:%M" UTC)
+
+set(FO_VERSION "3.10.0.72" CACHE INTERNAL "fossology version")
+set(FO_COMMIT_HASH "f00fdf4" CACHE INTERNAL "commit hash")
 
 message(STATUS "The defaults have been set")

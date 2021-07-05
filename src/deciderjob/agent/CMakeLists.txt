@@ -1,6 +1,4 @@
-configure_file("${CMAKE_CURRENT_LIST_DIR}/version.php.in" 
-    "${CMAKE_CURRENT_BINARY_DIR}/gen/version.php"
-    NEWLINE_STYLE UNIX)
+generate_version_php()
 
 install(DIRECTORY ${CMAKE_CURRENT_LIST_DIR}/ ${CMAKE_CURRENT_BINARY_DIR}/gen/
     DESTINATION ${FO_MODDIR}/${PROJECT_NAME}/agent

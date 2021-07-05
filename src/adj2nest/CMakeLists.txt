@@ -2,15 +2,13 @@ cmake_minimum_required(VERSION 3.10 FATAL_ERROR)
 project(adj2nest LANGUAGES C)
 
 # set defaults
-if(NOT DEFINED ARE_DEFAULTS_SET)
-    include(${CMAKE_CURRENT_SOURCE_DIR}/../../cmake/SetDefaults.cmake)
-endif(NOT DEFINED ARE_DEFAULTS_SET)
 
-add_subdirectory(${CMAKE_CURRENT_SOURCE_DIR}/agent)
-configure_file("${FO_CMAKEDIR}/VERSION.in" 
-    "${CMAKE_CURRENT_BINARY_DIR}/VERSION"
-    NEWLINE_STYLE UNIX
-    @ONLY)
+include(${CMAKE_CURRENT_SOURCE_DIR}/../../cmake/SetDefaults.cmake)
+
+
+add_subdirectory(agent)
+
+generate_version()
 
 install(DIRECTORY ui
     DESTINATION ${FO_MODDIR}/${PROJECT_NAME}
@@ -18,6 +16,9 @@ install(DIRECTORY ui
     FILES_MATCHING 
     PATTERN *.php)
 
-install(FILES "${CMAKE_CURRENT_BINARY_DIR}/VERSION" adj2nest.conf 
+
+install(FILES "${PROJECT_BINARY_DIR}/VERSION" adj2nest.conf 
     DESTINATION ${FO_MODDIR}/${PROJECT_NAME}
     COMPONENT adj2nest)
+
+add_symlink()

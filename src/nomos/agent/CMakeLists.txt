@@ -3,13 +3,9 @@ set(FO_CWD ${CMAKE_CURRENT_SOURCE_DIR})
 
 
 set(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} ${FO_C_FLAGS}")
-include(FindPkgConfig)
-include(FindPostgreSQL)
-pkg_check_modules(GLIB REQUIRED glib-2.0)
-pkg_check_modules(JSONC REQUIRED json-c)
 
 include_directories(
-    ${GLIB_INCLUDE_DIRS}
+    ${glib_INCLUDE_DIRS}
     ${PostgreSQL_INCLUDE_DIRS}
     ${FO_CLIB_SRC}
 )
@@ -71,7 +67,11 @@ foreach(FO_NOM_TARGET nomos nomos_cov nomos_exec nomos_cov_exec)
         $<TARGET_FILE_DIR:encode>/_autodata.c
         $<TARGET_FILE_DIR:encode>/_precheck.c
     )
-    target_compile_definitions(${FO_NOM_TARGET} PRIVATE _FILE_OFFSET_BITS=64)
+    target_compile_definitions(${FO_NOM_TARGET} 
+        PRIVATE 
+        _FILE_OFFSET_BITS=64
+        VERSION_S="${FO_VERSION}"
+        COMMIT_HASH_S="${FO_COMMIT_HASH}")
     target_include_directories(${FO_NOM_TARGET}
         PRIVATE $<TARGET_FILE_DIR:encode> ${FO_CWD})
     if(${FO_NOM_TARGET} MATCHES "cov")
@@ -81,7 +81,7 @@ foreach(FO_NOM_TARGET nomos nomos_cov nomos_exec nomos_cov_exec)
         target_link_libraries(${FO_NOM_TARGET} 
             PRIVATE 
             fossology
-            ${JSONC_LIBRARIES}
+            ${jsonc_LIBRARIES}
             pthread
             rt
         )
@@ -98,5 +98,4 @@ install(TARGETS nomos_exec
     DESTINATION ${FO_MODDIR}/${PROJECT_NAME}/agent 
     COMPONENT nomos)
 
-# TODO: add VERSION and COMMIT ID 
 # FIXME: nomos coverage not building

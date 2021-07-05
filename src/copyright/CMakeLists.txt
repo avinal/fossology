@@ -1,9 +1,9 @@
 cmake_minimum_required(VERSION 3.10 FATAL_ERROR)
 project(copyright LANGUAGES CXX)
 # set defaults
-if(NOT DEFINED ARE_DEFAULTS_SET)
-    include(${CMAKE_CURRENT_SOURCE_DIR}/../../cmake/SetDefaults.cmake)
-endif(NOT DEFINED ARE_DEFAULTS_SET)
+
+include(${CMAKE_CURRENT_SOURCE_DIR}/../../cmake/SetDefaults.cmake)
+
 
 add_subdirectory(${CMAKE_CURRENT_SOURCE_DIR}/agent)
 
@@ -18,14 +18,12 @@ install(DIRECTORY ui ui/template
 
 foreach(COP ecc keyword copyright)
     set(PROJECT_NAME ${COP})
-    configure_file("${FO_CMAKEDIR}/VERSION.in" 
-        "${CMAKE_CURRENT_BINARY_DIR}/VERSION-${COP}"
-        NEWLINE_STYLE UNIX
-        @ONLY)
+    generate_version(${COP} "VERSION-${COP}")
     install(FILES ui/agent-${COP}.php
         DESTINATION ${FO_MODDIR}/${COP}/ui
         COMPONENT ${COP})
     install(FILES ${COP}.conf "${CMAKE_CURRENT_BINARY_DIR}/VERSION-${COP}"
         DESTINATION ${FO_MODDIR}/${COP}
         COMPONENT ${COP})
+    add_symlink(${FO_MODDIR}/${COP})
 endforeach()

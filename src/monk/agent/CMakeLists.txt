@@ -1,12 +1,9 @@
 set(FO_CWD ${CMAKE_CURRENT_SOURCE_DIR})
 
 set(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} ${FO_C_FLAGS} -std=c99 -Wextra -fopenmp")
-include(FindPkgConfig)
-include(FindPostgreSQL)
-pkg_check_modules(GLIB REQUIRED glib-2.0)
 
 include_directories(
-    ${GLIB_INCLUDE_DIRS}
+    ${glib_INCLUDE_DIRS}
     ${PostgreSQL_INCLUDE_DIRS}
 )
 if(NOT TARGET fossology)
@@ -67,7 +64,10 @@ foreach(FO_MONK_TARGET monk monk_exec monk_cov monkbulk)
         $<TARGET_FILE_DIR:squareBuilder>/_squareVisitor.h
     )
     target_link_libraries(${FO_MONK_TARGET} PRIVATE fossology magic)
-    target_compile_definitions(${FO_MONK_TARGET} PRIVATE _FILE_OFFSET_BITS=64)
+    target_compile_definitions(${FO_MONK_TARGET} 
+        PRIVATE _FILE_OFFSET_BITS=64
+        VERSION_S="${FO_VERSION}"
+        COMMIT_HASH_S="${FO_COMMIT_HASH}")
     target_include_directories(${FO_MONK_TARGET} 
         PRIVATE $<TARGET_FILE_DIR:squareBuilder>)
 endforeach()
@@ -75,9 +75,12 @@ endforeach()
 set_target_properties(monk_exec
         PROPERTIES OUTPUT_NAME monk)
 
-install(TARGETS monk_exec monkbulk
+install(TARGETS monk_exec
     RUNTIME
     DESTINATION ${FO_MODDIR}/${PROJECT_NAME}/agent 
-    COMPONENT monk-agent)
+    COMPONENT monk)
 
-# TODO: add VERSION and COMMIT ID 
+install(TARGETS monkbulk
+    RUNTIME
+    DESTINATION ${FO_MODDIR}/${PROJECT_NAME}bulk/agent 
+    COMPONENT monk)

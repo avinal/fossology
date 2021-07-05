@@ -2,15 +2,10 @@ set(FO_CWD ${CMAKE_CURRENT_SOURCE_DIR})
 
 set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} ${FO_CXX_FLAGS} -fopenmp -Wextra")
 
-find_package(Boost REQUIRED regex system filesystem program_options)
-include(FindPkgConfig)
-include(FindPostgreSQL)
-pkg_check_modules(GLIB REQUIRED glib-2.0)
-pkg_check_modules(JSONCPP REQUIRED jsoncpp)
 
 include_directories(
-    ${GLIB_INCLUDE_DIRS}
-    ${JSONCPP_INCLUDE_DIRS}
+    ${glib_INCLUDE_DIRS}
+    ${jsoncpp_INCLUDE_DIRS}
     ${PostgreSQL_INCLUDE_DIRS}
     ${FO_CLIB_SRC}
 )
@@ -18,8 +13,8 @@ if(NOT TARGET fossologyCPP)
     add_subdirectory(${FO_CXXLIB_SRC} buildcpp EXCLUDE_FROM_ALL)
 endif()
 
-add_library(copyright "")
-add_library(copyright_cov "")
+add_library(copyright EXCLUDE_FROM_ALL "")
+add_library(copyright_cov EXCLUDE_FROM_ALL "")
 add_executable(copyright_exec "")
 add_executable(ecc "")
 add_executable(keyword "")
@@ -32,6 +27,8 @@ foreach(FO_COPY_TARGET copyright copyright_exec copyright_cov
                 DATADIR="${FO_MODDIR}"
                 IDENTITY_COPYRIGHT
                 _FILE_OFFSET_BITS=64
+                VERSION_S="${FO_VERSION}"
+                COMMIT_HASH_S="${FO_COMMIT_HASH}"
         )
     elseif(${FO_COPY_TARGET} STREQUAL "ecc")
         target_compile_definitions(${FO_COPY_TARGET}
@@ -39,6 +36,8 @@ foreach(FO_COPY_TARGET copyright copyright_exec copyright_cov
                 DATADIR="${FO_MODDIR}"
                 IDENTITY_ECC
                 _FILE_OFFSET_BITS=64
+                VERSION_S="${FO_VERSION}"
+                COMMIT_HASH_S="${FO_COMMIT_HASH}"
         )
     elseif(${FO_COPY_TARGET} STREQUAL "keyword")
         target_compile_definitions(${FO_COPY_TARGET}
@@ -46,6 +45,8 @@ foreach(FO_COPY_TARGET copyright copyright_exec copyright_cov
                 DATADIR="${FO_MODDIR}"
                 IDENTITY_KW
                 _FILE_OFFSET_BITS=64
+                VERSION_S="${FO_VERSION}"
+                COMMIT_HASH_S="${FO_COMMIT_HASH}"
         )
     endif()
     if(NOT ${FO_COPY_TARGET} STREQUAL "fo_unicode_clean")
@@ -90,7 +91,7 @@ foreach(FO_COPY_TARGET copyright copyright_exec copyright_cov
     target_link_libraries(${FO_COPY_TARGET} 
         PRIVATE 
             fossologyCPP m icuuc icudata stdc++ 
-            ${Boost_LIBRARIES} ${JSONCPP_LIBRARIES}
+            ${Boost_LIBRARIES} ${jsoncpp_LIBRARIES}
     )
 endforeach()
 target_compile_options(copyright_cov PRIVATE ${FO_COV_FLAGS})
@@ -106,9 +107,10 @@ foreach(COP ecc keyword)
         RUNTIME
         DESTINATION ${FO_MODDIR}/${COP}/agent
         COMPONENT ${COP})
+    install(FILES ${COP}.conf
+        DESTINATION ${FO_MODDIR}/${COP}/agent
+        COMPONENT ${COP})
 endforeach()
 
 
-# TODO: add version and commit info
-# ASK: executable configurations
 # BUG: coverage may not work on ninja

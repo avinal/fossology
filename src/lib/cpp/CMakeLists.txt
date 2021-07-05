@@ -1,12 +1,12 @@
 # set minimum cmake version required
 cmake_minimum_required(VERSION 3.10)
-project(fossologyCPP LANGUAGES CXX)
+project(libcpp LANGUAGES CXX)
 # set(CMAKE_VERBOSE_MAKEFILE ON)
 set(FO_CWD ${CMAKE_CURRENT_SOURCE_DIR})
 # set defaults
-if(NOT DEFINED ARE_DEFAULTS_SET)
-    include(${CMAKE_CURRENT_SOURCE_DIR}/../../../cmake/SetDefaults.cmake)
-endif()
+
+include(${CMAKE_CURRENT_SOURCE_DIR}/../../../cmake/SetDefaults.cmake)
+# endif()
 
 set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} ${FO_CXX_FLAGS} -fPIC -Wextra -Weffc++")
 add_compile_definitions(
@@ -16,11 +16,8 @@ add_compile_definitions(
     _FILE_OFFSET_BITS=64
 )
 
-include(FindPkgConfig)
-include(FindPostgreSQL)
-pkg_check_modules(GLIB REQUIRED glib-2.0)
 include_directories(
-    ${GLIB_INCLUDE_DIRS}
+    ${glib_INCLUDE_DIRS}
     ${PostgreSQL_INCLUDE_DIRS}
     ${FO_CLIB_SRC}
 )

@@ -1,11 +1,11 @@
 # set minimum cmake version required
 cmake_minimum_required(VERSION 3.10 FATAL_ERROR)
-project(fossology LANGUAGES C)
+project(libc LANGUAGES C)
 
 # set defaults
-if(NOT DEFINED ARE_DEFAULTS_SET)
-    include(${CMAKE_CURRENT_SOURCE_DIR}/../../../cmake/SetDefaults.cmake)
-endif(NOT DEFINED ARE_DEFAULTS_SET)
+
+include(${CMAKE_CURRENT_SOURCE_DIR}/../../../cmake/SetDefaults.cmake)
+
 
 set(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} -fPIC -Wall")
 add_compile_definitions(
@@ -15,13 +15,10 @@ add_compile_definitions(
     _FILE_OFFSET_BITS=64
 )
 
-include(FindPkgConfig)
-include(FindPostgreSQL)
-pkg_check_modules(GLIB REQUIRED glib-2.0)
 
 include_directories(
     ${fossology_SOURCE_DIR}
-    ${GLIB_INCLUDE_DIRS}
+    ${glib_INCLUDE_DIRS}
     ${PostgreSQL_INCLUDE_DIRS}
 )
 
@@ -49,7 +46,7 @@ foreach(FO_CLIB_TARGET fossology fossology_cov)
     )
 
     target_link_libraries(${FO_CLIB_TARGET}
-        PRIVATE ${GLIB_LIBRARIES} ${PostgreSQL_LIBRARIES})
+        PRIVATE ${glib_LIBRARIES} ${PostgreSQL_LIBRARIES})
 endforeach()
 
 target_compile_options(fossology_cov PRIVATE ${FO_COV_FLAGS})

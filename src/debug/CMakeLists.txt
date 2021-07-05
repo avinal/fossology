@@ -1,18 +1,13 @@
 cmake_minimum_required(VERSION 3.10 FATAL_ERROR)
-project(www)
+project(debug)
 # set defaults
 
 include(${CMAKE_CURRENT_SOURCE_DIR}/../../cmake/SetDefaults.cmake)
 
-
 install(DIRECTORY ui
     DESTINATION ${FO_MODDIR}/${PROJECT_NAME}
-    COMPONENT www
+    COMPONENT debug
+    FILES_MATCHING
+    PATTERN *.php
 )
-
 add_symlink()
-foreach(WWW_INSTALL page async)
-    add_symlink(${FO_MODDIR}/${PROJECT_NAME}/ui/${WWW_INSTALL} 
-        www-${WWW_INSTALL})
-endforeach()
-

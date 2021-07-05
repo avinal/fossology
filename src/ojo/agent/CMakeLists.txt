@@ -2,20 +2,19 @@ set(FO_CWD ${CMAKE_CURRENT_SOURCE_DIR})
 
 set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} ${FO_CXX_FLAGS} -fopenmp")
 find_package(Boost REQUIRED regex system filesystem program_options)
-include(FindPkgConfig)
-include(FindPostgreSQL)
-pkg_check_modules(GLIB REQUIRED glib-2.0)
-pkg_check_modules(JSONCPP REQUIRED jsoncpp)
-
 include_directories(
-    ${GLIB_INCLUDE_DIRS}
+    ${glib_INCLUDE_DIRS}
     ${PostgreSQL_INCLUDE_DIRS}
     ${FO_CLIB_SRC}
-    ${JSONCPP_INCLUDE_DIRS}
+    ${jsoncpp_INCLUDE_DIRS}
     ${FO_CXXLIB_SRC}
 )
 
-add_compile_definitions( _FILE_OFFSET_BITS=64 DATADIR="${FO_MODDIR}")
+add_compile_definitions( 
+    _FILE_OFFSET_BITS=64 
+    DATADIR="${FO_MODDIR}"
+    VERSION_S="${FO_VERSION}"
+    COMMIT_HASH_S="${FO_COMMIT_HASH}")
 
 if(NOT TARGET fossologyCPP)
     add_subdirectory(${FO_CXXLIB_SRC} buildcxx EXCLUDE_FROM_ALL)
@@ -49,7 +48,7 @@ foreach(FO_OJO_TARGET ojo ojo_exec ojo_cov ojo_cov_exec)
     endif()
     if(${FO_OJO_TARGET} MATCHES "_exec$")
         target_link_libraries(${FO_OJO_TARGET} 
-            PRIVATE fossologyCPP icuuc ${Boost_LIBRARIES} ${JSONCPP_LIBRARIES})
+            PRIVATE fossologyCPP icuuc ${Boost_LIBRARIES} ${jsoncpp_LIBRARIES})
         string(REPLACE "_exec" "" FO_OJO_TARGET_R ${FO_OJO_TARGET})
         set_target_properties(${FO_OJO_TARGET}
             PROPERTIES OUTPUT_NAME ${FO_OJO_TARGET_R})
@@ -62,4 +61,3 @@ install(TARGETS ojo_exec
     COMPONENT ojo-agent)
 
 # FIXME: coverage build is failing
-# TODO: add VERSION and COMMIT ID 

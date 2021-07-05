@@ -10,13 +10,6 @@ add_compile_definitions(
     _FILE_OFFSET_BITS=64
 )
 
-include(FindPkgConfig)
-include(FindPostgreSQL)
-foreach(SCHE_LIBS glib-2.0 gthread-2.0 gio-2.0 gobject-2.0)
-    string(REPLACE "-2.0" "" LIB_NAME ${SCHE_LIBS})
-    pkg_check_modules(${LIB_NAME} REQUIRED ${SCHE_LIBS})
-endforeach()
-
 if(NOT TARGET fossology)
     add_subdirectory(${FO_CLIB_SRC} buildc EXCLUDE_FROM_ALL)
 endif()
@@ -44,7 +37,7 @@ foreach(FO_SCH_TARGET scheduler fo_scheduler fo_cli scheduler_cov)
                 ${gthread_LIBRARIES}
                 ${gio_LIBRARIES}
         )
-        # ASK: PROCESS_NAME is both exe or only one at a time?-- both at the same time
+        # TODO: PROCESS_NAME is both exe at the same time
         target_compile_options(${FO_SCH_TARGET}
             PRIVATE "-DPROCESS_NAME=${FO_SCH_TARGET}")
     else()
@@ -78,16 +71,34 @@ endforeach()
 target_compile_options(scheduler_cov PRIVATE ${FO_COV_FLAGS})
 
 # HACK: adding target for angled branckes
-# ASK: change angled brackets to quoted
 target_include_directories(scheduler_cov PRIVATE ${FO_CWD})
 target_include_directories(scheduler 
     PUBLIC $<BUILD_INTERFACE:${CMAKE_CURRENT_LIST_DIR}>)
+
+add_custom_target(initfile ALL
+COMMAND ${CMAKE_COMMAND}
+    -DIN_FILE_NAME="fossology.in"
+    -DOUT_FILE_NAME="fossology"
+    -DINPUT_FILE_DIR="${FO_CWD}/defconf/init.d"
+    -DOUTPUT_FILE_DIR="${CMAKE_CURRENT_BINARY_DIR}/gen/init.d"
+    -DFO_SYSCONFDIR="${FO_SYSCONFDIR}"
+    -DFO_PROJECT="${FO_PROJECT}"
+    -DFO_MODDIR="${FO_MODDIR}"
+    -DFO_INITDIR="${FO_INITDIR}"
+    -P ${FO_CMAKEDIR}/FoVersionFile.cmake
+    COMMENT "Generating init script for the ${FO_PROJECT} scheduler"
+    DEPENDS "${FO_CWD}/defconf/init.d/fossology.in"
+    BYPRODUCTS ${CMAKE_CURRENT_BINARY_DIR}/gen/init.d)
 
 install(TARGETS fo_cli fo_scheduler
     RUNTIME
     DESTINATION ${FO_MODDIR}/${PROJECT_NAME}/agent 
     COMPONENT scheduler)
 
-# TODO: Add commit and version info
+install(DIRECTORY ${CMAKE_CURRENT_BINARY_DIR}/gen/init.d
+    DESTINATION ${FO_INITDIR}
+    COMPONENT scheduler) 
+add_symlink()
+
 # TODO: add install for configuration files
 # ASK: what are the configuration files and how they are generared?

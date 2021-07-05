@@ -1,3 +1,18 @@
+message(STATUS "Configuring ${PROJECT_NAME}")
+
+# checking for dependencies
+find_package(PkgConfig REQUIRED)
+find_package(PostgreSQL REQUIRED)
+find_package(Boost REQUIRED regex system filesystem program_options)
+find_package(Git REQUIRED)
+foreach(SCHE_LIBS glib-2.0 gthread-2.0 gio-2.0 gobject-2.0)
+    string(REPLACE "-2.0" "" LIB_NAME ${SCHE_LIBS})
+    pkg_check_modules(${LIB_NAME} REQUIRED ${SCHE_LIBS})
+endforeach()
+pkg_check_modules(jsoncpp REQUIRED jsoncpp)
+pkg_check_modules(jsonc REQUIRED json-c)
+
+if(NOT DEFINED ARE_DEFAULTS_SET)
 
 # set all the default variable in cache
 set(FO_PROJECT "fossology" CACHE INTERNAL "The name of our project")
@@ -35,10 +50,10 @@ set(FO_COV_FLAGS "-O0;-fprofile-arcs;-ftest-coverage" CACHE INTERNAL "coverage f
 # Install paths
 set(FO_DESTDIR "" CACHE INTERNAL "pseudoroot for packaging purposes")
 
-set(CMAKE_INSTALL_PREFIX "~/Desktop/fosstest")
+set(CMAKE_INSTALL_PREFIX "")
 message(STATUS "Installation path: ${CMAKE_INSTALL_PREFIX}")
 
-set(FO_PREFIX "${CMAKE_INSTALL_PREFIX}" CACHE PATH "base of the program data tree")
+set(FO_PREFIX "${CMAKE_INSTALL_PREFIX}/usr/local" CACHE PATH "base of the program data tree")
 
 set(FO_BINDIR "${FO_PREFIX}/bin" CACHE PATH "executable programs that users run")
 
@@ -78,15 +93,22 @@ set(FO_WEBDIR "${FO_MODDIR}/www" CACHE PATH "webroot")
 
 set(FO_PHPDIR "${FO_MODDIR}/php" CACHE PATH "php root")
 
+## Build variables
+
+set(FO_APACHE_CTL "/usr/sbin/apachectl" CACHE PATH "apache ctl")
+set(FO_APACHE2_EN_SITE "/usr/sbin/a2ensite" CACHE PATH "apachec ensite")
+set(FO_APACHE2SITE_DIR "/etc/apache2sites-available" CACHE PATH "apache site dir")
+set(FO_HTTPD_SITE_DIR "/etc/httpd/conf.d" CACHE PATH "http site dir")
 set(FO_TWIG_CACHE "<parameter key=\"cache\" type=\"string\">${FO_CACHEDIR}</parameter>" 
     CACHE INTERNAL "twig cache variable")
 
 set(ARE_DEFAULTS_SET ON CACHE BOOL "flag to check if defaults have been set")
-
+endif(NOT DEFINED ARE_DEFAULTS_SET)
 # TEMP
-string(TIMESTAMP FO_BUILD_DATE "%Y/%m/%d %H:%M" UTC)
 
-set(FO_VERSION "3.10.0.72" CACHE INTERNAL "fossology version")
-set(FO_COMMIT_HASH "f00fdf4" CACHE INTERNAL "commit hash")
+# set(CMAKE_INSTALL_MESSAGE NEVER)
 
-message(STATUS "The defaults have been set")
+include(${FO_CMAKEDIR}/FoUtilities.cmake)
+if(NOT DEFINED FO_COMMIT_DATE)
+    getGitVersion()
+endif(NOT DEFINED FO_COMMIT_DATE)

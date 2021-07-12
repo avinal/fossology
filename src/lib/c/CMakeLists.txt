@@ -1,8 +1,24 @@
-# set minimum cmake version required
+#[[--------------------------------------------------------------------
+SPDX-License-Identifier: GPL-2.0
+SPDX-FileCopyrightText: 2021 Avinal Kumar <avinal.xlvii@gmail.com>
+
+This program is free software; you can redistribute it and/or
+modify it under the terms of the GNU General Public License
+version 2 as published by the Free Software Foundation.
+
+This program is distributed in the hope that it will be useful,
+but WITHOUT ANY WARRANTY; without even the implied warranty of
+MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+GNU General Public License for more details.
+
+You should have received a copy of the GNU General Public License along
+with this program; if not, write to the Free Software Foundation, Inc.,
+51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
+---------------------------------------------------------------------]]
+
 cmake_minimum_required(VERSION 3.10 FATAL_ERROR)
 project(libc LANGUAGES C)
 
-# set defaults
 
 include(${CMAKE_CURRENT_SOURCE_DIR}/../../../cmake/SetDefaults.cmake)
 
@@ -35,14 +51,6 @@ foreach(FO_CLIB_TARGET fossology fossology_cov)
             ${FO_CWD}/libfossdbmanager.c
             ${FO_CWD}/fossconfig.c
             ${FO_CWD}/sqlCopy.c
-        PUBLIC
-            ${FO_CWD}/libfossscheduler.h
-            ${FO_CWD}/libfossdb.h
-            ${FO_CWD}/libfossagent.h
-            ${FO_CWD}/libfossrepo.h
-            ${FO_CWD}/libfossdbmanager.h
-            ${FO_CWD}/fossconfig.h
-            ${FO_CWD}/sqlCopy.h
     )
 
     target_link_libraries(${FO_CLIB_TARGET}
@@ -63,4 +71,8 @@ target_include_directories(fossology
 install(TARGETS fossology sqlCopyTest fossconfigTest reppath 
     RUNTIME DESTINATION ${FO_LIBEXECDIR}
     ARCHIVE DESTINATION ${FO_LIBEXECDIR}
+    COMPONENT lib)
+
+install(FILES ${FO_CWD}/libfossology.h 
+    DESTINATION ${FO_INCLUDEDIR}
     COMPONENT lib)

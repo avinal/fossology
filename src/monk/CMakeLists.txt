@@ -1,6 +1,23 @@
+#[[--------------------------------------------------------------------
+SPDX-License-Identifier: GPL-2.0
+SPDX-FileCopyrightText: 2021 Avinal Kumar <avinal.xlvii@gmail.com>
+
+This program is free software; you can redistribute it and/or
+modify it under the terms of the GNU General Public License
+version 2 as published by the Free Software Foundation.
+
+This program is distributed in the hope that it will be useful,
+but WITHOUT ANY WARRANTY; without even the implied warranty of
+MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+GNU General Public License for more details.
+
+You should have received a copy of the GNU General Public License along
+with this program; if not, write to the Free Software Foundation, Inc.,
+51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
+---------------------------------------------------------------------]]
+
 cmake_minimum_required(VERSION 3.10 FATAL_ERROR)
 project(monk LANGUAGES C)
-# set defaults
 
 include(${CMAKE_CURRENT_SOURCE_DIR}/../../cmake/SetDefaults.cmake)
 
@@ -19,15 +36,14 @@ install(FILES ui/agent-monk-bulk.php
     COMPONENT monk)
 
 foreach(MONK_INSTALL monkbulk monk)
-    set(PROJECT_NAME ${MONK_INSTALL})
-    configure_file("${FO_CMAKEDIR}/VERSION.in" 
-        "${CMAKE_CURRENT_BINARY_DIR}/${MONK_INSTALL}/VERSION"
-        NEWLINE_STYLE UNIX
-        @ONLY)
-    install(FILES ${MONK_INSTALL}.conf "${CMAKE_CURRENT_BINARY_DIR}/${MONK_INSTALL}/VERSION"
+    generate_version(${MONK_INSTALL} "VERSION-${MONK_INSTALL}")
+    install(FILES ${MONK_INSTALL}.conf
         DESTINATION ${FO_MODDIR}/${MONK_INSTALL}
+        COMPONENT monk)
+    install(FILES "${CMAKE_CURRENT_BINARY_DIR}/VERSION-${MONK_INSTALL}"
+        DESTINATION ${FO_MODDIR}/${MONK_INSTALL}
+        RENAME "VERSION"
         COMPONENT monk)
     add_symlink(${FO_MODDIR}/${MONK_INSTALL})
 endforeach()
 
-generate_version()

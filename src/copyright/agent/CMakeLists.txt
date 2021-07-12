@@ -1,3 +1,21 @@
+#[[--------------------------------------------------------------------
+SPDX-License-Identifier: GPL-2.0
+SPDX-FileCopyrightText: 2021 Avinal Kumar <avinal.xlvii@gmail.com>
+
+This program is free software; you can redistribute it and/or
+modify it under the terms of the GNU General Public License
+version 2 as published by the Free Software Foundation.
+
+This program is distributed in the hope that it will be useful,
+but WITHOUT ANY WARRANTY; without even the implied warranty of
+MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+GNU General Public License for more details.
+
+You should have received a copy of the GNU General Public License along
+with this program; if not, write to the Free Software Foundation, Inc.,
+51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
+---------------------------------------------------------------------]]
+
 set(FO_CWD ${CMAKE_CURRENT_SOURCE_DIR})
 
 set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} ${FO_CXX_FLAGS} -fopenmp -Wextra")
@@ -12,47 +30,41 @@ include_directories(
 if(NOT TARGET fossologyCPP)
     add_subdirectory(${FO_CXXLIB_SRC} buildcpp EXCLUDE_FROM_ALL)
 endif()
+add_compile_definitions(
+    DATADIR="${FO_MODDIR}"
+    _FILE_OFFSET_BITS=64
 
-add_library(copyright EXCLUDE_FROM_ALL "")
-add_library(copyright_cov EXCLUDE_FROM_ALL "")
-add_executable(copyright_exec "")
+    VERSION_S="${FO_VERSION}"
+    COMMIT_HASH_S="${FO_COMMIT_HASH}")
+
+add_library(copyright_lib EXCLUDE_FROM_ALL "")
+add_library(copyright_cov_lib EXCLUDE_FROM_ALL "")
+add_executable(copyright "")
 add_executable(ecc "")
 add_executable(keyword "")
 add_executable(fo_unicode_clean "")
-foreach(FO_COPY_TARGET copyright copyright_exec copyright_cov 
+add_executable(copyright_cov EXCLUDE_FROM_ALL "")
+foreach(FO_COPY_TARGET copyright_lib copyright copyright_cov_lib copyright_cov
     ecc keyword fo_unicode_clean)
-    if(${FO_COPY_TARGET} STREQUAL "^copyright")
+    if(${FO_COPY_TARGET} MATCHES "^copyright")
         target_compile_definitions(${FO_COPY_TARGET}
             PRIVATE    
-                DATADIR="${FO_MODDIR}"
                 IDENTITY_COPYRIGHT
-                _FILE_OFFSET_BITS=64
-                VERSION_S="${FO_VERSION}"
-                COMMIT_HASH_S="${FO_COMMIT_HASH}"
         )
     elseif(${FO_COPY_TARGET} STREQUAL "ecc")
         target_compile_definitions(${FO_COPY_TARGET}
             PRIVATE    
-                DATADIR="${FO_MODDIR}"
                 IDENTITY_ECC
-                _FILE_OFFSET_BITS=64
-                VERSION_S="${FO_VERSION}"
-                COMMIT_HASH_S="${FO_COMMIT_HASH}"
         )
     elseif(${FO_COPY_TARGET} STREQUAL "keyword")
         target_compile_definitions(${FO_COPY_TARGET}
             PRIVATE    
-                DATADIR="${FO_MODDIR}"
                 IDENTITY_KW
-                _FILE_OFFSET_BITS=64
-                VERSION_S="${FO_VERSION}"
-                COMMIT_HASH_S="${FO_COMMIT_HASH}"
         )
     endif()
     if(NOT ${FO_COPY_TARGET} STREQUAL "fo_unicode_clean")
         if(${FO_COPY_TARGET} MATCHES "^copyright")
             set(COP_XSRC copyscan.cc)
-            set(COP_XINC copyscan.hpp)
         endif()
         target_sources(${FO_COPY_TARGET}
             PRIVATE
@@ -67,24 +79,11 @@ foreach(FO_COPY_TARGET copyright copyright_exec copyright_cov
             ${FO_CWD}/copyrightState.cc
             ${FO_CWD}/database.cc
             ${FO_CWD}/${COP_XSRC}
-            PUBLIC
-            ${FO_CWD}/copyright.hpp
-            ${FO_CWD}/regscan.hpp
-            ${FO_CWD}/scanners.hpp
-            ${FO_CWD}/cleanEntries.hpp
-            ${FO_CWD}/regexConfProvider.hpp
-            ${FO_CWD}/regexConfParser.hpp
-            ${FO_CWD}/directoryScan.hpp
-            ${FO_CWD}/copyrightUtils.hpp
-            ${FO_CWD}/copyrightState.hpp
-            ${FO_CWD}/database.hpp
-            ${FO_CWD}/${COP_XINC}
         )
     else()
         target_sources(${FO_COPY_TARGET}
             PRIVATE
             ${FO_CWD}/FossologyUnicodeClean.cc
-            ${FO_CWD}/FossologyUnicodeClean.hpp
         )
     endif()
 
@@ -95,14 +94,15 @@ foreach(FO_COPY_TARGET copyright copyright_exec copyright_cov
     )
 endforeach()
 target_compile_options(copyright_cov PRIVATE ${FO_COV_FLAGS})
-set_target_properties(copyright_exec PROPERTIES OUTPUT_NAME copyright)
+set_target_properties(copyright_lib PROPERTIES OUTPUT_NAME copyright)
+set_target_properties(copyright_cov_lib PROPERTIES OUTPUT_NAME copyright_cov)
 
-install(TARGETS copyright_exec fo_unicode_clean
+install(TARGETS fo_unicode_clean
     RUNTIME
     DESTINATION ${FO_MODDIR}/${PROJECT_NAME}/agent 
     COMPONENT copyright)
 
-foreach(COP ecc keyword)
+foreach(COP ecc keyword copyright)
     install(TARGETS ${COP}
         RUNTIME
         DESTINATION ${FO_MODDIR}/${COP}/agent
@@ -113,4 +113,4 @@ foreach(COP ecc keyword)
 endforeach()
 
 
-# BUG: coverage may not work on ninja
+# BUG: coverage may not work 

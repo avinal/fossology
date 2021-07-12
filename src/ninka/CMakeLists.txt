@@ -16,13 +16,13 @@ with this program; if not, write to the Free Software Foundation, Inc.,
 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 ---------------------------------------------------------------------]]
 
-generate_version_php()
+cmake_minimum_required(VERSION 3.10 FATAL_ERROR)
 
-install(DIRECTORY ./ ${CMAKE_CURRENT_BINARY_DIR}/gen/
-    DESTINATION ${FO_MODDIR}/${PROJECT_NAME}/agent
-    COMPONENT readmeoss
-    FILES_MATCHING
-    PATTERN *.php
-)
+# set defaults
 
-add_symlink(${FO_LIBEXECDIR}/fo_wrapper ${PROJECT_NAME} ${FO_MODDIR}/${PROJECT_NAME}/agent)
+    include(${CMAKE_CURRENT_SOURCE_DIR}/cmake/SetDefaults.cmake)
+
+
+add_subdirectory(${CMAKE_CURRENT_SOURCE_DIR}/agent)
+
+# TODO: come back later as agent is deprecated

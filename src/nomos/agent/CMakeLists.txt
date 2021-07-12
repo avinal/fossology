@@ -1,3 +1,20 @@
+#[[--------------------------------------------------------------------
+SPDX-License-Identifier: GPL-2.0
+SPDX-FileCopyrightText: 2021 Avinal Kumar <avinal.xlvii@gmail.com>
+
+This program is free software; you can redistribute it and/or
+modify it under the terms of the GNU General Public License
+version 2 as published by the Free Software Foundation.
+
+This program is distributed in the hope that it will be useful,
+but WITHOUT ANY WARRANTY; without even the implied warranty of
+MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+GNU General Public License for more details.
+
+You should have received a copy of the GNU General Public License along
+with this program; if not, write to the Free Software Foundation, Inc.,
+51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
+---------------------------------------------------------------------]]
 
 set(FO_CWD ${CMAKE_CURRENT_SOURCE_DIR})
 
@@ -52,18 +69,6 @@ foreach(FO_NOM_TARGET nomos nomos_cov nomos_exec nomos_cov_exec)
         ${FO_CWD}/nomos_utils.c
         ${FO_CWD}/doctorBuffer_utils.c
         ${FO_CWD}/json_writer.c
-        ${FO_CWD}/nomos.h
-        ${FO_CWD}/licenses.h
-        ${FO_CWD}/list.h
-        ${FO_CWD}/parse.h
-        ${FO_CWD}/process.h
-        ${FO_CWD}/nomos_regex.h
-        ${FO_CWD}/util.h
-        ${FO_CWD}/nomos_gap.h
-        ${FO_CWD}/nomos_utils.h
-        ${FO_CWD}/doctorBuffer_utils.h
-        ${FO_CWD}/json_writer.h
-        $<TARGET_FILE_DIR:encode>/_autodefs.h
         $<TARGET_FILE_DIR:encode>/_autodata.c
         $<TARGET_FILE_DIR:encode>/_precheck.c
     )

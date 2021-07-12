@@ -1,3 +1,20 @@
+#[[--------------------------------------------------------------------
+SPDX-License-Identifier: GPL-2.0
+SPDX-FileCopyrightText: 2021 Avinal Kumar <avinal.xlvii@gmail.com>
+
+This program is free software; you can redistribute it and/or
+modify it under the terms of the GNU General Public License
+version 2 as published by the Free Software Foundation.
+
+This program is distributed in the hope that it will be useful,
+but WITHOUT ANY WARRANTY; without even the implied warranty of
+MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+GNU General Public License for more details.
+
+You should have received a copy of the GNU General Public License along
+with this program; if not, write to the Free Software Foundation, Inc.,
+51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
+---------------------------------------------------------------------]]
 
 set(FO_CWD ${CMAKE_CURRENT_SOURCE_DIR})
 
@@ -45,7 +62,6 @@ foreach(FO_WGET_TARGET wget_agent wget_agent_exec wget_agent_cov)
     target_sources(${FO_WGET_TARGET}
         PRIVATE
         ${FO_CWD}/wget_agent.c
-        ${FO_CWD}/wget_agent.h
         ${FO_CWD}/${WGET_XSRC}
     )
     if(${FO_WGET_TARGET} STREQUAL "wget_agent_cov")

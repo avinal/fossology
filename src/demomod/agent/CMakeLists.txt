@@ -16,13 +16,35 @@ with this program; if not, write to the Free Software Foundation, Inc.,
 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 ---------------------------------------------------------------------]]
 
-generate_version_php()
+cmake_minimum_required(VERSION 3.10 FATAL_ERROR)
+project(demomod LANGUAGES C)
+set(FO_CWD ${CMAKE_CURRENT_SOURCE_DIR})
 
-install(DIRECTORY ./ ${CMAKE_CURRENT_BINARY_DIR}/gen/
-    DESTINATION ${FO_MODDIR}/${PROJECT_NAME}/agent
-    COMPONENT readmeoss
-    FILES_MATCHING
-    PATTERN *.php
+if(NOT DEFINED ARE_DEFAULTS_SET)
+include(${CMAKE_CURRENT_SOURCE_DIR}/../../../cmake/SetDefaults.cmake)
+endif(NOT DEFINED ARE_DEFAULTS_SET)
+
+set(CMAKE_C_FLAGS "${CMAKE_C_FLAGS};${FO_C_FLAGS};-fPIC;-Werror")
+
+
+include_directories(
+    ${glib_INCLUDE_DIRS}
+    ${PostgreSQL_INCLUDE_DIRS}
 )
+if(NOT TARGET fossology)
+    add_subdirectory(${FO_CLIB_SRC} buildc EXCLUDE_FROM_ALL)
+endif()
 
-add_symlink(${FO_LIBEXECDIR}/fo_wrapper ${PROJECT_NAME} ${FO_MODDIR}/${PROJECT_NAME}/agent)
+add_executable(demomod "")
+target_sources(demomod
+    PRIVATE
+    ${FO_CWD}/usage.c
+    ${FO_CWD}/demomod.c
+    ${FO_CWD}/utils.c
+    ${FO_CWD}/process.c
+    ${FO_CWD}/demomod.h
+)
+target_compile_definitions(demomod PRIVATE _FILE_OFFSET_BITS=64)
+target_link_libraries(demomod PRIVATE fossology)
+
+# TODO: come back later as agent is not used

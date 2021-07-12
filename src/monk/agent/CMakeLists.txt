@@ -1,3 +1,21 @@
+#[[--------------------------------------------------------------------
+SPDX-License-Identifier: GPL-2.0
+SPDX-FileCopyrightText: 2021 Avinal Kumar <avinal.xlvii@gmail.com>
+
+This program is free software; you can redistribute it and/or
+modify it under the terms of the GNU General Public License
+version 2 as published by the Free Software Foundation.
+
+This program is distributed in the hope that it will be useful,
+but WITHOUT ANY WARRANTY; without even the implied warranty of
+MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+GNU General Public License for more details.
+
+You should have received a copy of the GNU General Public License along
+with this program; if not, write to the Free Software Foundation, Inc.,
+51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
+---------------------------------------------------------------------]]
+
 set(FO_CWD ${CMAKE_CURRENT_SOURCE_DIR})
 
 set(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} ${FO_C_FLAGS} -std=c99 -Wextra -fopenmp")
@@ -27,9 +45,9 @@ add_executable(monkbulk "")
 
 foreach(FO_MONK_TARGET monk monk_exec monk_cov monkbulk)
     if(${FO_MONK_TARGET} STREQUAL "monk")
-        set(MONK_XSRC "monk.c" "monk.h")
+        set(MONK_XSRC "monk.c" )
     elseif(${FO_MONK_TARGET} STREQUAL "monkbulk")
-        set(MONK_XSRC "monkbulk.c" "monkbulk.h")
+        set(MONK_XSRC "monkbulk.c" )
     endif()
     target_sources(${FO_MONK_TARGET}
         PRIVATE
@@ -46,22 +64,8 @@ foreach(FO_MONK_TARGET monk monk_exec monk_cov monkbulk)
         ${FO_CWD}/cli.c
         ${FO_CWD}/scheduler.c
         ${FO_CWD}/serialize.c
-        ${FO_CWD}/string_operations.h
-        ${FO_CWD}/file_operations.h
-        ${FO_CWD}/database.h
-        ${FO_CWD}/encoding.h
-        ${FO_CWD}/license.h
-        ${FO_CWD}/match.h
-        ${FO_CWD}/highlight.h
-        ${FO_CWD}/hash.h
-        ${FO_CWD}/diff.h
-        ${FO_CWD}/common.h
-        ${FO_CWD}/cli.h
-        ${FO_CWD}/scheduler.h
-        ${FO_CWD}/serialize.h
         ${FO_CWD}/${MONK_XSRC}
         $<TARGET_FILE_DIR:squareBuilder>/_squareVisitor.c
-        $<TARGET_FILE_DIR:squareBuilder>/_squareVisitor.h
     )
     target_link_libraries(${FO_MONK_TARGET} PRIVATE fossology magic)
     target_compile_definitions(${FO_MONK_TARGET} 

@@ -1,3 +1,21 @@
+#[[--------------------------------------------------------------------
+SPDX-License-Identifier: GPL-2.0
+SPDX-FileCopyrightText: 2021 Avinal Kumar <avinal.xlvii@gmail.com>
+
+This program is free software; you can redistribute it and/or
+modify it under the terms of the GNU General Public License
+version 2 as published by the Free Software Foundation.
+
+This program is distributed in the hope that it will be useful,
+but WITHOUT ANY WARRANTY; without even the implied warranty of
+MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+GNU General Public License for more details.
+
+You should have received a copy of the GNU General Public License along
+with this program; if not, write to the Free Software Foundation, Inc.,
+51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
+---------------------------------------------------------------------]]
+
 set(FO_CWD ${CMAKE_CURRENT_SOURCE_DIR})
 
 set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} ${FO_CXX_FLAGS} -fopenmp")
@@ -34,13 +52,6 @@ foreach(FO_OJO_TARGET ojo ojo_exec ojo_cov ojo_cov_exec)
         ${FO_CWD}/OjoState.cc
         ${FO_CWD}/directoryScan.cc
         ${FO_CWD}/OjoUtils.cc
-        ${FO_CWD}/OjosDatabaseHandler.hpp
-        ${FO_CWD}/ojoregex.hpp
-        ${FO_CWD}/ojos.hpp
-        ${FO_CWD}/OjoAgent.hpp
-        ${FO_CWD}/OjoState.hpp
-        ${FO_CWD}/directoryScan.hpp
-        ${FO_CWD}/OjoUtils.hpp
     )
     if(${FO_OJO_TARGET} MATCHES "^ojo_cov")
         target_compile_options(${FO_OJO_TARGET}

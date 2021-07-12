@@ -43,29 +43,29 @@ test "$ENABLED" != "0" || exit 0
 
 set -e
 
-start () \{
+start () {
     echo -n "Starting $DESC: "
     $DAEMON $SCHEDULEROPT
     echo "$NAME."
-\}
+}
 
-stop () \{
+stop () {
     echo -n "Stopping $DESC: "
     # we don't really care about the exit code as long as it's stopped
     $DAEMON --kill || echo -n "no "
     echo "$NAME killed."
-\}
+}
 
-gracefulstop () \{
+gracefulstop () {
     echo -n "Gracefully shutting down $DESC after all current jobs finish: "
     # we don't really care about the exit code as long as it's stopped
     $DAEMON --shutdown
     echo "$NAME shutdown."
-\}
+}
 
-reload () \{
+reload () {
     $CLI --reload
-\}
+}
 
 case "$1" in
   start)
@@ -88,7 +88,7 @@ case "$1" in
     ;;
   *)
     N=@FO_INITDIR@/init.d/$NAME
-    echo "Usage: $N \{start|stop|graceful-stop|restart|reload|force-reload\}" >&2
+    echo "Usage: $N {start|stop|graceful-stop|restart|reload|force-reload}" >&2
     exit 1
 	;;
 esac

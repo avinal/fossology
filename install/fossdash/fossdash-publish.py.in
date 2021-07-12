@@ -66,7 +66,7 @@ config = " ".join(["=".join(config) for config in CONFIG_STATIC.items()])
 timestamp = datetime.datetime.now().strftime("%s000000000")
 
 # Quries to fetch fossdashconfig value from database
-QUERIES = \{
+QUERIES = {
     'uuid': "SELECT instance_uuid uuid FROM instance;",
     'FossDashReportingAPIUrl': "select conf_value from fossdashconfig where variablename='FossDashReportingAPIUrl'",
     'FossdashMetricConfig':  "select conf_value from fossdashconfig where variablename='FossdashMetricConfig'",
@@ -78,7 +78,7 @@ QUERIES = \{
     'InfluxDBUser': "select conf_value from fossdashconfig where variablename='InfluxDBUser'",
     'InfluxDBUserPassword': "select conf_value from fossdashconfig where variablename='InfluxDBUserPassword'",
     'InfluxDBToken': "select conf_value from fossdashconfig where variablename='InfluxDBToken'"
-\}
+}
 
 # prefix for generating fossdash fileName
 file_name_prefix = os.path.basename(__file__)[:-3]

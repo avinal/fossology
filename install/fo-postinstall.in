@@ -73,7 +73,7 @@ while true; do
 done
 
 # If everything flags were sent, set everything to true to prevent overwrite
-if [[ $OPT == *" -e "* || $OPT == *" --everything "* ]]; then
+if [[ $OPTS == *" -e "* || $OPTS == *" --everything "* ]]; then
     EVERYTHING=true
 fi
 
@@ -317,12 +317,12 @@ if [[ $WEBONLY ]]; then
 
   # Enable fossology for source install
   if [[ "@FO_DESTDIR@" != *"debian"* ]]; then
-    if [[ -d @FO_APACHE2_SITE_DIR@ ]]; then
-      if [[ -f @FO_APACHE2_SITE_DIR@/fossology.conf ]]; then
+    if [[ -d @FO_APACHE2SITE_DIR@ ]]; then
+      if [[ -f @FO_APACHE2SITE_DIR@/fossology.conf ]]; then
         echo "Fossology already enabled for apache2";
       else
         echo "NOTE: enabling fossology site for apache2";
-        ln -s @FO_DESTDIR@@FO_SYSCONFDIR@/conf/src-install-apache-example.conf @FO_APACHE2_SITE_DIR@/fossology.conf;
+        ln -s @FO_DESTDIR@@FO_SYSCONFDIR@/conf/src-install-apache-example.conf @FO_APACHE2SITE_DIR@/fossology.conf;
         @FO_APACHE2_EN_SITE@ fossology.conf;
         RESTART_MESSAGE=true
       fi;

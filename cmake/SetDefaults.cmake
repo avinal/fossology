@@ -1,16 +1,26 @@
+#[[--------------------------------------------------------------------
+SPDX-License-Identifier: GPL-2.0
+SPDX-FileCopyrightText: 2021 Avinal Kumar <avinal.xlvii@gmail.com>
+
+This program is free software; you can redistribute it and/or
+modify it under the terms of the GNU General Public License
+version 2 as published by the Free Software Foundation.
+
+This program is distributed in the hope that it will be useful,
+but WITHOUT ANY WARRANTY; without even the implied warranty of
+MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+GNU General Public License for more details.
+
+You should have received a copy of the GNU General Public License along
+with this program; if not, write to the Free Software Foundation, Inc.,
+51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
+---------------------------------------------------------------------]]
+
 message(STATUS "Configuring ${PROJECT_NAME}")
 
 # checking for dependencies
 find_package(PkgConfig REQUIRED)
-find_package(PostgreSQL REQUIRED)
-find_package(Boost REQUIRED regex system filesystem program_options)
-find_package(Git REQUIRED)
-foreach(SCHE_LIBS glib-2.0 gthread-2.0 gio-2.0 gobject-2.0)
-    string(REPLACE "-2.0" "" LIB_NAME ${SCHE_LIBS})
-    pkg_check_modules(${LIB_NAME} REQUIRED ${SCHE_LIBS})
-endforeach()
-pkg_check_modules(jsoncpp REQUIRED jsoncpp)
-pkg_check_modules(jsonc REQUIRED json-c)
+
 
 if(NOT DEFINED ARE_DEFAULTS_SET)
 
@@ -61,7 +71,7 @@ set(FO_SBINDIR "${FO_PREFIX}/sbin" CACHE PATH "executable programs that sysadmin
 
 set(FO_SYSCONFDIR "${FO_PREFIX}/etc/${FO_PROJECT}" CACHE PATH "configuration files")
 
-set(FO_INITDIR "/etc" CACHE PATH "init script root dir")
+set(FO_INITDIR "${CMAKE_INSTALL_PREFIX}/etc" CACHE PATH "init script root dir")
 
 set(FO_LIBDIR "${FO_PREFIX}/lib" CACHE PATH "object code libraries")
 
@@ -75,13 +85,13 @@ set(FO_MODDIR "${FO_DATAROOTDIR}/${FO_PROJECT}" CACHE PATH "non-arch-dependent p
 
 set(FO_REPODIR "/srv/${FO_PROJECT}/repository" CACHE PATH "hardcoded repository location")
 
-set(FO_LOCALSTATEDIR "/var/local" CACHE PATH "local state")
+set(FO_LOCALSTATEDIR "${CMAKE_INSTALL_PREFIX}/var/local" CACHE PATH "local state")
 
 set(FO_PROJECTSTATEDIR "${FO_LOCALSTATEDIR}/lib/${FO_PROJECT}" CACHE PATH "project local state")
 
 set(FO_CACHEDIR "${FO_LOCALSTATEDIR}/lib/${FO_PROJECT}" CACHE PATH "cache dir")
 
-set(FO_LOGDIR "/var/log/${FO_PROJECT}" CACHE PATH "project logdir")
+set(FO_LOGDIR "${CMAKE_INSTALL_PREFIX}/var/log/${FO_PROJECT}" CACHE PATH "project logdir")
 
 set(FO_MANDIR "${FO_DATAROOTDIR}/man" CACHE PATH "manpages")
 
@@ -105,8 +115,19 @@ set(FO_TWIG_CACHE "<parameter key=\"cache\" type=\"string\">${FO_CACHEDIR}</para
 set(ARE_DEFAULTS_SET ON CACHE BOOL "flag to check if defaults have been set")
 endif(NOT DEFINED ARE_DEFAULTS_SET)
 # TEMP
+find_package(PostgreSQL REQUIRED)
+set(Boost_USE_STATIC_LIBS       ON)
 
-# set(CMAKE_INSTALL_MESSAGE NEVER)
+
+find_package(Boost REQUIRED regex system filesystem program_options)
+find_package(Git REQUIRED)
+foreach(SCHE_LIBS glib-2.0 gthread-2.0 gio-2.0 gobject-2.0)
+    string(REPLACE "-2.0" "" LIB_NAME ${SCHE_LIBS})
+    pkg_check_modules(${LIB_NAME} REQUIRED ${SCHE_LIBS})
+endforeach()
+pkg_check_modules(jsoncpp REQUIRED jsoncpp)
+pkg_check_modules(jsonc REQUIRED json-c)
+set(CMAKE_INSTALL_MESSAGE NEVER)
 
 include(${FO_CMAKEDIR}/FoUtilities.cmake)
 if(NOT DEFINED FO_COMMIT_DATE)

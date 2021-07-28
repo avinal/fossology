@@ -1,4 +1,4 @@
-#[[--------------------------------------------------------------------
+#[=======================================================================[
 SPDX-License-Identifier: GPL-2.0
 SPDX-FileCopyrightText: 2021 Avinal Kumar <avinal.xlvii@gmail.com>
 
@@ -14,7 +14,7 @@ GNU General Public License for more details.
 You should have received a copy of the GNU General Public License along
 with this program; if not, write to the Free Software Foundation, Inc.,
 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
----------------------------------------------------------------------]]
+#]=======================================================================]
 
 cmake_minimum_required(VERSION 3.10 FATAL_ERROR)
 project(copyright LANGUAGES CXX)
@@ -23,6 +23,10 @@ include(${CMAKE_CURRENT_SOURCE_DIR}/../../cmake/SetDefaults.cmake)
 
 add_subdirectory(${CMAKE_CURRENT_SOURCE_DIR}/agent)
 
+if(TESTING)
+    enable_testing()
+    add_subdirectory(agent_tests)
+endif()
 install(DIRECTORY ui
     DESTINATION ${FO_MODDIR}/${PROJECT_NAME}
     COMPONENT copyright
@@ -45,5 +49,5 @@ foreach(COP ecc keyword copyright)
         DESTINATION ${FO_MODDIR}/${COP}
         RENAME "VERSION"
         COMPONENT ${COP})
-    add_symlink(${FO_MODDIR}/${COP})
+    add_symlink(${COP})
 endforeach()

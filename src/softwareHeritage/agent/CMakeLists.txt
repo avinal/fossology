@@ -1,4 +1,4 @@
-#[[--------------------------------------------------------------------
+#[=======================================================================[
 SPDX-License-Identifier: GPL-2.0
 SPDX-FileCopyrightText: 2021 Avinal Kumar <avinal.xlvii@gmail.com>
 
@@ -14,7 +14,7 @@ GNU General Public License for more details.
 You should have received a copy of the GNU General Public License along
 with this program; if not, write to the Free Software Foundation, Inc.,
 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
----------------------------------------------------------------------]]
+#]=======================================================================]
 
 generate_version_php()
 
@@ -24,5 +24,5 @@ install(DIRECTORY ./ ${CMAKE_CURRENT_BINARY_DIR}/gen/
     FILES_MATCHING
     PATTERN *.php
 )
-add_symlink(${FO_LIBEXECDIR}/fo_wrapper ${PROJECT_NAME} ${FO_MODDIR}/${PROJECT_NAME}/agent)
+add_symlink(${PROJECT_NAME} ${FO_LIBEXECDIR}/fo_wrapper ${FO_MODDIR}/${PROJECT_NAME}/agent)
 

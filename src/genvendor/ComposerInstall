@@ -1,4 +1,4 @@
-#!/bin/sh 
+#!/bin/bash
 
 export COMPOSER_HOME=/dev/null
 export COMPOSER_ALLOW_SUPERUSER=1

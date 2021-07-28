@@ -1,4 +1,4 @@
-#[[--------------------------------------------------------------------
+#[=======================================================================[
 SPDX-License-Identifier: GPL-2.0
 SPDX-FileCopyrightText: 2021 Avinal Kumar <avinal.xlvii@gmail.com>
 
@@ -14,7 +14,7 @@ GNU General Public License for more details.
 You should have received a copy of the GNU General Public License along
 with this program; if not, write to the Free Software Foundation, Inc.,
 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
----------------------------------------------------------------------]]
+#]=======================================================================]
 
 message(STATUS "Configuring ${PROJECT_NAME}")
 
@@ -48,6 +48,8 @@ set(FO_CLI_SRC "${FO_SOURCEDIR}/cli" CACHE PATH "path to fossology cli source di
 
 set(FO_SCH_SRC "${FO_SOURCEDIR}/scheduler" CACHE PATH "path to fossology scheduler source directory")
 
+set(FO_TESTDIR "${FO_SOURCEDIR}/testing" CACHE PATH "testing directory of fossology")
+
 
 # common flags and options (always use list for flags)
 set(FO_C_FLAGS "-Wall" CACHE INTERNAL "default fossology c flags")
@@ -60,10 +62,10 @@ set(FO_COV_FLAGS "-O0;-fprofile-arcs;-ftest-coverage" CACHE INTERNAL "coverage f
 # Install paths
 set(FO_DESTDIR "" CACHE INTERNAL "pseudoroot for packaging purposes")
 
-set(CMAKE_INSTALL_PREFIX "")
+# set(CMAKE_INSTALL_PREFIX "")
 message(STATUS "Installation path: ${CMAKE_INSTALL_PREFIX}")
 
-set(FO_PREFIX "${CMAKE_INSTALL_PREFIX}/usr/local" CACHE PATH "base of the program data tree")
+set(FO_PREFIX "${CMAKE_INSTALL_PREFIX}" CACHE PATH "base of the program data tree")
 
 set(FO_BINDIR "${FO_PREFIX}/bin" CACHE PATH "executable programs that users run")
 
@@ -71,7 +73,7 @@ set(FO_SBINDIR "${FO_PREFIX}/sbin" CACHE PATH "executable programs that sysadmin
 
 set(FO_SYSCONFDIR "${FO_PREFIX}/etc/${FO_PROJECT}" CACHE PATH "configuration files")
 
-set(FO_INITDIR "${CMAKE_INSTALL_PREFIX}/etc" CACHE PATH "init script root dir")
+set(FO_INITDIR "/etc" CACHE PATH "init script root dir")
 
 set(FO_LIBDIR "${FO_PREFIX}/lib" CACHE PATH "object code libraries")
 
@@ -107,19 +109,18 @@ set(FO_PHPDIR "${FO_MODDIR}/php" CACHE PATH "php root")
 
 set(FO_APACHE_CTL "/usr/sbin/apachectl" CACHE PATH "apache ctl")
 set(FO_APACHE2_EN_SITE "/usr/sbin/a2ensite" CACHE PATH "apachec ensite")
-set(FO_APACHE2SITE_DIR "/etc/apache2sites-available" CACHE PATH "apache site dir")
+set(FO_APACHE2SITE_DIR "/etc/apache2/sites-available" CACHE PATH "apache site dir")
 set(FO_HTTPD_SITE_DIR "/etc/httpd/conf.d" CACHE PATH "http site dir")
-set(FO_TWIG_CACHE "<parameter key=\"cache\" type=\"string\">${FO_CACHEDIR}</parameter>" 
+set(FO_TWIG_CACHE ${FO_CACHEDIR} 
     CACHE INTERNAL "twig cache variable")
 
 set(ARE_DEFAULTS_SET ON CACHE BOOL "flag to check if defaults have been set")
 endif(NOT DEFINED ARE_DEFAULTS_SET)
 # TEMP
 find_package(PostgreSQL REQUIRED)
-set(Boost_USE_STATIC_LIBS       ON)
-
-
-find_package(Boost REQUIRED regex system filesystem program_options)
+if(DEFINED CMAKE_CXX_COMPILER)
+    find_package(Boost REQUIRED regex system filesystem program_options)
+endif()
 find_package(Git REQUIRED)
 foreach(SCHE_LIBS glib-2.0 gthread-2.0 gio-2.0 gobject-2.0)
     string(REPLACE "-2.0" "" LIB_NAME ${SCHE_LIBS})

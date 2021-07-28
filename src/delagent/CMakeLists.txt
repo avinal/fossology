@@ -1,4 +1,4 @@
-#[[--------------------------------------------------------------------
+#[=======================================================================[
 SPDX-License-Identifier: GPL-2.0
 SPDX-FileCopyrightText: 2021 Avinal Kumar <avinal.xlvii@gmail.com>
 
@@ -14,7 +14,7 @@ GNU General Public License for more details.
 You should have received a copy of the GNU General Public License along
 with this program; if not, write to the Free Software Foundation, Inc.,
 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
----------------------------------------------------------------------]]
+#]=======================================================================]
 
 cmake_minimum_required(VERSION 3.10 FATAL_ERROR)
 project(delagent LANGUAGES C)
@@ -38,5 +38,5 @@ install(FILES delagent.conf mod_deps "${CMAKE_CURRENT_BINARY_DIR}/VERSION"
     COMPONENT delagent)
 
 add_symlink()
-add_symlink(${FO_MODDIR}/${PROJECT_NAME}/ui/Page ${PROJECT_NAME}-page)
+add_symlink(${PROJECT_NAME}-page ${FO_MODDIR}/${PROJECT_NAME}/ui/Page)
    

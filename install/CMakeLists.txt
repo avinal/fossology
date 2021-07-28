@@ -1,4 +1,4 @@
-#[[--------------------------------------------------------------------
+#[=======================================================================[
 SPDX-License-Identifier: GPL-2.0
 SPDX-FileCopyrightText: 2021 Avinal Kumar <avinal.xlvii@gmail.com>
 
@@ -14,7 +14,7 @@ GNU General Public License for more details.
 You should have received a copy of the GNU General Public License along
 with this program; if not, write to the Free Software Foundation, Inc.,
 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
----------------------------------------------------------------------]]
+#]=======================================================================]
 
 set(FO_CWD ${CMAKE_CURRENT_SOURCE_DIR})
 
@@ -53,6 +53,7 @@ install(FILES
     ${CMAKE_CURRENT_BINARY_DIR}/gen/Db.conf 
     ${CMAKE_CURRENT_BINARY_DIR}/gen/fossology.conf
     DESTINATION ${FO_SYSCONFDIR})
+    
 
 install(DIRECTORY  
     ${CMAKE_CURRENT_SOURCE_DIR}/defconf/
@@ -65,6 +66,7 @@ install(DIRECTORY
 install(DIRECTORY ${FO_CWD}/db/
     ${CMAKE_CURRENT_BINARY_DIR}/gen/
     DESTINATION ${FO_LIBEXECDIR}
+    COMPONENT db
     FILES_MATCHING
     PATTERN *.php
     PATTERN *.sql
@@ -72,16 +74,13 @@ install(DIRECTORY ${FO_CWD}/db/
     PATTERN "migratetest.php" EXCLUDE
 )
 
-install(FILES ${CMAKE_CURRENT_BINARY_DIR}/gen/fo-postinstall
+install(PROGRAMS ${CMAKE_CURRENT_BINARY_DIR}/gen/fo-postinstall
     ${CMAKE_CURRENT_BINARY_DIR}/gen/dbcreate
     ${FO_CWD}/fo_dbcheck.php
     ${FO_CWD}/fossinit-common.php
     ${FO_CWD}/fossinit.php
     ${CMAKE_CURRENT_BINARY_DIR}/gen/fossdash-publish.py
-    DESTINATION ${FO_LIBEXECDIR}
-    PERMISSIONS OWNER_READ OWNER_WRITE OWNER_EXECUTE
-        GROUP_READ GROUP_EXECUTE
-        WORLD_READ WORLD_EXECUTE)
+    DESTINATION ${FO_LIBEXECDIR})
 
 install(FILES 
     ${FO_CWD}/fo-apache.conf 
@@ -89,4 +88,5 @@ install(FILES
     DESTINATION ${FO_SYSCONFDIR}/conf)
 
 install(FILES ${CMAKE_CURRENT_BINARY_DIR}/gen/db.cron
-    DESTINATION ${FO_PREFIX}/etc/cron.d/fossology)
+    DESTINATION ${FO_PREFIX}/etc/cron.d/fossology
+    COMPONENT db)

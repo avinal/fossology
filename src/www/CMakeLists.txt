@@ -1,4 +1,4 @@
-#[[--------------------------------------------------------------------
+#[=======================================================================[
 SPDX-License-Identifier: GPL-2.0
 SPDX-FileCopyrightText: 2021 Avinal Kumar <avinal.xlvii@gmail.com>
 
@@ -14,7 +14,7 @@ GNU General Public License for more details.
 You should have received a copy of the GNU General Public License along
 with this program; if not, write to the Free Software Foundation, Inc.,
 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
----------------------------------------------------------------------]]
+#]=======================================================================]
 
 cmake_minimum_required(VERSION 3.10 FATAL_ERROR)
 project(www)
@@ -27,10 +27,10 @@ install(DIRECTORY ui
     DESTINATION ${FO_MODDIR}/${PROJECT_NAME}
     COMPONENT www
 )
-
+add_custom_target(www ALL
+    COMMENT "Configuring www for symbolic link")
 add_symlink()
 foreach(WWW_INSTALL page async)
-    add_symlink(${FO_MODDIR}/${PROJECT_NAME}/ui/${WWW_INSTALL} 
-        www-${WWW_INSTALL})
+    add_symlink(www-${WWW_INSTALL} ${FO_MODDIR}/${PROJECT_NAME}/ui/${WWW_INSTALL})
 endforeach()
 

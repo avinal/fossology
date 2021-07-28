@@ -1,4 +1,4 @@
-#[[--------------------------------------------------------------------
+#[=======================================================================[
 SPDX-License-Identifier: GPL-2.0
 SPDX-FileCopyrightText: 2021 Avinal Kumar <avinal.xlvii@gmail.com>
 
@@ -14,7 +14,7 @@ GNU General Public License for more details.
 You should have received a copy of the GNU General Public License along
 with this program; if not, write to the Free Software Foundation, Inc.,
 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
----------------------------------------------------------------------]]
+#]=======================================================================]
 
 set(FO_CWD ${CMAKE_CURRENT_SOURCE_DIR})
 set(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} -Wall")
@@ -42,10 +42,11 @@ include_directories(
 add_library(scheduler "")
 add_library(scheduler_cov EXCLUDE_FROM_ALL "")
 add_executable(fo_scheduler "")
-add_executable(fo_cli "")
+add_executable(fo_cli ${FO_CWD}/fo_cli.c)
+target_link_libraries(fo_cli PRIVATE fossology)
 
-foreach(FO_SCH_TARGET scheduler fo_scheduler fo_cli scheduler_cov)
-    if(${FO_SCH_TARGET} MATCHES "^fo_")
+foreach(FO_SCH_TARGET scheduler fo_scheduler scheduler_cov)
+    if(${FO_SCH_TARGET} STREQUAL "fo_scheduler")
         set(SCH_XSRC ${FO_SCH_TARGET}.c)
         target_link_libraries(${FO_SCH_TARGET}
             PRIVATE
@@ -103,10 +104,7 @@ install(TARGETS fo_cli fo_scheduler
     DESTINATION ${FO_MODDIR}/${PROJECT_NAME}/agent 
     COMPONENT scheduler)
 
-install(FILES ${CMAKE_CURRENT_BINARY_DIR}/gen/init.d/fossology
+install(PROGRAMS ${CMAKE_CURRENT_BINARY_DIR}/gen/init.d/fossology
     DESTINATION ${FO_INITDIR}/init.d
-    COMPONENT scheduler
-    PERMISSIONS OWNER_READ OWNER_WRITE OWNER_EXECUTE
-        GROUP_READ GROUP_EXECUTE
-        WORLD_READ WORLD_EXECUTE) 
+    COMPONENT scheduler) 
 add_symlink()

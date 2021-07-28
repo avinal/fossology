@@ -1,4 +1,4 @@
-#[[--------------------------------------------------------------------
+#[=======================================================================[
 SPDX-License-Identifier: GPL-2.0
 SPDX-FileCopyrightText: 2021 Avinal Kumar <avinal.xlvii@gmail.com>
 
@@ -14,7 +14,7 @@ GNU General Public License for more details.
 You should have received a copy of the GNU General Public License along
 with this program; if not, write to the Free Software Foundation, Inc.,
 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
----------------------------------------------------------------------]]
+#]=======================================================================]
 
 #[[ macro to get latest version
     @param git version
@@ -152,39 +152,88 @@ macro(generate_version_php)
 endmacro(generate_version_php)
 
 
-#[[ add symbolic links for agents
-    @param project name
-    @param destination directory name
-    @param link name
-]]
 macro(add_symlink)
+    set(LINK_NAME ${PROJECT_NAME})
+    set(LINK_TARGET ${FO_MODDIR}/${PROJECT_NAME})
+    set(LINK_DESTINATION ${FO_SYSCONFDIR}/mods-enabled)
     set(FO_ARGS ${ARGV})
-    set(FO_LINK_SOURCE ${FO_MODDIR}/${PROJECT_NAME})
-    set(FO_LINK_NAME "")
-    set(MSG_NAME ${PROJECT_NAME})
-    set(FO_LINK_DIR ${FO_SYSCONFDIR}/mods-enabled)
     if(${ARGC} EQUAL 1)
-        list(GET FO_ARGS 0 FO_LINK_SOURCE)
+        list(GET FO_ARGS 0 LINK_NAME)
     elseif(${ARGC} EQUAL 2)
-        list(GET FO_ARGS 0 FO_LINK_SOURCE)
-        list(GET FO_ARGS 1 FO_LINK_NAME)
-        set(MSG_NAME ${FO_LINK_NAME})
+        list(GET FO_ARGS 0 LINK_NAME)
+        list(GET FO_ARGS 1 LINK_TARGET)
     elseif(${ARGC} EQUAL 3)
-        list(GET FO_ARGS 0 FO_LINK_SOURCE)
-        list(GET FO_ARGS 1 FO_LINK_NAME)
-        list(GET FO_ARGS 2 FO_LINK_DIR)
-        set(MSG_NAME ${FO_LINK_NAME})
+        list(GET FO_ARGS 0 LINK_NAME)
+        list(GET FO_ARGS 1 LINK_TARGET)
+        list(GET FO_ARGS 2 LINK_DESTINATION)
     endif()
-    install(
-        CODE "execute_process( \
-            COMMAND mkdir -p \
-            ${FO_LINK_DIR})"
-        CODE "execute_process( \
-            COMMAND ln -sf \ 
-            ${FO_LINK_SOURCE} \
-            ${FO_LINK_DIR}/${FO_LINK_NAME})"
-        CODE "message(STATUS \"Added softlink for ${MSG_NAME}\")"
+    get_filename_component(LINK_TARGET_NAME ${LINK_TARGET} NAME_WE)
+    # add_custom_target(${LINK_NAME}_${LINK_TARGET_NAME}_symlink ALL
+    #     COMMENT "Generating symbolic link: ${LINK_NAME} -> ${LINK_TARGET}"
+    #     COMMAND ln -sf -T ${LINK_TARGET} ${CMAKE_CURRENT_BINARY_DIR}/${LINK_NAME}
+    #     DEPENDS ${PROJECT_NAME}
+    #     BYPRODUCTS ${CMAKE_CURRENT_BINARY_DIR}/${LINK_NAME})
+    # install(
+    #     CODE "message(\"adding link for ${LINK_DESTINATION}\")"
+    #     CODE "execute_process(COMMAND mkdir -p ${LINK_DESTINATION})"
+    #     CODE "file(INSTALL DESTINATION ${LINK_DESTINATION} TYPE FILE FILES ${CMAKE_CURRENT_BINARY_DIR}/${LINK_NAME})"
+    #     CODE "message(STATUS \"Added symbolic link: ${LINK_NAME} -> ${LINK_TARGET}\")"
+    #     COMPONENT ${PROJECT_NAME})
+    # install(PROGRAMS ${CMAKE_CURRENT_BINARY_DIR}/${LINK_NAME}
+    #     DESTINATION ${LINK_DESTINATION}
+    #     COMPONENT ${PROJECT_NAME})
+    install(CODE "message(STATUS \"adding symlink for ${LINK_DESTINATION}\")"
+        CODE "execute_process(COMMAND mkdir -p ${LINK_DESTINATION})"
+        CODE "execute_process(COMMAND ln -sf -T ${LINK_TARGET} ${LINK_DESTINATION}/${LINK_NAME})"
+        CODE "message(STATUS \"Added symbolic link: ${LINK_NAME} -> ${LINK_TARGET}\")"
         COMPONENT ${PROJECT_NAME})
 endmacro(add_symlink)
 
-# ASK: correct bash scrips according to shellcheck??
+
+function (basic_install_link OLD NEW)
+   set (CMD_IN
+     "
+     set (OLD \"@OLD@\")
+     set (NEW \"@NEW@\")
+     message(\"${PROJECT_NAME} here1\")
+     if (NOT IS_ABSOLUTE \"\${OLD}\")
+       set (OLD \"\$ENV{DESTDIR}\${CMAKE_INSTALL_PREFIX}/\${OLD}\")
+     endif ()
+     if (NOT IS_ABSOLUTE \"\${NEW}\")
+       set (NEW \"\$ENV{DESTDIR}\${CMAKE_INSTALL_PREFIX}/\${NEW}\")
+     endif ()
+ 
+     if (IS_SYMLINK \"\${NEW}\")
+       file (REMOVE \"\${NEW}\")
+     endif ()
+     message(\"${PROJECT_NAME} here 2\")
+     if (EXISTS \"\${NEW}\")
+       message (STATUS \"Skipping: \${NEW} -> \${OLD}\")
+     else ()
+       message (STATUS \"Installing: \${NEW} -> \${OLD}\")
+       message(\"${PROJECT_NAME} here 3\")
+       get_filename_component (SYMDIR \"\${NEW}\" PATH)
+ 
+       file (RELATIVE_PATH OLD \"\${SYMDIR}\" \"\${OLD}\")
+ 
+       if (NOT EXISTS \${SYMDIR})
+         file (MAKE_DIRECTORY \"\${SYMDIR}\")
+       endif ()
+       message(\"${PROJECT_NAME} here 4\")
+       execute_process (
+         COMMAND ln -sf -T \"\${OLD}\" \"\${NEW}\"
+         RESULT_VARIABLE RETVAL
+       )
+       message(\"${PROJECT_NAME} here 5\")
+       if (NOT RETVAL EQUAL 0)
+         message (ERROR \"Failed to create (symbolic) link \${NEW} -> \${OLD}\")
+       else ()
+         list (APPEND CMAKE_ABSOLUTE_DESTINATION_FILES \"\${NEW}\")
+       endif ()
+     endif ()
+     "
+   )
+ 
+   string (CONFIGURE "${CMD_IN}" CMD @ONLY)
+   install (CODE "${CMD}" COMPONENT "${PROJECT_NAME}")
+ endfunction ()

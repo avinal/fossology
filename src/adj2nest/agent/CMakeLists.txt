@@ -1,4 +1,4 @@
-#[[--------------------------------------------------------------------
+#[=======================================================================[
 SPDX-License-Identifier: GPL-2.0
 SPDX-FileCopyrightText: 2021 Avinal Kumar <avinal.xlvii@gmail.com>
 
@@ -14,7 +14,7 @@ GNU General Public License for more details.
 You should have received a copy of the GNU General Public License along
 with this program; if not, write to the Free Software Foundation, Inc.,
 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
----------------------------------------------------------------------]]
+#]=======================================================================]
 
 set(FO_CWD ${CMAKE_CURRENT_SOURCE_DIR})
 set(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} ${FO_C_FLAGS} -fPIC")
@@ -39,5 +39,5 @@ target_compile_definitions(adj2nest
 target_link_libraries(adj2nest PRIVATE fossology)
 
 install(TARGETS adj2nest DESTINATION ${FO_MODDIR}/${PROJECT_NAME}/agent 
-    COMPONENT adj2nest-agent)
+    COMPONENT adj2nest)
     

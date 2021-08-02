@@ -37,15 +37,15 @@ add_custom_command(
     COMMAND ${CMAKE_COMMAND} -E copy_directory
         ${FO_CWD}/generator $<TARGET_FILE_DIR:encode>
     COMMAND echo "NOTE: GENSEARCHDATA takes 1-2 minutes to run"
-    COMMAND $<TARGET_FILE_DIR:encode>/GENSEARCHDATA
+    COMMAND bash $<TARGET_FILE_DIR:encode>/GENSEARCHDATA
     WORKING_DIRECTORY $<TARGET_FILE_DIR:encode>
     DEPENDS encode
 )
 
 add_custom_command(
     OUTPUT _precheck.c
-    COMMAND $<TARGET_FILE_DIR:encode>/PRECHECK
-    COMMAND $<TARGET_FILE_DIR:encode>/CHECKSTR
+    COMMAND bash $<TARGET_FILE_DIR:encode>/PRECHECK
+    COMMAND bash $<TARGET_FILE_DIR:encode>/CHECKSTR
     WORKING_DIRECTORY $<TARGET_FILE_DIR:encode>
     DEPENDS $<TARGET_FILE_DIR:encode>/_autodata.c
 )

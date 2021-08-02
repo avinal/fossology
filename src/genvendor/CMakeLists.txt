@@ -25,8 +25,14 @@ include(${CMAKE_CURRENT_SOURCE_DIR}/../../cmake/SetDefaults.cmake)
 file(COPY composer.json composer.lock RdfXml.php.patch ComposerInstall
     DESTINATION ${CMAKE_CURRENT_BINARY_DIR}/vendor)
 
+set(FO_VENDOR ${CMAKE_CURRENT_BINARY_DIR}/vendor/vendor CACHE INTERNAL "vendor dir")
+
+if(TESTING)
+    set(PHPUNIT true)
+endif()
+
 add_custom_target(vendor ALL
-    COMMAND ${CMAKE_CURRENT_BINARY_DIR}/vendor/ComposerInstall
+    COMMAND bash ${CMAKE_CURRENT_BINARY_DIR}/vendor/ComposerInstall ${PHPUNIT}
     WORKING_DIRECTORY "${CMAKE_CURRENT_BINARY_DIR}/vendor"
     COMMENT "Generating vendor"
     DEPENDS ${CMAKE_CURRENT_BINARY_DIR}/vendor/ComposerInstall

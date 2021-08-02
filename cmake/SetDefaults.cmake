@@ -87,11 +87,11 @@ set(FO_MODDIR "${FO_DATAROOTDIR}/${FO_PROJECT}" CACHE PATH "non-arch-dependent p
 
 set(FO_REPODIR "/srv/${FO_PROJECT}/repository" CACHE PATH "hardcoded repository location")
 
-set(FO_LOCALSTATEDIR "${CMAKE_INSTALL_PREFIX}/var/local" CACHE PATH "local state")
+set(FO_LOCALSTATEDIR "/var/local" CACHE PATH "local state")
 
 set(FO_PROJECTSTATEDIR "${FO_LOCALSTATEDIR}/lib/${FO_PROJECT}" CACHE PATH "project local state")
 
-set(FO_CACHEDIR "${FO_LOCALSTATEDIR}/lib/${FO_PROJECT}" CACHE PATH "cache dir")
+set(FO_CACHEDIR "${FO_LOCALSTATEDIR}/cache/${FO_PROJECT}" CACHE PATH "cache dir")
 
 set(FO_LOGDIR "${CMAKE_INSTALL_PREFIX}/var/log/${FO_PROJECT}" CACHE PATH "project logdir")
 
@@ -111,8 +111,7 @@ set(FO_APACHE_CTL "/usr/sbin/apachectl" CACHE PATH "apache ctl")
 set(FO_APACHE2_EN_SITE "/usr/sbin/a2ensite" CACHE PATH "apachec ensite")
 set(FO_APACHE2SITE_DIR "/etc/apache2/sites-available" CACHE PATH "apache site dir")
 set(FO_HTTPD_SITE_DIR "/etc/httpd/conf.d" CACHE PATH "http site dir")
-set(FO_TWIG_CACHE ${FO_CACHEDIR} 
-    CACHE INTERNAL "twig cache variable")
+set(FO_TWIG_CACHE ${FO_CACHEDIR} CACHE INTERNAL "twig cache variable")
 
 set(ARE_DEFAULTS_SET ON CACHE BOOL "flag to check if defaults have been set")
 endif(NOT DEFINED ARE_DEFAULTS_SET)

@@ -1,4 +1,4 @@
-#!/bin/sh 
+#!/bin/bash 
 #######
 #
 #  GENSEARCHDATA: Script to take STRINGS.in file and create _autodata.c

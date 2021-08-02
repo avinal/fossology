@@ -14,3 +14,8 @@ then
 else
 	echo "  - Already patched"
 fi
+
+if $1
+then
+	composer update --ignore-platform-reqs --with-dependencies --prefer-dist --working-dir=. phpunit/phpunit
+fi

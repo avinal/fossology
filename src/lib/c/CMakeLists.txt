@@ -19,24 +19,19 @@ with this program; if not, write to the Free Software Foundation, Inc.,
 cmake_minimum_required(VERSION 3.10 FATAL_ERROR)
 project(libc LANGUAGES C)
 
-
 include(${CMAKE_CURRENT_SOURCE_DIR}/../../../cmake/SetDefaults.cmake)
-
 
 set(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} -fPIC -Wall")
 add_compile_definitions(
     FOSSDB_CONF="${FO_SYSCONFDIR}/Db.conf"
     FOSSGROUP="${FO_PROJECTGROUP}" 
     DEFAULT_SETUP="${FO_SYSCONFDIR}"
-    _FILE_OFFSET_BITS=64
-)
-
+    _FILE_OFFSET_BITS=64)
 
 include_directories(
     ${fossology_SOURCE_DIR}
     ${glib_INCLUDE_DIRS}
-    ${PostgreSQL_INCLUDE_DIRS}
-)
+    ${PostgreSQL_INCLUDE_DIRS})
 
 add_library(fossology "")
 add_library(fossology_cov EXCLUDE_FROM_ALL "")
@@ -50,9 +45,7 @@ foreach(FO_CLIB_TARGET fossology fossology_cov)
             ${FO_CWD}/libfossrepo.c
             ${FO_CWD}/libfossdbmanager.c
             ${FO_CWD}/fossconfig.c
-            ${FO_CWD}/sqlCopy.c
-    )
-
+            ${FO_CWD}/sqlCopy.c)
     target_link_libraries(${FO_CLIB_TARGET}
         PRIVATE ${glib_LIBRARIES} ${PostgreSQL_LIBRARIES})
 endforeach()
@@ -61,7 +54,7 @@ target_compile_options(fossology_cov PRIVATE ${FO_COV_FLAGS})
 
 if(TESTING)
     enable_testing()
-    add_subdirectory(tests EXCLUDE_FROM_ALL)
+    add_subdirectory(tests)
 endif()
 
 foreach(FO_CLIB_EXEC sqlCopyTest fossconfigTest reppath)

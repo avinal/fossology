@@ -21,7 +21,6 @@ project(reportImport)
 
 include(${CMAKE_CURRENT_SOURCE_DIR}/../../cmake/SetDefaults.cmake)
 
-
 add_subdirectory(${CMAKE_CURRENT_SOURCE_DIR}/agent)
 generate_version()
 install(DIRECTORY ui
@@ -29,8 +28,7 @@ install(DIRECTORY ui
     COMPONENT reportImport
     FILES_MATCHING
     PATTERN *.php
-    PATTERN *.twig
-)
+    PATTERN *.twig)
 
 install(FILES reportImport.conf "${CMAKE_CURRENT_BINARY_DIR}/VERSION"
     DESTINATION ${FO_MODDIR}/${PROJECT_NAME}

@@ -21,7 +21,6 @@ project(deciderjob)
 
 include(${CMAKE_CURRENT_SOURCE_DIR}/../../cmake/SetDefaults.cmake)
 
-
 add_subdirectory(${CMAKE_CURRENT_SOURCE_DIR}/agent)
 generate_version()
 

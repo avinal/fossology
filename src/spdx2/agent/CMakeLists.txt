@@ -23,8 +23,7 @@ install(DIRECTORY ./ ${CMAKE_CURRENT_BINARY_DIR}/gen/
     COMPONENT spdx2
     FILES_MATCHING
     PATTERN *.php
-    PATTERN *.twig
-)
+    PATTERN *.twig)
 
 foreach(SPDX_INSTALL spdx2 spdx2tv dep5)
     install(PROGRAMS agent.sh

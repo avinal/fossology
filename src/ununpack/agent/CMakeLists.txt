@@ -17,23 +17,20 @@ with this program; if not, write to the Free Software Foundation, Inc.,
 #]=======================================================================]
 
 set(FO_CWD ${CMAKE_CURRENT_SOURCE_DIR})
-
-
 set(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} ${FO_C_FLAGS}")
 
 include_directories(
     ${glib_INCLUDE_DIRS}
     ${PostgreSQL_INCLUDE_DIRS}
-    ${FO_CLIB_SRC}
-)
+    ${FO_CLIB_SRC})
+
 if(NOT TARGET fossology)
     add_subdirectory(${FO_CLIB_SRC} buildc EXCLUDE_FROM_ALL)
 endif()
 add_compile_definitions(
     _FILE_OFFSET_BITS=64
     VERSION_S="${FO_VERSION}"
-    COMMIT_HASH_S="${FO_COMMIT_HASH}"
-)
+    COMMIT_HASH_S="${FO_COMMIT_HASH}")
 
 add_library(ununpack EXCLUDE_FROM_ALL "")
 add_library(ununpack_cov EXCLUDE_FROM_ALL "")
@@ -45,18 +42,9 @@ foreach(FO_UNP_LIB ununpack  ununpack_cov)
         ${FO_CWD}/ununpack-ar.c
         ${FO_CWD}/ununpack-disk.c
         ${FO_CWD}/utils.c
-        ${FO_CWD}/ununpack.h
-        ${FO_CWD}/ununpack-iso.h
-        ${FO_CWD}/ununpack-ar.h
-        ${FO_CWD}/ununpack-disk.h
-        ${FO_CWD}/ununpack_globals.h
-        ${FO_CWD}/checksum.h
         ${FO_CWD}/checksum.c
     )
-    target_link_libraries(${FO_UNP_LIB}
-        PRIVATE
-        fossology
-        gcrypt)
+    target_link_libraries(${FO_UNP_LIB} PRIVATE fossology gcrypt)
 endforeach()
 
 add_executable(departition "")
@@ -93,5 +81,3 @@ install(TARGETS ununpack_exec departition
     RUNTIME
     DESTINATION ${FO_MODDIR}/${PROJECT_NAME}/agent 
     COMPONENT ununpack)
-
-# FIXME:coverage build is failing

@@ -19,10 +19,7 @@ with this program; if not, write to the Free Software Foundation, Inc.,
 cmake_minimum_required(VERSION 3.10 FATAL_ERROR)
 project(libphp)
 
-# set defaults
-
 include(${CMAKE_CURRENT_SOURCE_DIR}/../../../cmake/SetDefaults.cmake)
-
 
 foreach(PHP_GEN bootstrap.php services.xml)
     add_custom_target(${PHP_GEN} ALL
@@ -38,7 +35,7 @@ foreach(PHP_GEN bootstrap.php services.xml)
         DEPENDS "${CMAKE_CURRENT_SOURCE_DIR}/${PHP_GEN}.in"
         BYPRODUCTS "${CMAKE_CURRENT_BINARY_DIR}/gen/${PHP_GEN}")
 endforeach()
-# TODO exclude build and test folders in agent only install 
+ 
 install(DIRECTORY ./ ${CMAKE_CURRENT_BINARY_DIR}/gen/
     DESTINATION ${FO_MODDIR}/lib/php
     COMPONENT lib
@@ -47,5 +44,4 @@ install(DIRECTORY ./ ${CMAKE_CURRENT_BINARY_DIR}/gen/
     PATTERN *.twig
     PATTERN *.xml
     REGEX "\/tests" EXCLUDE
-    REGEX "\/test" EXCLUDE
-)
+    REGEX "\/test" EXCLUDE)

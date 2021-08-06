@@ -17,7 +17,6 @@ with this program; if not, write to the Free Software Foundation, Inc.,
 #]=======================================================================]
 
 set(FO_CWD ${CMAKE_CURRENT_SOURCE_DIR})
-
 set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} ${FO_CXX_FLAGS} -fopenmp -Wextra")
 
 
@@ -101,6 +100,3 @@ foreach(COP ecc keyword copyright)
         DESTINATION ${FO_MODDIR}/${COP}/agent
         COMPONENT ${COP})
 endforeach()
-
-
-# BUG: coverage may not work 

@@ -17,7 +17,6 @@ with this program; if not, write to the Free Software Foundation, Inc.,
 #]=======================================================================]
 
 set(FO_CWD ${CMAKE_CURRENT_SOURCE_DIR})
-
 set(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} ${FO_C_FLAGS} -fPIC")
 
 include_directories(
@@ -40,16 +39,14 @@ target_sources(buckets
     ${FO_CWD}/match.c
     ${FO_CWD}/container.c
     ${FO_CWD}/child.c
-    ${FO_CWD}/write.c
-)
+    ${FO_CWD}/write.c)
 target_compile_definitions(buckets
     PRIVATE
     _FILE_OFFSET_BITS=64
     PROJECTSTATEDIR="${FO_PROJECTSTATEDIR}"
     DATADIR="${FO_DATADIR}"
     VERSION_S="${FO_VERSION}"
-    COMMIT_HASH_S="${FO_COMMIT_HASH}"
-)
+    COMMIT_HASH_S="${FO_COMMIT_HASH}")
 target_link_libraries(buckets PRIVATE fossology)
 
 install(TARGETS buckets

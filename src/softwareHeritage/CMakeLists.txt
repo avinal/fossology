@@ -18,10 +18,8 @@ with this program; if not, write to the Free Software Foundation, Inc.,
 
 cmake_minimum_required(VERSION 3.10 FATAL_ERROR)
 project(softwareHeritage)
-# set defaults
 
 include(${CMAKE_CURRENT_SOURCE_DIR}/../../cmake/SetDefaults.cmake)
-
 
 add_subdirectory(${CMAKE_CURRENT_SOURCE_DIR}/agent)
 generate_version()
@@ -30,8 +28,7 @@ install(DIRECTORY ui
     COMPONENT softwareHeritage
     FILES_MATCHING
     PATTERN *.php
-    PATTERN *.twig
-)
+    PATTERN *.twig)
 
 install(FILES softwareHeritage.conf "${CMAKE_CURRENT_BINARY_DIR}/VERSION"
     DESTINATION ${FO_MODDIR}/${PROJECT_NAME}

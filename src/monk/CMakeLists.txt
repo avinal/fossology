@@ -21,13 +21,12 @@ project(monk LANGUAGES C)
 
 include(${CMAKE_CURRENT_SOURCE_DIR}/../../cmake/SetDefaults.cmake)
 
-
 add_subdirectory(${CMAKE_CURRENT_SOURCE_DIR}/agent)
 if(TESTING)
     enable_testing()
     add_subdirectory(agent_tests)
 endif()
-    install(DIRECTORY ui
+install(DIRECTORY ui
     DESTINATION ${FO_MODDIR}/${PROJECT_NAME}
     COMPONENT monk
     FILES_MATCHING
@@ -50,4 +49,3 @@ foreach(MONK_INSTALL monkbulk monk)
         COMPONENT ${MONK_INSTALL})
     add_symlink(${MONK_INSTALL})
 endforeach()
-

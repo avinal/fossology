@@ -17,16 +17,16 @@ with this program; if not, write to the Free Software Foundation, Inc.,
 #]=======================================================================]
 
 set(FO_CWD ${CMAKE_CURRENT_SOURCE_DIR})
-
 set(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} ${FO_C_FLAGS} -std=c99 -Wextra -fopenmp")
 
 include_directories(
     ${glib_INCLUDE_DIRS}
-    ${PostgreSQL_INCLUDE_DIRS}
-)
+    ${PostgreSQL_INCLUDE_DIRS})
+
 if(NOT TARGET fossology)
     add_subdirectory(${FO_CLIB_SRC} buildc EXCLUDE_FROM_ALL)
 endif()
+
 add_executable(squareBuilder EXCLUDE_FROM_ALL buildSquareVisitor.c)
 target_link_libraries(squareBuilder PRIVATE fossology m magic)
 add_custom_command(
@@ -35,14 +35,12 @@ add_custom_command(
         ${FO_CWD}/generator $<TARGET_FILE_DIR:squareBuilder>
     COMMAND $<TARGET_FILE_DIR:squareBuilder>/genSquareVisitor
     WORKING_DIRECTORY $<TARGET_FILE_DIR:squareBuilder>
-    DEPENDS squareBuilder
-)
+    DEPENDS squareBuilder)
 
 add_library(monk EXCLUDE_FROM_ALL "")
 add_library(monk_cov EXCLUDE_FROM_ALL "")
 add_executable(monk_exec "")
 add_executable(monkbulk "")
-
 foreach(FO_MONK_TARGET monk monk_exec monk_cov monkbulk)
     if(${FO_MONK_TARGET} STREQUAL "monk")
         set(MONK_XSRC "monk.c" )
@@ -65,8 +63,7 @@ foreach(FO_MONK_TARGET monk monk_exec monk_cov monkbulk)
         ${FO_CWD}/scheduler.c
         ${FO_CWD}/serialize.c
         ${FO_CWD}/${MONK_XSRC}
-        $<TARGET_FILE_DIR:squareBuilder>/_squareVisitor.c
-    )
+        $<TARGET_FILE_DIR:squareBuilder>/_squareVisitor.c)
     target_link_libraries(${FO_MONK_TARGET} PRIVATE fossology magic)
     target_compile_definitions(${FO_MONK_TARGET} 
         PRIVATE _FILE_OFFSET_BITS=64
@@ -76,8 +73,7 @@ foreach(FO_MONK_TARGET monk monk_exec monk_cov monkbulk)
         PRIVATE $<TARGET_FILE_DIR:squareBuilder>)
 endforeach()
 
-set_target_properties(monk_exec
-        PROPERTIES OUTPUT_NAME monk)
+set_target_properties(monk_exec PROPERTIES OUTPUT_NAME monk)
 
 install(TARGETS monk_exec
     RUNTIME

@@ -22,15 +22,22 @@ project(www)
 
 include(${CMAKE_CURRENT_SOURCE_DIR}/../../cmake/SetDefaults.cmake)
 
+file(WRITE ${CMAKE_CURRENT_BINARY_DIR}/gen/fossology.rc "${FO_SYSCONFDIR}")
 
 install(DIRECTORY ui
     DESTINATION ${FO_MODDIR}/${PROJECT_NAME}
     COMPONENT www
-)
+    PATTERN "pretty-swag.json" EXCLUDE)
+
+install(FILES 
+    ${CMAKE_CURRENT_BINARY_DIR}/gen/fossology.rc 
+    ${FO_SOURCEDIR}/../NOTICES-THIRDPARTY.html
+    DESTINATION ${FO_MODDIR}/${PROJECT_NAME}/ui
+    COMPONENT www)
+
 add_custom_target(www ALL
     COMMENT "Configuring www for symbolic link")
 add_symlink()
 foreach(WWW_INSTALL page async)
     add_symlink(www-${WWW_INSTALL} ${FO_MODDIR}/${PROJECT_NAME}/ui/${WWW_INSTALL})
 endforeach()
-

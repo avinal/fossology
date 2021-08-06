@@ -17,16 +17,14 @@ with this program; if not, write to the Free Software Foundation, Inc.,
 #]=======================================================================]
 
 set(FO_CWD ${CMAKE_CURRENT_SOURCE_DIR})
-
 set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} ${FO_CXX_FLAGS} -fopenmp")
-find_package(Boost REQUIRED regex system filesystem program_options)
+
 include_directories(
     ${glib_INCLUDE_DIRS}
     ${PostgreSQL_INCLUDE_DIRS}
     ${FO_CLIB_SRC}
     ${jsoncpp_INCLUDE_DIRS}
-    ${FO_CXXLIB_SRC}
-)
+    ${FO_CXXLIB_SRC})
 
 add_compile_definitions( 
     _FILE_OFFSET_BITS=64 
@@ -54,8 +52,7 @@ foreach(FO_OJO_TARGET ojo ojo_exec ojo_cov ojo_cov_exec)
         ${FO_CWD}/OjoUtils.cc
     )
     if(${FO_OJO_TARGET} MATCHES "^ojo_cov")
-        target_compile_options(${FO_OJO_TARGET}
-            PRIVATE ${FO_COV_FLAGS})
+        target_compile_options(${FO_OJO_TARGET} PRIVATE ${FO_COV_FLAGS})
     endif()
     if(${FO_OJO_TARGET} MATCHES "_exec$")
         target_link_libraries(${FO_OJO_TARGET} 
@@ -70,5 +67,3 @@ install(TARGETS ojo_exec
     RUNTIME
     DESTINATION ${FO_MODDIR}/${PROJECT_NAME}/agent 
     COMPONENT ojo)
-
-# FIXME: coverage build is failing

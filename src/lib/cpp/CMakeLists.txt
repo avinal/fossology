@@ -21,23 +21,19 @@ project(libcpp LANGUAGES CXX)
 
 set(FO_CWD ${CMAKE_CURRENT_SOURCE_DIR})
 
-
 include(${CMAKE_CURRENT_SOURCE_DIR}/../../../cmake/SetDefaults.cmake)
-# endif()
 
 set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} ${FO_CXX_FLAGS} -fPIC -Wextra -Weffc++")
 add_compile_definitions(
     FOSSDB_CONF="${FO_SYSCONFDIR}/Db.conf" 
     FOSSGROUP="${FO_PROJECTGROUP}" 
     DEFAULT_SETUP="${FO_SYSCONFDIR}"
-    _FILE_OFFSET_BITS=64
-)
+    _FILE_OFFSET_BITS=64)
 
 include_directories(
     ${glib_INCLUDE_DIRS}
     ${PostgreSQL_INCLUDE_DIRS}
-    ${FO_CLIB_SRC}
-)
+    ${FO_CLIB_SRC})
 
 if(NOT TARGET fossology)
     add_subdirectory(${FO_CLIB_SRC} buildc EXCLUDE_FROM_ALL)
@@ -50,8 +46,7 @@ target_sources(fossologyCPP
         ${FO_CWD}/libfossdbmanagerclass.cc
         ${FO_CWD}/files.cc
         ${FO_CWD}/libfossdbQueryResult.cc
-        ${FO_CWD}/libfossUtils.cc
-)
+        ${FO_CWD}/libfossUtils.cc)
 
 target_link_libraries(fossologyCPP PRIVATE fossology)
 

@@ -18,12 +18,10 @@ with this program; if not, write to the Free Software Foundation, Inc.,
 
 cmake_minimum_required(VERSION 3.10 FATAL_ERROR)
 project(FOSSOLOGY)
-# set defaults
-set(FO_CWD ${CMAKE_CURRENT_SOURCE_DIR})
+
 include(${CMAKE_CURRENT_SOURCE_DIR}/cmake/SetDefaults.cmake)
 
 add_subdirectory(src)
 add_subdirectory(install)
-
 
 include(${CMAKE_CURRENT_SOURCE_DIR}/cmake/FoPackaging.cmake)

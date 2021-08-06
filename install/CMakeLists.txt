@@ -52,12 +52,17 @@ install(FILES
     "${CMAKE_CURRENT_BINARY_DIR}/VERSION" 
     ${CMAKE_CURRENT_BINARY_DIR}/gen/Db.conf 
     ${CMAKE_CURRENT_BINARY_DIR}/gen/fossology.conf
+    COMPONENT common
     DESTINATION ${FO_SYSCONFDIR})
+
+install(FILES "${CMAKE_CURRENT_BINARY_DIR}/VERSION"
+    DESTINATION ${FO_MODDIR})
     
 
 install(DIRECTORY  
     ${CMAKE_CURRENT_SOURCE_DIR}/defconf/
     ${CMAKE_CURRENT_SOURCE_DIR}/fossdash/
+    COMPONENT common
     DESTINATION ${FO_SYSCONFDIR}
     FILES_MATCHING
     PATTERN *.txt
@@ -85,6 +90,7 @@ install(PROGRAMS ${CMAKE_CURRENT_BINARY_DIR}/gen/fo-postinstall
 install(FILES 
     ${FO_CWD}/fo-apache.conf 
     ${FO_CWD}/src-install-apache-example.conf
+    COMPONENT common
     DESTINATION ${FO_SYSCONFDIR}/conf)
 
 install(FILES ${CMAKE_CURRENT_BINARY_DIR}/gen/db.cron

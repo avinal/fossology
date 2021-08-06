@@ -21,7 +21,6 @@ project(mimetype LANGUAGES C)
 
 include(${CMAKE_CURRENT_SOURCE_DIR}/../../cmake/SetDefaults.cmake)
 
-
 add_subdirectory(${CMAKE_CURRENT_SOURCE_DIR}/agent)
 
 if(TESTING)
@@ -34,8 +33,7 @@ install(DIRECTORY ui
     DESTINATION ${FO_MODDIR}/${PROJECT_NAME}
     COMPONENT mimetype
     FILES_MATCHING
-    PATTERN *.php
-    )
+    PATTERN *.php)
 
 install(FILES mimetype.conf mod_deps "${CMAKE_CURRENT_BINARY_DIR}/VERSION"
     DESTINATION ${FO_MODDIR}/${PROJECT_NAME}

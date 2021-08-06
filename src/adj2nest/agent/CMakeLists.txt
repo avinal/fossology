@@ -29,7 +29,6 @@ if(NOT TARGET fossology)
 endif()
 
 add_executable(adj2nest "")
-
 target_sources(adj2nest PRIVATE ${FO_CWD}/adj2nest.c)
 target_compile_definitions(adj2nest 
     PRIVATE 

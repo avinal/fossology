@@ -18,7 +18,6 @@ with this program; if not, write to the Free Software Foundation, Inc.,
 
 cmake_minimum_required(VERSION 3.10 FATAL_ERROR)
 project(genvendor)
-# set defaults
 
 include(${CMAKE_CURRENT_SOURCE_DIR}/../../cmake/SetDefaults.cmake)
 
@@ -27,6 +26,7 @@ file(COPY composer.json composer.lock RdfXml.php.patch ComposerInstall
 
 set(FO_VENDOR ${CMAKE_CURRENT_BINARY_DIR}/vendor/vendor CACHE INTERNAL "vendor dir")
 
+# FIXME: run only on testting
 if(TESTING)
     set(PHPUNIT true)
 endif()
@@ -43,4 +43,3 @@ install(DIRECTORY ${CMAKE_CURRENT_BINARY_DIR}/vendor/
     COMPONENT vendor
     PATTERN *.patch EXCLUDE
     PATTERN "ComposerInstall" EXCLUDE)
-

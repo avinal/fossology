@@ -25,8 +25,7 @@ add_compile_definitions(
     PROJECT_GROUP="${FO_PROJECTGROUP}"
     CLI_DIR="${FO_DESTDIR}${FO_BINDIR}"
     DEFAULT_SETUP="${FO_SYSCONFDIR}"
-    _FILE_OFFSET_BITS=64
-)
+    _FILE_OFFSET_BITS=64)
 
 if(NOT TARGET fossology)
     add_subdirectory(${FO_CLIB_SRC} buildc EXCLUDE_FROM_ALL)
@@ -36,8 +35,7 @@ include_directories(
     ${FO_CWD}
     ${glib_INCLUDE_DIRS}
     ${PostgreSQL_INCLUDE_DIRS}
-    ${FO_CLIB_SRC}
-)
+    ${FO_CLIB_SRC})
 
 add_library(scheduler "")
 add_library(scheduler_cov EXCLUDE_FROM_ALL "")
@@ -49,14 +47,8 @@ foreach(FO_SCH_TARGET scheduler fo_scheduler scheduler_cov)
     if(${FO_SCH_TARGET} STREQUAL "fo_scheduler")
         set(SCH_XSRC ${FO_SCH_TARGET}.c)
         target_link_libraries(${FO_SCH_TARGET}
-            PRIVATE
-                fossology 
-                scheduler
-                ${gobject_LIBRARIES}
-                ${gthread_LIBRARIES}
-                ${gio_LIBRARIES}
-        )
-        # TODO: PROCESS_NAME is both exe at the same time
+            PRIVATE fossology scheduler ${gobject_LIBRARIES} 
+                ${gthread_LIBRARIES} ${gio_LIBRARIES})
         target_compile_options(${FO_SCH_TARGET}
             PRIVATE "-DPROCESS_NAME=${FO_SCH_TARGET}")
     else()
@@ -73,17 +65,13 @@ foreach(FO_SCH_TARGET scheduler fo_scheduler scheduler_cov)
             ${FO_CWD}/logging.c
             ${FO_CWD}/emailformatter.c
             ${FO_CWD}/${SCH_XSRC}
-            "${FO_CWD}/interface.c"
-    )
+            "${FO_CWD}/interface.c")
 endforeach()
 
 target_compile_options(scheduler_cov PRIVATE ${FO_COV_FLAGS})
-
-# HACK: adding target for angled branckes
 target_include_directories(scheduler_cov PRIVATE ${FO_CWD})
 target_include_directories(scheduler 
     PUBLIC $<BUILD_INTERFACE:${CMAKE_CURRENT_LIST_DIR}>)
-
 add_custom_target(initfile ALL
 COMMAND ${CMAKE_COMMAND}
     -DIN_FILE_NAME="fossology.in"
@@ -106,5 +94,5 @@ install(TARGETS fo_cli fo_scheduler
 
 install(PROGRAMS ${CMAKE_CURRENT_BINARY_DIR}/gen/init.d/fossology
     DESTINATION ${FO_INITDIR}/init.d
-    COMPONENT scheduler) 
+    COMPONENT common) 
 add_symlink()

@@ -16,13 +16,6 @@ with this program; if not, write to the Free Software Foundation, Inc.,
 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 #]=======================================================================]
 
-cmake_minimum_required(VERSION 3.10 FATAL_ERROR)
-project(src)
-# set defaults
-
-include(${CMAKE_CURRENT_SOURCE_DIR}/../cmake/SetDefaults.cmake)
-
-
 add_subdirectory(lib)
 add_subdirectory(scheduler)
 add_subdirectory(adj2nest)
@@ -53,7 +46,8 @@ if(NOT OFFLINE)
     add_subdirectory(genvendor)
 endif()
 
-
-
-
-# TODO: find alternative for add directories
+# deprecated or not used agents
+# add_subdirectory(demomod)
+# add_subdirectory(example_wc_agent)
+# add_subdirectory(ninka)
+# add_subdirectory(regexscan)

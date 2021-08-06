@@ -1,4 +1,4 @@
-#[[--------------------------------------------------------------------
+#[=======================================================================[
 SPDX-License-Identifier: GPL-2.0
 SPDX-FileCopyrightText: 2021 Avinal Kumar <avinal.xlvii@gmail.com>
 
@@ -14,15 +14,9 @@ GNU General Public License for more details.
 You should have received a copy of the GNU General Public License along
 with this program; if not, write to the Free Software Foundation, Inc.,
 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
----------------------------------------------------------------------]]
+#]=======================================================================]
 
-cmake_minimum_required(VERSION 3.10 FATAL_ERROR)
-project(wc_agent LANGUAGES C)
 set(FO_CWD ${CMAKE_CURRENT_SOURCE_DIR})
-# set defaults
-if(NOT DEFINED ARE_DEFAULTS_SET)
-include(${CMAKE_CURRENT_SOURCE_DIR}/../../../cmake/SetDefaults.cmake)
-endif(NOT DEFINED ARE_DEFAULTS_SET)
 
 set(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} ${FO_C_FLAGS}")
 
@@ -37,18 +31,16 @@ endif()
 
 
 add_executable(wc_agent "")
-target_sources(wc_agent
-    PRIVATE
-    ${FO_CWD}/wc_agent.c
-)
+target_sources(wc_agent PRIVATE ${FO_CWD}/wc_agent.c)
 target_compile_definitions(wc_agent
     PRIVATE
     _FILE_OFFSET_BITS=64
     VERSION_S="${FO_VERSION}"
     COMMIT_HASH_S="${FO_COMMIT_HASH}"
 )
-target_link_libraries(wc_agent 
-    PRIVATE 
-        fossology 
-)
-# TODO: come back later as agent is not used
+target_link_libraries(wc_agent PRIVATE fossology)
+
+install(TARGETS wc_agent
+    RUNTIME
+    DESTINATION ${FO_MODDIR}/${PROJECT_NAME}/agent 
+    COMPONENT wc_agent)

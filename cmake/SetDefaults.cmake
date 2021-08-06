@@ -21,7 +21,6 @@ message(STATUS "Configuring ${PROJECT_NAME}")
 # checking for dependencies
 find_package(PkgConfig REQUIRED)
 
-
 if(NOT DEFINED ARE_DEFAULTS_SET)
 
 # set all the default variable in cache
@@ -33,6 +32,8 @@ set(FO_PROJECTGROUP "fossy" CACHE INTERNAL "group for the project in the system"
 
 # agents library and source paths
 get_filename_component(FO_BASEDIR ${CMAKE_CURRENT_LIST_DIR}/../ ABSOLUTE CACHE PATH)
+
+set(FO_DEBDIR "${FO_BASEDIR}/debian" CACHE PATH "debian packaging stuffs")
 
 set(FO_CMAKEDIR "${FO_BASEDIR}/cmake" CACHE PATH "cmake modules of fossology")
 
@@ -108,14 +109,19 @@ set(FO_PHPDIR "${FO_MODDIR}/php" CACHE PATH "php root")
 ## Build variables
 
 set(FO_APACHE_CTL "/usr/sbin/apachectl" CACHE PATH "apache ctl")
+
 set(FO_APACHE2_EN_SITE "/usr/sbin/a2ensite" CACHE PATH "apachec ensite")
+
 set(FO_APACHE2SITE_DIR "/etc/apache2/sites-available" CACHE PATH "apache site dir")
+
 set(FO_HTTPD_SITE_DIR "/etc/httpd/conf.d" CACHE PATH "http site dir")
+
 set(FO_TWIG_CACHE ${FO_CACHEDIR} CACHE INTERNAL "twig cache variable")
 
 set(ARE_DEFAULTS_SET ON CACHE BOOL "flag to check if defaults have been set")
+
 endif(NOT DEFINED ARE_DEFAULTS_SET)
-# TEMP
+
 find_package(PostgreSQL REQUIRED)
 if(DEFINED CMAKE_CXX_COMPILER)
     find_package(Boost REQUIRED regex system filesystem program_options)
@@ -127,7 +133,8 @@ foreach(SCHE_LIBS glib-2.0 gthread-2.0 gio-2.0 gobject-2.0)
 endforeach()
 pkg_check_modules(jsoncpp REQUIRED jsoncpp)
 pkg_check_modules(jsonc REQUIRED json-c)
-set(CMAKE_INSTALL_MESSAGE NEVER)
+
+set(CMAKE_INSTALL_MESSAGE NEVER) # control if messages should be displayed while installing
 
 include(${FO_CMAKEDIR}/FoUtilities.cmake)
 if(NOT DEFINED FO_COMMIT_DATE)

@@ -22,7 +22,6 @@ install(DIRECTORY ./ ${CMAKE_CURRENT_BINARY_DIR}/gen/
     DESTINATION ${FO_MODDIR}/${PROJECT_NAME}/agent
     COMPONENT spasht
     FILES_MATCHING
-    PATTERN *.php
-)
+    PATTERN *.php)
 
 add_symlink(${PROJECT_NAME} ${FO_LIBEXECDIR}/fo_wrapper ${FO_MODDIR}/${PROJECT_NAME}/agent)

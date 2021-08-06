@@ -18,14 +18,13 @@ with this program; if not, write to the Free Software Foundation, Inc.,
 
 set(FO_CWD ${CMAKE_CURRENT_SOURCE_DIR})
 
-
 set(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} ${FO_C_FLAGS}")
 
 include_directories(
     ${glib_INCLUDE_DIRS}
     ${PostgreSQL_INCLUDE_DIRS}
-    ${FO_CLIB_SRC}
-)
+    ${FO_CLIB_SRC})
+
 if(NOT TARGET fossology)
     add_subdirectory(${FO_CLIB_SRC} buildc EXCLUDE_FROM_ALL)
 endif()
@@ -39,22 +38,19 @@ add_custom_command(
     COMMAND echo "NOTE: GENSEARCHDATA takes 1-2 minutes to run"
     COMMAND bash $<TARGET_FILE_DIR:encode>/GENSEARCHDATA
     WORKING_DIRECTORY $<TARGET_FILE_DIR:encode>
-    DEPENDS encode
-)
+    DEPENDS encode)
 
 add_custom_command(
     OUTPUT _precheck.c
     COMMAND bash $<TARGET_FILE_DIR:encode>/PRECHECK
     COMMAND bash $<TARGET_FILE_DIR:encode>/CHECKSTR
     WORKING_DIRECTORY $<TARGET_FILE_DIR:encode>
-    DEPENDS $<TARGET_FILE_DIR:encode>/_autodata.c
-)
+    DEPENDS $<TARGET_FILE_DIR:encode>/_autodata.c)
 
 add_library(nomos "")
 add_library(nomos_cov EXCLUDE_FROM_ALL "")
 add_executable(nomos_exec "")
 add_executable(nomos_cov_exec EXCLUDE_FROM_ALL "")
-
 foreach(FO_NOM_TARGET nomos nomos_cov nomos_exec nomos_cov_exec)
     target_sources(${FO_NOM_TARGET}
         PRIVATE
@@ -84,12 +80,7 @@ foreach(FO_NOM_TARGET nomos nomos_cov nomos_exec nomos_cov_exec)
     endif()
     if(${FO_NOM_TARGET} MATCHES "_exec$")
         target_link_libraries(${FO_NOM_TARGET} 
-            PRIVATE 
-            fossology
-            ${jsonc_LIBRARIES}
-            pthread
-            rt
-        )
+            PRIVATE fossology ${jsonc_LIBRARIES} pthread rt)
         string(REPLACE "_exec" "" FO_NOM_TARGET_R ${FO_NOM_TARGET})
         set_target_properties(${FO_NOM_TARGET}
             PROPERTIES OUTPUT_NAME ${FO_NOM_TARGET_R})
@@ -102,5 +93,3 @@ install(TARGETS nomos_exec
     RUNTIME
     DESTINATION ${FO_MODDIR}/${PROJECT_NAME}/agent 
     COMPONENT nomos)
-
-# FIXME: nomos coverage not building

@@ -17,7 +17,7 @@ with this program; if not, write to the Free Software Foundation, Inc.,
 #]=======================================================================]
 
 #[[ macro to get latest version
-    @param git version
+    git version
     commit hash
     build time
     commit time
@@ -35,15 +35,15 @@ macro(getGitVersion)
     list(LENGTH FO_VERSION_GIT VAR_LEN)
     if(${VAR_LEN} EQUAL 2) 
         list(GET FO_VERSION_GIT 0 VERSION_GIT)
-        string(APPEND ".0" ${VERSION_GIT})
+        string(APPEND "-0" ${VERSION_GIT})
     elseif(${VAR_LEN} EQUAL 3)
         string(REGEX REPLACE 
         "^([0-9]+\\.[0-9]+\\.[0-9]+)-([0-9]*)-g[0-9a-z]*"
-        "\\1.\\2" VERSION_GIT ${VERSION_GIT})
+        "\\1-\\2" VERSION_GIT ${VERSION_GIT})
     elseif(${VAR_LEN} EQUAL 4)
         string(REGEX REPLACE 
         "^([0-9]+\\.[0-9]+\\.[0-9]+)(-rc[0-9]+)-([0-9]*)-g[0-9a-z]*"
-        "\\1.\\3\\2" VERSION_GIT ${VERSION_GIT})
+        "\\1-\\3\\2" VERSION_GIT ${VERSION_GIT})
     endif()
     set(FO_VERSION ${VERSION_GIT} CACHE INTERNAL "fossology version")
     message(STATUS "Current fossology version ${FO_VERSION}")
@@ -151,7 +151,11 @@ macro(generate_version_php)
             DEPENDS "${CMAKE_CURRENT_SOURCE_DIR}/version.php.in")
 endmacro(generate_version_php)
 
-
+#[[ generate symbolic links and install them
+    @param link name
+    @param link target
+    @param link destination
+]]
 macro(add_symlink)
     set(LINK_NAME ${PROJECT_NAME})
     set(LINK_TARGET ${FO_MODDIR}/${PROJECT_NAME})
@@ -168,72 +172,10 @@ macro(add_symlink)
         list(GET FO_ARGS 2 LINK_DESTINATION)
     endif()
     get_filename_component(LINK_TARGET_NAME ${LINK_TARGET} NAME_WE)
-    # add_custom_target(${LINK_NAME}_${LINK_TARGET_NAME}_symlink ALL
-    #     COMMENT "Generating symbolic link: ${LINK_NAME} -> ${LINK_TARGET}"
-    #     COMMAND ln -sf -T ${LINK_TARGET} ${CMAKE_CURRENT_BINARY_DIR}/${LINK_NAME}
-    #     DEPENDS ${PROJECT_NAME}
-    #     BYPRODUCTS ${CMAKE_CURRENT_BINARY_DIR}/${LINK_NAME})
-    # install(
-    #     CODE "message(\"adding link for ${LINK_DESTINATION}\")"
-    #     CODE "execute_process(COMMAND mkdir -p ${LINK_DESTINATION})"
-    #     CODE "file(INSTALL DESTINATION ${LINK_DESTINATION} TYPE FILE FILES ${CMAKE_CURRENT_BINARY_DIR}/${LINK_NAME})"
-    #     CODE "message(STATUS \"Added symbolic link: ${LINK_NAME} -> ${LINK_TARGET}\")"
-    #     COMPONENT ${PROJECT_NAME})
-    # install(PROGRAMS ${CMAKE_CURRENT_BINARY_DIR}/${LINK_NAME}
-    #     DESTINATION ${LINK_DESTINATION}
-    #     COMPONENT ${PROJECT_NAME})
-    install(CODE "message(STATUS \"adding symlink for ${LINK_DESTINATION}\")"
-        CODE "execute_process(COMMAND mkdir -p ${LINK_DESTINATION})"
-        CODE "execute_process(COMMAND ln -sf -T ${LINK_TARGET} ${LINK_DESTINATION}/${LINK_NAME})"
-        CODE "message(STATUS \"Added symbolic link: ${LINK_NAME} -> ${LINK_TARGET}\")"
+    install(CODE
+        "file(MAKE_DIRECTORY \"\$ENV{DESTDIR}${LINK_DESTINATION}\")
+        execute_process(
+            COMMAND ln -sf -T \"${LINK_TARGET}\" \"${LINK_NAME}\"
+            WORKING_DIRECTORY \"\$ENV{DESTDIR}${LINK_DESTINATION}\")"
         COMPONENT ${PROJECT_NAME})
 endmacro(add_symlink)
-
-
-function (basic_install_link OLD NEW)
-   set (CMD_IN
-     "
-     set (OLD \"@OLD@\")
-     set (NEW \"@NEW@\")
-     message(\"${PROJECT_NAME} here1\")
-     if (NOT IS_ABSOLUTE \"\${OLD}\")
-       set (OLD \"\$ENV{DESTDIR}\${CMAKE_INSTALL_PREFIX}/\${OLD}\")
-     endif ()
-     if (NOT IS_ABSOLUTE \"\${NEW}\")
-       set (NEW \"\$ENV{DESTDIR}\${CMAKE_INSTALL_PREFIX}/\${NEW}\")
-     endif ()
- 
-     if (IS_SYMLINK \"\${NEW}\")
-       file (REMOVE \"\${NEW}\")
-     endif ()
-     message(\"${PROJECT_NAME} here 2\")
-     if (EXISTS \"\${NEW}\")
-       message (STATUS \"Skipping: \${NEW} -> \${OLD}\")
-     else ()
-       message (STATUS \"Installing: \${NEW} -> \${OLD}\")
-       message(\"${PROJECT_NAME} here 3\")
-       get_filename_component (SYMDIR \"\${NEW}\" PATH)
- 
-       file (RELATIVE_PATH OLD \"\${SYMDIR}\" \"\${OLD}\")
- 
-       if (NOT EXISTS \${SYMDIR})
-         file (MAKE_DIRECTORY \"\${SYMDIR}\")
-       endif ()
-       message(\"${PROJECT_NAME} here 4\")
-       execute_process (
-         COMMAND ln -sf -T \"\${OLD}\" \"\${NEW}\"
-         RESULT_VARIABLE RETVAL
-       )
-       message(\"${PROJECT_NAME} here 5\")
-       if (NOT RETVAL EQUAL 0)
-         message (ERROR \"Failed to create (symbolic) link \${NEW} -> \${OLD}\")
-       else ()
-         list (APPEND CMAKE_ABSOLUTE_DESTINATION_FILES \"\${NEW}\")
-       endif ()
-     endif ()
-     "
-   )
- 
-   string (CONFIGURE "${CMD_IN}" CMD @ONLY)
-   install (CODE "${CMD}" COMPONENT "${PROJECT_NAME}")
- endfunction ()

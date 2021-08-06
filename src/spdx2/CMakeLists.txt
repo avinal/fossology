@@ -18,10 +18,8 @@ with this program; if not, write to the Free Software Foundation, Inc.,
 
 cmake_minimum_required(VERSION 3.10 FATAL_ERROR)
 project(spdx2)
-# set defaults
 
 include(${CMAKE_CURRENT_SOURCE_DIR}/../../cmake/SetDefaults.cmake)
-
 
 add_subdirectory(${CMAKE_CURRENT_SOURCE_DIR}/agent)
 
@@ -33,8 +31,7 @@ install(DIRECTORY ui
     FILES_MATCHING
     PATTERN *.php
     PATTERN "DepFiveAgentPlugin.php" EXCLUDE
-    PATTERN "SpdxTwoTagValueAgentPlugin.php" EXCLUDE
-)
+    PATTERN "SpdxTwoTagValueAgentPlugin.php" EXCLUDE)
 
 install(FILES ui/DepFiveAgentPlugin.php
     DESTINATION ${FO_MODDIR}/dep5/ui

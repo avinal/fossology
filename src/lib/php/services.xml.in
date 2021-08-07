@@ -15,7 +15,7 @@ without any warranty.
 
     <parameters>
         <parameter key="twig.environment.config" type="collection">
-            {$TWIG_CACHE}
+            <parameter key="cache" type="string">@FO_TWIG_CACHE@</parameter>
             <parameter key="autoescape" type="constant">false</parameter>
         </parameter>
         <parameter key="twig.loader.source_path" type="string">%application_root%/lib/php/UI/template</parameter>

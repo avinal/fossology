@@ -25,3 +25,6 @@ include(${CMAKE_CURRENT_SOURCE_DIR}/cmake/SetDefaults.cmake)
 # add source directories
 add_subdirectory(src)
 add_subdirectory(install)
+
+# add packaging configurations
+include(${CMAKE_CURRENT_SOURCE_DIR}/cmake/FoPackaging.cmake)

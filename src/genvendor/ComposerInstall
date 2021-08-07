@@ -1,0 +1,16 @@
+#!/bin/bash
+
+export COMPOSER_HOME=/dev/null
+export COMPOSER_ALLOW_SUPERUSER=1
+composer install --no-plugins --no-scripts --no-dev
+
+if ! patch --reverse --silent --force --dry-run vendor/easyrdf/easyrdf/lib/EasyRdf/Parser/RdfXml.php RdfXml.php.patch > /dev/null
+then
+	echo "  - Applying easyrdf patch"
+	if patch --silent --force vendor/easyrdf/easyrdf/lib/EasyRdf/Parser/RdfXml.php RdfXml.php.patch
+	then
+		echo "  - Patched easyrdf successfully"
+	fi
+else
+	echo "  - Already patched"
+fi

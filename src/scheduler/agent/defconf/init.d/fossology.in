@@ -1,5 +1,5 @@
 #!/bin/sh
-# Init script for the {$PROJECT} scheduler.
+# Init script for the @FO_PROJECT@ scheduler.
 # Copyright (C) 2011 Hewlett-Packard Development Company, L.P.
 #
 # Based on the example skeleton:
@@ -7,7 +7,7 @@
 #	Modified for Debian by Ian Murdock <imurdock@gnu.ai.mit.edu>.
 #
 ### BEGIN INIT INFO
-# Provides:          {$PROJECT}
+# Provides:          @FO_PROJECT@
 # Required-Start:    $network $local_fs $remote_fs $syslog $named
 # Required-Stop:     $network $local_fs $remote_fs $syslog $named
 # Should-Start:      postgresql
@@ -17,8 +17,8 @@
 ### END INIT INFO
 
 PATH=/usr/local/sbin:/usr/local/bin:/sbin:/bin:/usr/sbin:/usr/bin
-DAEMON={$MODDIR}/scheduler/agent/fo_scheduler
-CLI={$MODDIR}/scheduler/agent/fo_cli
+DAEMON=@FO_MODDIR@/scheduler/agent/fo_scheduler
+CLI=@FO_MODDIR@/scheduler/agent/fo_cli
 NAME=fossology
 DESC="FOSSology job scheduler"
 
@@ -32,10 +32,10 @@ ENABLED=1
 
 # Include scheduler defaults if available
 SCHEDULEROPT="--daemon --reset --verbose=1"
-if [ -f {$SYSCONFDIR}/default/fossology ] ; then
+if [ -f @FO_SYSCONFDIR@/default/fossology ] ; then
     # This can override SCHEDULEROPT.
     # Be sure to keep "-d" for daemon mode
-    . {$SYSCONFDIR}/default/fossology
+    . @FO_SYSCONFDIR@/default/fossology
 fi
 
 # Quit quietly, if $ENABLED is 0.
@@ -43,29 +43,29 @@ test "$ENABLED" != "0" || exit 0
 
 set -e
 
-start () \{
+start () {
     echo -n "Starting $DESC: "
     $DAEMON $SCHEDULEROPT
     echo "$NAME."
-\}
+}
 
-stop () \{
+stop () {
     echo -n "Stopping $DESC: "
     # we don't really care about the exit code as long as it's stopped
     $DAEMON --kill || echo -n "no "
     echo "$NAME killed."
-\}
+}
 
-gracefulstop () \{
+gracefulstop () {
     echo -n "Gracefully shutting down $DESC after all current jobs finish: "
     # we don't really care about the exit code as long as it's stopped
     $DAEMON --shutdown
     echo "$NAME shutdown."
-\}
+}
 
-reload () \{
+reload () {
     $CLI --reload
-\}
+}
 
 case "$1" in
   start)
@@ -87,8 +87,8 @@ case "$1" in
     reload
     ;;
   *)
-    N={$INITDIR}/init.d/$NAME
-    echo "Usage: $N \{start|stop|graceful-stop|restart|reload|force-reload\}" >&2
+    N=@FO_INITDIR@/init.d/$NAME
+    echo "Usage: $N {start|stop|graceful-stop|restart|reload|force-reload}" >&2
     exit 1
 	;;
 esac

@@ -46,3 +46,6 @@ foreach(MONK_INSTALL monkbulk monk)
         COMPONENT ${MONK_INSTALL})
     add_symlink(${MONK_INSTALL})
 endforeach()
+
+enable_testing()
+add_subdirectory(agent_tests)

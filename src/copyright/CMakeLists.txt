@@ -46,3 +46,6 @@ foreach(COP ecc keyword copyright)
         COMPONENT ${COP})
     add_symlink(${COP})
 endforeach()
+
+enable_testing()
+add_subdirectory(agent_tests)

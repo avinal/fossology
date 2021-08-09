@@ -38,4 +38,6 @@ install(FILES delagent.conf mod_deps "${CMAKE_CURRENT_BINARY_DIR}/VERSION"
 
 add_symlink()
 add_symlink(${PROJECT_NAME}-page ${FO_MODDIR}/${PROJECT_NAME}/ui/Page)
-   
+  
+enable_testing()
+add_subdirectory(agent_tests)

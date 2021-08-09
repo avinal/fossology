@@ -35,3 +35,5 @@ install(FILES unifiedreport.conf "${CMAKE_CURRENT_BINARY_DIR}/VERSION"
     COMPONENT unifiedreport)
 
 add_symlink()
+enable_testing()
+add_subdirectory(agent_tests)

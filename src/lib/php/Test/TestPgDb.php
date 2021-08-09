@@ -19,7 +19,7 @@ with this program; if not, write to the Free Software Foundation, Inc.,
 namespace Fossology\Lib\Test;
 
 // setup autoloading
-require_once(dirname(dirname(dirname(dirname(__FILE__)))) . "/vendor/autoload.php");
+require_once(dirname(__FILE__, 5) . "/build/vendor/autoload.php");
 require_once(__DIR__ . "/../../../testing/db/TestDbFactory.php");
 
 use Fossology\Lib\Db\Driver\Postgres;

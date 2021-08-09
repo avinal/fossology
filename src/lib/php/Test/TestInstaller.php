@@ -18,7 +18,7 @@ with this program; if not, write to the Free Software Foundation, Inc.,
 
 namespace Fossology\Lib\Test;
 
-require_once(dirname(dirname(dirname(__DIR__))) . "/vendor/autoload.php");
+require_once(dirname(__DIR__, 4) . "/build/vendor/autoload.php");
 
 class TestInstaller
 {

@@ -77,9 +77,9 @@ foreach(FO_NOM_TARGET nomos nomos_cov nomos_exec nomos_cov_exec)
     if(${FO_NOM_TARGET} MATCHES "cov")
         target_compile_options(${FO_NOM_TARGET} PRIVATE ${FO_COV_FLAGS})
     endif()
-    if(${FO_NOM_TARGET} MATCHES "_exec$")
-        target_link_libraries(${FO_NOM_TARGET} 
+    target_link_libraries(${FO_NOM_TARGET} 
             PRIVATE fossology ${jsonc_LIBRARIES} pthread rt)
+    if(${FO_NOM_TARGET} MATCHES "_exec$")
         string(REPLACE "_exec" "" FO_NOM_TARGET_R ${FO_NOM_TARGET})
         set_target_properties(${FO_NOM_TARGET}
             PROPERTIES OUTPUT_NAME ${FO_NOM_TARGET_R})

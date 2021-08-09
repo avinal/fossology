@@ -36,3 +36,5 @@ install(FILES nomos.conf "${CMAKE_CURRENT_BINARY_DIR}/VERSION"
     COMPONENT nomos)
 
 add_symlink()
+enable_testing()
+add_subdirectory(agent_tests)

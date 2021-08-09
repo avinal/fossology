@@ -43,9 +43,9 @@ add_subdirectory(ununpack)
 add_subdirectory(unifiedreport)
 add_subdirectory(wget_agent)
 add_subdirectory(www)
-if(NOT OFFLINE)
-    add_subdirectory(genvendor)
-endif()
+# if(NOT OFFLINE)
+#     add_subdirectory(genvendor)
+# endif()
 
 # deprecated or not used agents
 # add_subdirectory(demomod)

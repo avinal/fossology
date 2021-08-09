@@ -36,3 +36,6 @@ install(FILES decider.conf "${CMAKE_CURRENT_BINARY_DIR}/VERSION"
     COMPONENT decider)
 
 add_symlink()
+
+enable_testing()
+add_subdirectory(agent_tests)

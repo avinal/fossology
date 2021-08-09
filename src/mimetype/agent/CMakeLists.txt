@@ -30,6 +30,7 @@ include_directories(
     ${FO_CLIB_SRC})
 
 if(NOT TARGET fossology)
+    set(NOSUBTEST TRUE)
     add_subdirectory(${FO_CLIB_SRC} buildc EXCLUDE_FROM_ALL)
 endif()
 
@@ -38,6 +39,7 @@ add_library(mimetype_cov EXCLUDE_FROM_ALL "")
 foreach(FO_MIME_TARGET mimetype mimetype_cov)
     target_sources(${FO_MIME_TARGET}
         PRIVATE ${FO_CWD}/mimetype.c ${FO_CWD}/finder.c)
+    target_link_libraries(mimetype PRIVATE fossology magic)
 endforeach()
 target_compile_options(mimetype_cov PRIVATE ${FO_COV_FLAGS})
 

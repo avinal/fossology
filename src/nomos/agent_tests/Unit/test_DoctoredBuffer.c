@@ -129,10 +129,10 @@ void test_doctorBuffer_fromFile()
 {
 
   licenseInit();
-  char* buf, *undoc;
-  buf = (char*) malloc(3000);
-
-  int f = open("../testdata/NomosTestfiles/WXwindows/WXwindows.txt", O_RDONLY);
+  char *buf, *undoc, *filename;
+  filename = buf = (char*)malloc(3000);
+  sprintf(filename, "%s/NomosTestfiles/WXwindows/WXwindows.txt", TESTDATADIR);
+  int f = open(filename, O_RDONLY);
   int whatIread = read(f, buf, 3000);
   close(f);
 

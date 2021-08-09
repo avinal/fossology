@@ -25,6 +25,7 @@ include_directories(
     ${FO_CLIB_SRC})
 
 if(NOT TARGET fossology)
+    set(NOSUBTEST TRUE)
     add_subdirectory(${FO_CLIB_SRC} buildc EXCLUDE_FROM_ALL)
 endif()
 
@@ -49,6 +50,8 @@ foreach(FO_WGET_TARGET wget_agent wget_agent_exec wget_agent_cov)
             PROPERTIES OUTPUT_NAME wget_agent)
         set(WGET_XSRC "main.c")
     else()
+        target_link_libraries(${FO_WGET_TARGET} 
+            PRIVATE fossology gcrypt checksum)
         set(WGET_XSRC "")
     endif()
     target_sources(${FO_WGET_TARGET}

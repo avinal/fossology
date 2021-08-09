@@ -36,6 +36,7 @@ include_directories(
     ${FO_CLIB_SRC})
 
 if(NOT TARGET fossology)
+    set(NOSUBTEST TRUE)
     add_subdirectory(${FO_CLIB_SRC} buildc EXCLUDE_FROM_ALL)
 endif()
 
@@ -64,3 +65,7 @@ install(TARGETS fossologyCPP
 install(FILES ${FO_CWD}/libfossologyCPP.hpp 
     DESTINATION ${FO_INCLUDEDIR}
     COMPONENT lib)
+
+enable_language(C)
+enable_testing()
+add_subdirectory(tests)

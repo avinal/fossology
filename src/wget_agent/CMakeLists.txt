@@ -35,3 +35,5 @@ install(FILES wget_agent.conf mod_deps "${CMAKE_CURRENT_BINARY_DIR}/VERSION"
     COMPONENT wget_agent)
 
 add_symlink()
+enable_testing()
+add_subdirectory(agent_tests)

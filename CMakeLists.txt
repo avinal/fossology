@@ -21,7 +21,7 @@ project(FOSSOLOGY)
 
 # set defaults for the project
 include(${CMAKE_CURRENT_SOURCE_DIR}/cmake/SetDefaults.cmake)
-
+enable_testing()
 # add source directories
 add_subdirectory(src)
 add_subdirectory(install)

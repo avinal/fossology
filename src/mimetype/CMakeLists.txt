@@ -35,3 +35,5 @@ install(FILES mimetype.conf mod_deps "${CMAKE_CURRENT_BINARY_DIR}/VERSION"
     COMPONENT mimetype)
 
 add_symlink()
+enable_testing()
+add_subdirectory(agent_tests)

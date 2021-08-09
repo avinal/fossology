@@ -37,3 +37,5 @@ install(FILES reuser.conf "${CMAKE_CURRENT_BINARY_DIR}/VERSION"
     COMPONENT reuser)
 
 add_symlink()
+enable_testing()
+add_subdirectory(agent_tests)

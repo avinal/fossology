@@ -179,3 +179,16 @@ macro(add_symlink)
             WORKING_DIRECTORY \"\$ENV{DESTDIR}${LINK_DESTINATION}\")"
         COMPONENT ${PROJECT_NAME})
 endmacro(add_symlink)
+
+
+macro(prepare_phpunit)
+    file(MAKE_DIRECTORY ${FO_SOURCEDIR}/../build)
+    file(COPY ${FO_SOURCEDIR}/composer.json ${FO_SOURCEDIR}/composer.lock
+        DESTINATION ${CMAKE_BINARY_DIR})
+    add_custom_target(phpunit ALL
+        COMMAND composer install --prefer-dist --working-dir=.
+        WORKING_DIRECTORY ${CMAKE_BINARY_DIR}
+        BYPRODUCTS ${CMAKE_BINARY_DIR}/vendor)
+    set(PHPUNIT ${CMAKE_BINARY_DIR}/vendor/bin/phpunit CACHE INTERNAL "phpunit location")
+    set(PHPUNIT_BOOTSTRAP ${FO_SOURCEDIR}/phpunit-bootstrap.php CACHE INTERNAL "phpunit bootstrap file")
+endmacro()

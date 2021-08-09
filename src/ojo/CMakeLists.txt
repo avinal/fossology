@@ -36,3 +36,5 @@ install(FILES ojo.conf "${CMAKE_CURRENT_BINARY_DIR}/VERSION"
     COMPONENT ojo)
 
 add_symlink()
+enable_testing()
+add_subdirectory(agent_tests)

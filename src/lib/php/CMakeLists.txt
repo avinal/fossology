@@ -45,3 +45,6 @@ install(DIRECTORY ./ ${CMAKE_CURRENT_BINARY_DIR}/gen/
     PATTERN *.xml
     REGEX "\/tests" EXCLUDE
     REGEX "\/test" EXCLUDE)
+
+enable_testing()
+add_subdirectory(tests)

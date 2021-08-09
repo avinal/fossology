@@ -24,6 +24,7 @@ include_directories(
     ${PostgreSQL_INCLUDE_DIRS})
     
 if(NOT TARGET fossology)
+    set(NOSUBTEST TRUE)
     add_subdirectory(${FO_CLIB_SRC} buildc EXCLUDE_FROM_ALL)
 endif()
 

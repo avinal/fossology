@@ -22,7 +22,7 @@ with this program; if not, write to the Free Software Foundation, Inc.,
 /* cunit includes */
 #include <libfodbreposysconf.h>
 
-#define AGENT_DIR "../../"
+// #define AGENT_DIR "../"
 
 fo_dbManager* dbManager;
 

@@ -57,7 +57,7 @@ int TraverseClean()
  */
 void testTraverseNormal4Package()
 {
-  Filename = "../testdata/testthree.zip";
+  Filename = "testdata/testthree.zip";
   Basename = "testthree.zip";
   deleteTmpFiles(NewDir);
   ParentInfo PITest = {0, 1287725739, 1287725739, 0, 0};
@@ -76,7 +76,7 @@ void testTraverseNormal4Package()
  */
 void testTraverseNormal4Package2()
 {
-  Filename = "../testdata/test.ar";
+  Filename = "testdata/test.ar";
   Basename = "test.ar";
   deleteTmpFiles(NewDir);
   ParentInfo PITest = {0, 1287725739, 1287725739, 0, 0};
@@ -96,12 +96,12 @@ void testTraverseNormal4Package2()
 void testTraverseNormal4Dir()
 {
   int returnval;
-  Filename = "../testdata";
+  Filename = "testdata";
   Basename = NULL;
   deleteTmpFiles(NewDir);
   MkDirs("./test-result/testdata");
-  char *cmdline = "/bin/cp -r ../testdata/* ./test-result/testdata/";
-  returnval = system(cmdline); // cp ../testdata to ./test-result/testdata/
+  char *cmdline = "/bin/cp -r testdata/* ./test-result/testdata/";
+  returnval = system(cmdline); // cp testdata to ./test-result/testdata/
   if(returnval > -1)
   {
     ParentInfo PITest = {0, 1287725739, 1287725739, 0, 0};
@@ -122,7 +122,7 @@ void testTraverseNormal4Dir()
  */
 void testTraverseNormal4Rpm()
 {
-  Filename = "../testdata/test.rpm";
+  Filename = "testdata/test.rpm";
   Basename = "test.rpm";
   deleteTmpFiles(NewDir);
   ParentInfo PITest = {0, 1287725739, 1287725739, 0, 0};

@@ -46,7 +46,7 @@ void testSumComputeFile()
 {
   Cksum *SumTest;
   FILE *Fin;
-  Filename = "../testdata/test.zip";
+  Filename = "testdata/test.zip";
   char Fuid[1024];
   int i;
 
@@ -82,7 +82,7 @@ void testSumToString()
 {
   Cksum *SumTest;
   FILE *Fin;
-  Filename = "../testdata/test.zip";
+  Filename = "testdata/test.zip";
   char *Fuid = NULL;
 
   Fin = fopen(Filename,"rb");

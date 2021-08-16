@@ -33,7 +33,7 @@ void testDebugContainerInfo()
   struct stat Stat = {0};
   ParentInfo PI = {0, 1287725739, 1287725739, 0, 0};
   ContainerInfo CITest = {
-      "../testdata/test.zip", "./test-result/", "test.zip",
+      "testdata/test.zip", "./test-result/", "test.zip",
       "test.zip.dir", 1, 1, 0, 0, Stat, PI, 0, 0, 0, 9, 0, 0};
   CI = &CITest;
   DebugContainerInfo(CI);

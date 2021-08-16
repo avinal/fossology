@@ -59,7 +59,7 @@ string getRegexConfFile(const string& identity)
 {
   string confInSameDir(identity + ".conf");
 
-  string confRelativeToTestDir("../../agent/" + identity + ".conf");
+  string confRelativeToTestDir("../../../../src/copyright/agent/" + identity + ".conf");
 
   string confInInstallDir((sysconfigdir ? string(sysconfigdir) : "/usr/local/share/fossology/")
                           + identity +  "/agent/" + identity + ".conf");

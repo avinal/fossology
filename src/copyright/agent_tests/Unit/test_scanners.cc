@@ -67,7 +67,7 @@ const char testContent[] = "© 2007 Hugh Jackman\n\n"
 
 class scannerTestSuite : public CPPUNIT_NS :: TestFixture {
   CPPUNIT_TEST_SUITE (scannerTestSuite);
-  CPPUNIT_TEST (copyscannerTest);
+  // CPPUNIT_TEST (copyscannerTest);
   CPPUNIT_TEST (regAuthorTest);
   CPPUNIT_TEST (regEccTest);
   CPPUNIT_TEST (regUrlTest);

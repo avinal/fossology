@@ -28,7 +28,7 @@ include_directories(
 if(NOT TARGET fossologyCPP)
     add_subdirectory(${FO_CXXLIB_SRC} buildcpp EXCLUDE_FROM_ALL)
 endif()
-
+file(COPY copyright.conf DESTINATION ${CMAKE_CURRENT_BINARY_DIR})
 add_compile_definitions(
     DATADIR="${FO_MODDIR}"
     _FILE_OFFSET_BITS=64

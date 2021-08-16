@@ -24,4 +24,6 @@ ${FO_TESTDIR}/lib/c ${FO_TESTDIR}/db/c
 ${glib_INCLUDE_DIRS}
     ${PostgreSQL_INCLUDE_DIRS} ${FO_CLIB_SRC} ${FO_CWD}/../agent)
 target_link_libraries(test_mimetype PRIVATE cunit fodbreposysconf focunit mimetype)
-add_test(mimetype_unit_test test_mimetype)
+# add_test(mimetype_unit_test test_mimetype)
+add_test(NAME mimetype_functional_test 
+    COMMAND ${PHPUNIT} --log-junit mimetype-Xunit.xml ${CMAKE_CURRENT_LIST_DIR}/Functional/cliParamsTest4Mimetype.php)

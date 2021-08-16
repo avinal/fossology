@@ -33,7 +33,7 @@ void testExtractDisk4Ext2()
   deleteTmpFiles("./test-result/");
   exists = file_dir_exists("./test-result/");
   FO_ASSERT_EQUAL(exists, 0); // not existing
-  Filename = "../testdata/ext2file.fs";
+  Filename = "testdata/ext2file.fs";
   MkDirs("./test-result/ext2file.fs.dir");
   Result = ExtractDisk(Filename, "ext", "./test-result/ext2file.fs.dir");
   exists = file_dir_exists("./test-result/ext2file.fs.dir/testtwo.zip");
@@ -52,7 +52,7 @@ void testExtractDisk4Ext3()
   deleteTmpFiles("./test-result/");
   exists = file_dir_exists("./test-result/");
   FO_ASSERT_EQUAL(exists, 0); // not existing
-  Filename = "../testdata/ext3file.fs";
+  Filename = "testdata/ext3file.fs";
   MkDirs("./test-result/ext3file.fs");
   Result = ExtractDisk(Filename, "ext", "./test-result/ext3file.fs.dir");
   exists = file_dir_exists("./test-result/ext3file.fs.dir/testtwo.zip");
@@ -72,7 +72,7 @@ void testExtractDisk4Ext2FstypeUnknow()
   deleteTmpFiles("./test-result/");
   exists = file_dir_exists("./test-result/");
   FO_ASSERT_EQUAL(exists, 0); // not existing
-  Filename = "../testdata/ext2file.fs";
+  Filename = "testdata/ext2file.fs";
   MkDirs("./test-result/ext2file.fs.dir");
   Result = ExtractDisk(Filename, "", "./test-result/ext2file.fs.dir");
   exists = file_dir_exists("./test-result/ext2file.fs.dir/testtwo.zip");
@@ -91,7 +91,7 @@ void testExtractDisk4Fat()
   deleteTmpFiles("./test-result/");
   exists = file_dir_exists("./test-result/");
   FO_ASSERT_EQUAL(exists, 0); // not existing
-  Filename = "../testdata/fatfile.fs";
+  Filename = "testdata/fatfile.fs";
   MkDirs("./test-result/fatfile.fs.dir");
   Result = ExtractDisk(Filename, "fat", "./test-result/fatfile.fs.dir");
   exists = file_dir_exists("./test-result/fatfile.fs.dir/testtwo.zip");
@@ -110,7 +110,7 @@ void testExtractDisk4Ntfs()
   deleteTmpFiles("./test-result/");
   exists = file_dir_exists("./test-result/");
   FO_ASSERT_EQUAL(exists, 0); // not existing
-  Filename = "../testdata/ntfsfile.fs";
+  Filename = "testdata/ntfsfile.fs";
   MkDirs("./test-result/ntfsfile.fs.dir");
   Result = ExtractDisk(Filename, "ntfs", "./test-result/ntfsfile.fs.dir");
   exists = file_dir_exists("./test-result/ntfsfile.fs.dir/testtwo.zip");

@@ -21,6 +21,9 @@ project(copyright LANGUAGES CXX)
 include(${CMAKE_CURRENT_SOURCE_DIR}/../../cmake/SetDefaults.cmake)
 
 add_subdirectory(${CMAKE_CURRENT_SOURCE_DIR}/agent)
+set(VERSIONFILE "VERSION-copyright")
+configure_file(${FO_CMAKEDIR}/Makefile.in ${CMAKE_CURRENT_BINARY_DIR}/Makefile
+    NEWLINE_STYLE LF @ONLY)
 
 install(DIRECTORY ui
     DESTINATION ${FO_MODDIR}/${PROJECT_NAME}

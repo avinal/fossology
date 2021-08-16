@@ -15,7 +15,12 @@ You should have received a copy of the GNU General Public License along
 with this program; if not, write to the Free Software Foundation, Inc.,
 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 #]=======================================================================]
+# TODO: single subdirectory test;
 
+if(DEFINED SINGLE_AGENT)
+    string(TOLOWER "${SINGLE_AGENT}" SINGLE_AGENT)
+    add_subdirectory(${SINGLE_AGENT})
+else()
 add_subdirectory(lib)
 add_subdirectory(scheduler)
 add_subdirectory(adj2nest)
@@ -43,12 +48,15 @@ add_subdirectory(ununpack)
 add_subdirectory(unifiedreport)
 add_subdirectory(wget_agent)
 add_subdirectory(www)
-# if(NOT OFFLINE)
-#     add_subdirectory(genvendor)
-# endif()
+if(NOT OFFLINE)
+    add_subdirectory(genvendor)
+endif()
 
 # deprecated or not used agents
 # add_subdirectory(demomod)
 # add_subdirectory(example_wc_agent)
 # add_subdirectory(ninka)
 # add_subdirectory(regexscan)
+endif()
+
+

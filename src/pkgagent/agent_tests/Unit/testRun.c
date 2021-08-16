@@ -40,7 +40,7 @@ extern CU_TestInfo testcases_GetMetadataDebBinary[];
 char *DBConfFile = NULL;
 fo_dbManager* dbManager = NULL;
 
-#define AGENT_DIR "../../"
+#define AGENT_DIR "../"
 
 /**
  * \brief initialize db

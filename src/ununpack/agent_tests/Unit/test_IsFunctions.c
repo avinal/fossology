@@ -29,7 +29,7 @@ static int Result = 0;
  */
 void testIsDebianSourceFile()
 {
-  char *Filename = "../testdata/test_1-1.dsc";
+  char *Filename = "testdata/test_1-1.dsc";
   Result = IsDebianSourceFile(Filename);
   FO_ASSERT_EQUAL(Result, 1);
 }
@@ -42,7 +42,7 @@ void testIsDebianSourceFile()
  */
 void testIsNotDebianSourceFile()
 {
-  char *Filename = "../testdata/test_1.orig.tar.gz";
+  char *Filename = "testdata/test_1.orig.tar.gz";
   Result = IsDebianSourceFile(Filename);
   FO_ASSERT_EQUAL(Result, 0);
 }
@@ -55,7 +55,7 @@ void testIsNotDebianSourceFile()
  */
 void testIsExeFile()
 {
-  char *Filename = "../testdata/test.exe";
+  char *Filename = "testdata/test.exe";
   Result = IsExe(Filename, 1);
   FO_ASSERT_EQUAL(Result, 1);
 }
@@ -68,7 +68,7 @@ void testIsExeFile()
  */
 void testIsNotExeFile()
 {
-  char *Filename = "../testdata/test_1.orig.tar.gz";
+  char *Filename = "testdata/test_1.orig.tar.gz";
   Result = IsExe(Filename, 1);
   FO_ASSERT_EQUAL(Result, 0);
 }

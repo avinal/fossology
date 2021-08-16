@@ -58,7 +58,7 @@ int CopyFileClean()
  */
 void testCopyFileNormalFile()
 {
-  Src = "../testdata/test.iso";
+  Src = "testdata/test.iso";
   deleteTmpFiles("./test-result/");
   strcpy(Dst, "./test-result/hello");
   stat(Src, &statSrc);
@@ -77,7 +77,7 @@ void testCopyFileNormalFile()
  */
 void testCopyFileNormalDir()
 {
-  Src = "../testdata";
+  Src = "testdata";
   strcpy(Dst, "./test-result/hello");
   deleteTmpFiles("./test-result/");
   Result = CopyFile(Src, Dst);

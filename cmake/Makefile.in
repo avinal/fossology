@@ -1,0 +1,42 @@
+###############################################################################
+# SPDX-License-Identifier: GPL-2.0
+# SPDX-FileCopyrightText: 2021 Avinal Kumar <avinal.xlvii@gmail.com>
+#
+# This program is free software; you can redistribute it and/or
+# modify it under the terms of the GNU General Public License
+# version 2 as published by the Free Software Foundation.
+#
+# This program is distributed in the hope that it will be useful,
+# but WITHOUT ANY WARRANTY; without even the implied warranty of
+# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+# GNU General Public License for more details.
+#
+# You should have received a copy of the GNU General Public License along
+# with this program; if not, write to the Free Software Foundation, Inc.,
+# 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
+###############################################################################
+
+NAME=@PROJECT_NAME@
+VERSION=@VERSIONFILE@
+CURRDIR=@CMAKE_CURRENT_BINARY_DIR@
+
+all: install
+
+install:
+
+	@echo "TEST: installing $(NAME)"
+	mkdir -p $(DESTDIR)$(MODDIR)/$(NAME)/agent
+	install $(CURRDIR)/agent/$(NAME) $(DESTDIR)$(MODDIR)/$(NAME)/agent/$(NAME)
+	install -m 644 $(CURRDIR)/$(VERSION) $(DESTDIR)$(MODDIR)/$(NAME)/VERSION
+	mkdir -p $(DESTDIR)$(SYSCONFDIR)/mods-enabled
+	ln -s $(MODDIR)/$(NAME) $(DESTDIR)$(SYSCONFDIR)/mods-enabled
+
+uninstall:
+
+	@echo "TEST: uninstalling $(NAME)"
+	rm -rf $(DESTDIR)$(MODDIR)/$(NAME)
+	rm -f $(DESTDIR)$(SYSCONFDIR)/mods-enabled/$(NAME)
+
+clean:
+
+.PHONY: all test coverage install uninstall clean

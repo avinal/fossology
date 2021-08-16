@@ -1,7 +1,9 @@
 set(FO_CWD ${CMAKE_CURRENT_SOURCE_DIR})
 set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} ${FO_CXX_FLAGS} -fopenmp -Wextra")
+if(NOT TARGET phpunit)
+    prepare_phpunit()
+endif()
 add_executable(test_copyright "")
-# ASK: do test should built as default?
 target_sources(test_copyright
     PRIVATE
         ${FO_CWD}/Unit/run_tests.cc
@@ -17,13 +19,8 @@ ${glib_INCLUDE_DIRS}
     ${PostgreSQL_INCLUDE_DIRS}
     ${FO_CLIB_SRC})
 add_test(copyright_unit_tests test_copyright)
-add_test(NAME copyright_functional_tests 
+add_test(NAME copyright_functional_test_1 
     COMMAND bash ${FO_CWD}/Functional/shunit2 ${FO_CWD}/Functional/cli_test.sh
     WORKING_DIRECTORY ${FO_CWD}/Functional)
-# ASK: tests will only work with make all test 
-add_custom_target(check
-    COMMAND ${CMAKE_CTEST_COMMAND}
-    DEPENDS test_copyright)
-
-# TODO: php tests
-
+add_test(NAME copyright_functional_test_2
+    COMMAND ${PHPUNIT} --bootstrap ${PHPUNIT_BOOTSTRAP} ${CMAKE_CURRENT_LIST_DIR}/Functional/schedulerTest.php)

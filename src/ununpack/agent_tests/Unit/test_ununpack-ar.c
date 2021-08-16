@@ -35,7 +35,7 @@ void testExtractAR4ArchiveLibraryFile()
   exists = file_dir_exists("./test-result/");
   FO_ASSERT_EQUAL(exists, 0); // not existing
   MkDirs("./test-result/test.ar.dir/");
-  Filename = "../testdata/test.ar";
+  Filename = "testdata/test.ar";
   Result = ExtractAR(Filename, "./test-result/test.ar.dir");
   exists = file_dir_exists("./test-result/test.ar.dir/test.tar");
   FO_ASSERT_EQUAL(exists, 1); // existing
@@ -54,7 +54,7 @@ void testExtractAR4DebFile()
   exists = file_dir_exists("./test-result/");
   FO_ASSERT_EQUAL(exists, 0); // not existing
   MkDirs("./test-result/test.deb.dir/");
-  Filename = "../testdata/test.deb";
+  Filename = "testdata/test.deb";
   Result = ExtractAR(Filename, "./test-result/test.deb.dir");
   exists = file_dir_exists("./test-result/test.deb.dir/data.tar.xz");
   FO_ASSERT_EQUAL(exists, 1); // existing
@@ -88,7 +88,8 @@ void testExtractAR4ErrorParameters()
   exists = file_dir_exists("./test-result/");
   FO_ASSERT_EQUAL(exists, 0); // not existing
   MkDirs("./test-result/test.rpm.dir/");
-  Filename = "../testdata/test.rpm";
+  Filename = "testdata/test.rpm";
+  MkDirs("./test-result/test.dir/");
   Result = ExtractAR(Filename, "./test-result/test.dir");
   FO_ASSERT_EQUAL(Result, 1); // fail to Extract archieve library
 }

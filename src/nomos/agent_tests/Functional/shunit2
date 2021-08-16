@@ -51,9 +51,9 @@ __SHUNIT_MODE_STANDALONE='standalone'
 __SHUNIT_PARENT=${SHUNIT_PARENT:-$0}
 
 # set the constants readonly
-shunit_constants_=`set |grep '^__SHUNIT_' |cut -d= -f1`
+shunit_constants_=$(set |grep '^__SHUNIT_' |cut -d= -f1)
 echo "${shunit_constants_}" |grep '^Binary file' >/dev/null && \
-    shunit_constants_=`set |grep -a '^__SHUNIT_' |cut -d= -f1`
+    shunit_constants_=$(set |grep -a '^__SHUNIT_' |cut -d= -f1)
 for shunit_constant_ in ${shunit_constants_}; do
   shunit_ro_opts_=''
   case ${ZSH_VERSION:-} in
@@ -219,7 +219,7 @@ assertNotNull()
     shunit_message_="${shunit_message_}$1"
     shift
   fi
-  shunit_actual_=`_shunit_escapeCharactersInString "${1:-}"`
+  shunit_actual_=$(_shunit_escapeCharactersInString "${1:-}")
   test -n "${shunit_actual_}"
   assertTrue "${shunit_message_}" $?
   shunit_return=$?
@@ -327,7 +327,7 @@ assertTrue()
   shunit_condition_=$1
 
   # see if condition is an integer, i.e. a return value
-  shunit_match_=`expr "${shunit_condition_}" : '\([0-9]*\)'`
+  shunit_match_=$(expr "${shunit_condition_}" : '\([0-9]*\)')
   shunit_return=${SHUNIT_TRUE}
   if [ -z "${shunit_condition_}" ]; then
     # null condition
@@ -392,7 +392,7 @@ assertFalse()
   shunit_condition_=$1
 
   # see if condition is an integer, i.e. a return value
-  shunit_match_=`expr "${shunit_condition_}" : '\([0-9]*\)'`
+  shunit_match_=$(expr "${shunit_condition_}" : '\([0-9]*\)')
   shunit_return=${SHUNIT_TRUE}
   if [ -z "${shunit_condition_}" ]; then
     # null condition
@@ -615,7 +615,7 @@ suite_addTest()
   shunit_func_=${1:-}
 
   __shunit_suite="${__shunit_suite:+${__shunit_suite} }${shunit_func_}"
-  __shunit_testsTotal=`expr ${__shunit_testsTotal} + 1`
+  __shunit_testsTotal=$(expr ${__shunit_testsTotal} + 1)
 
   unset shunit_func_
 }
@@ -687,15 +687,15 @@ _shunit_mktempDir()
 
   # the standard mktemp didn't work.  doing our own.
   if [ -r '/dev/urandom' -a -x '/usr/bin/od' ]; then
-    _shunit_random_=`/usr/bin/od -vAn -N4 -tx4 </dev/urandom \
-        |sed 's/^[^0-9a-f]*//'`
+    _shunit_random_=$(/usr/bin/od -vAn -N4 -tx4 </dev/urandom \
+        |sed 's/^[^0-9a-f]*//')
   elif [ -n "${RANDOM:-}" ]; then
     # $RANDOM works
     _shunit_random_=${RANDOM}${RANDOM}${RANDOM}$$
   else
     # $RANDOM doesn't work
-    _shunit_date_=`date '+%Y%m%d%H%M%S'`
-    _shunit_random_=`expr ${_shunit_date_} / $$`
+    _shunit_date_=$(date '+%Y%m%d%H%M%S')
+    _shunit_random_=$(expr ${_shunit_date_} / $$)
   fi
 
   _shunit_tmpDir_="${TMPDIR:-/tmp}/shunit.${_shunit_random_}"
@@ -756,7 +756,7 @@ _shunit_cleanup()
     # disable EXIT trap
     trap 0
     # add 128 to signal and exit
-    exit `expr ${_shunit_signal_} + 128`
+    exit $(expr ${_shunit_signal_} + 128)
   elif [ ${__shunit_reportGenerated} -eq ${SHUNIT_FALSE} ] ; then
     _shunit_assertFail 'Unknown failure encountered running a test prevented report generation'
     _shunit_generateReport
@@ -793,9 +793,9 @@ _shunit_execSuite()
 
     # update stats
     if [ ${__shunit_testSuccess} -eq ${SHUNIT_TRUE} ]; then
-      __shunit_testsPassed=`expr ${__shunit_testsPassed} + 1`
+      __shunit_testsPassed=$(expr ${__shunit_testsPassed} + 1)
     else
-      __shunit_testsFailed=`expr ${__shunit_testsFailed} + 1`
+      __shunit_testsFailed=$(expr ${__shunit_testsFailed} + 1)
     fi
   done
 
@@ -902,8 +902,8 @@ _shunit_last_test_status='U'
 #   None
 _shunit_assertPass()
 {
-  __shunit_assertsPassed=`expr ${__shunit_assertsPassed} + 1`
-  __shunit_assertsTotal=`expr ${__shunit_assertsTotal} + 1`
+  __shunit_assertsPassed=$(expr ${__shunit_assertsPassed} + 1)
+  __shunit_assertsTotal=$(expr ${__shunit_assertsTotal} + 1)
 
   # this aspect of the test passed - we may escalate the test status
   # from Unspecified or Skip to Pass
@@ -922,8 +922,8 @@ _shunit_assertFail()
   _shunit_msg_=$1
 
   __shunit_testSuccess=${SHUNIT_FALSE}
-  __shunit_assertsFailed=`expr ${__shunit_assertsFailed} + 1`
-  __shunit_assertsTotal=`expr ${__shunit_assertsTotal} + 1`
+  __shunit_assertsFailed=$(expr ${__shunit_assertsFailed} + 1)
+  __shunit_assertsTotal=$(expr ${__shunit_assertsTotal} + 1)
   echo "${__SHUNIT_ASSERT_MSG_PREFIX}${_shunit_msg_}"
 
   # this aspect of the test failed - we may escalate the status to Fail, but only
@@ -941,8 +941,8 @@ _shunit_assertFail()
 #   None
 _shunit_assertSkip()
 {
-  __shunit_assertsSkipped=`expr ${__shunit_assertsSkipped} + 1`
-  __shunit_assertsTotal=`expr ${__shunit_assertsTotal} + 1`
+  __shunit_assertsSkipped=$(expr ${__shunit_assertsSkipped} + 1)
+  __shunit_assertsTotal=$(expr ${__shunit_assertsTotal} + 1)
 
   # the test is being skipped - we may escalate the status to Skip, but 
   # only if we have no status reported yet.  i.e. If a test runs an assert
@@ -1008,7 +1008,7 @@ _shunit_escapeCharactersInString()
   # Note: using longer variable names to prevent conflicts with
   # _shunit_escapeCharInStr().
   for _shunit_char_ in '"' '$' "'" '`'; do
-    _shunit_str_=`_shunit_escapeCharInStr "${_shunit_char_}" "${_shunit_str_}"`
+    _shunit_str_=$(_shunit_escapeCharInStr "${_shunit_char_}" "${_shunit_str_}")
   done
 
   echo "${_shunit_str_}"
@@ -1168,7 +1168,7 @@ else
 fi
 
 # create a temporary storage location
-__shunit_tmpDir=`_shunit_mktempDir`
+__shunit_tmpDir=$(_shunit_mktempDir)
 
 # provide a public temporary directory for unit test scripts
 # TODO(kward): document this
@@ -1192,7 +1192,7 @@ noexec 2>/dev/null || _shunit_fatal \
 
 # we must manually source the tests in standalone mode
 if [ "${__shunit_mode}" = "${__SHUNIT_MODE_STANDALONE}" ]; then
-  . "`_shunit_prepForSourcing \"${__shunit_script}\"`"
+  . "$(_shunit_prepForSourcing \"${__shunit_script}\")"
 fi
 
 # execute the oneTimeSetUp function (if it exists)
@@ -1204,7 +1204,7 @@ suite
 
 # if no suite function was defined, dynamically build a list of functions
 if [ -z "${__shunit_suite}" ]; then
-  shunit_funcs_=`_shunit_extractTestFunctions "${__shunit_script}"`
+  shunit_funcs_=$(_shunit_extractTestFunctions "${__shunit_script}")
   for shunit_func_ in ${shunit_funcs_}; do
     suite_addTest ${shunit_func_}
   done

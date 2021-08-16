@@ -55,16 +55,16 @@ class cliParamsTest4Wget extends \PHPUnit\Framework\TestCase {
 
     $db_conf = "";
 
-    $cwd = getcwd();
+    $cwd = dirname(__DIR__, 4).'/build/src/wget_agent/agent_tests'; //getcwd();
     list($test_name, $db_conf, $DB_NAME, $PG_CONN) = setupTestEnv($cwd, "wget_agent");
 
     $REPO_NAME = "testDbRepo".$test_name;
 
-    $WGET_PATH = '../../agent/wget_agent';
+    $WGET_PATH = dirname(__DIR__, 4).'/build/src/wget_agent/agent/wget_agent';
     $usage= "";
     if(file_exists($WGET_PATH))
     {
-      $usage = 'Usage: ../../agent/wget_agent [options] [OBJ]';
+      $usage = 'Usage: '.$WGET_PATH.' [options] [OBJ]';
     }
     else
     {

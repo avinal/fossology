@@ -54,7 +54,7 @@ class TestInstaller
       }
     }
 
-    $topDir = dirname(dirname(dirname(dirname(__DIR__))));
+    $topDir = dirname(__DIR__,4).'/build/install';
     system("install -D $topDir/VERSION $sysConf");
   }
 

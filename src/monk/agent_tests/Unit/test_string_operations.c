@@ -165,10 +165,10 @@ void assertTokenPosition(char* string, int count, ...) {
     va_list argptr;
     va_start(argptr, count);
     for (size_t i = 0; i < tokens->len; i++) {
-      int expected = va_arg(argptr, int);
+      size_t expected = va_arg(argptr, size_t);
       size_t current = token_position_of(i, tokens);
       if (current != expected) {
-        printf("ASSERT tokenizing '%s': posof(token[%ld]) == %ld != %d\n", string, i, current, expected);
+        printf("ASSERT tokenizing '%s': posof(token[%ld]) == %ld != %ld\n", string, i, current, expected);
         CU_FAIL("see output");
         break;
       }

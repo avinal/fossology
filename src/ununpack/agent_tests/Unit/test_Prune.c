@@ -21,7 +21,6 @@ with this program; if not, write to the Free Software Foundation, Inc.,
  */
 /* local variables */
 static char *Fname = "";
-struct stat Stat;
 static char *Dst = NULL;
 static int Result = 0;
 
@@ -54,7 +53,8 @@ int PruneClean()
  */
 void testPruneFileFileSzieIs0()
 {
-  Fname = "../testdata/null_file";
+  struct stat Stat;
+  Fname = "testdata/null_file";
   deleteTmpFiles(NewDir);
   strcpy(Dst, "./test-result/nullfile");
   stat(Fname, &Stat);
@@ -73,7 +73,8 @@ void testPruneFileFileSzieIs0()
  */
 void testPruneRegFile()
 {
-  Fname = "../testdata/test.ar";
+  struct stat Stat;
+  Fname = "testdata/test.ar";
   deleteTmpFiles(NewDir);
   strcpy(Dst, "./test-result/test.ar");
   stat(Fname, &Stat);
@@ -93,7 +94,8 @@ void testPruneRegFile()
  */
 void testPruneCharFile()
 {
-  Fname = "../testdata/ext2file.fs";
+  struct stat Stat;
+  Fname = "testdata/ext2file.fs";
   stat(Fname, &Stat);
   Result = Prune(Fname, Stat);
   exists = file_dir_exists(Fname);

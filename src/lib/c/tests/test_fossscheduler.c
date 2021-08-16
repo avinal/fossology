@@ -40,7 +40,7 @@ with this program; if not, write to the Free Software Foundation, Inc.,
 /* ************************************************************************** */
 
 extern int items_processed;
-extern char buffer[];
+extern char test_buffer[];
 extern int valid;
 extern int sscheduler;
 extern int agent_verbose;
@@ -50,7 +50,7 @@ extern void fo_heartbeat();
 /* *** set up and tear down for fossschduler ******************************** */
 /* ************************************************************************** */
 
-char buffer[1024];
+char test_buffer[1024];
 int in_sub[2];
 int out_sub[2];
 int stdin_t;
@@ -87,7 +87,7 @@ void set_up(void)
   read_from = fdopen(out_sub[0], "rb");
   write_to = fdopen(in_sub[1], "wb");
 
-  memset(buffer, '\0', sizeof(buffer));
+  memset(test_buffer, '\0', sizeof(test_buffer));
 }
 
 /**
@@ -124,7 +124,7 @@ void tear_down(void)
 void signal_connect_end()
 {
   FO_ASSERT_FALSE(valid);
-  FO_ASSERT_STRING_EQUAL(fgets(buffer, sizeof(buffer), read_from), "OK\n");
+  FO_ASSERT_STRING_EQUAL(fgets(test_buffer, sizeof(test_buffer), read_from), "OK\n");
 
   write_con("CLOSE\n");
 }
@@ -157,9 +157,9 @@ void signal_connect_verbose()
 void signal_connect_version()
 {
   FO_ASSERT_FALSE(valid);
-  FO_ASSERT_PTR_NOT_NULL(fgets(buffer, sizeof(buffer), read_from));
-  buffer[strlen(buffer) - 1] = '\0';
-  FO_ASSERT_STRING_EQUAL(buffer, COMMIT_HASH);
+  FO_ASSERT_PTR_NOT_NULL(fgets(test_buffer, sizeof(test_buffer), read_from));
+  test_buffer[strlen(test_buffer) - 1] = '\0';
+  FO_ASSERT_STRING_EQUAL(test_buffer, COMMIT_HASH);
 
   write_con("CLOSE\n");
 }
@@ -190,12 +190,12 @@ void test_scheduler_no_connect()
 
   /* make sure that fo_scheduler_connect didn't write anything to stdout */
   fprintf(stdout, FROM_UNIT);
-  FO_ASSERT_PTR_NOT_NULL(fgets(buffer, sizeof(buffer), read_from));
-  FO_ASSERT_STRING_EQUAL(buffer, FROM_UNIT);
+  FO_ASSERT_PTR_NOT_NULL(fgets(test_buffer, sizeof(test_buffer), read_from));
+  FO_ASSERT_STRING_EQUAL(test_buffer, FROM_UNIT);
 
   /* reset stdout for the next test */
-  while (strcmp(buffer, FROM_UNIT) != 0)
-    FO_ASSERT_PTR_NOT_NULL(fgets(buffer, sizeof(buffer), read_from));
+  while (strcmp(test_buffer, FROM_UNIT) != 0)
+    FO_ASSERT_PTR_NOT_NULL(fgets(test_buffer, sizeof(test_buffer), read_from));
 }
 
 /**
@@ -222,12 +222,12 @@ void test_scheduler_connect()
   FO_ASSERT_FALSE(agent_verbose);
 
   /* check that the correct stuff was written to stdout */
-  memset(buffer, '\0', sizeof(buffer));
-  tmp = fgets(buffer, sizeof(buffer), read_from);
+  memset(test_buffer, '\0', sizeof(test_buffer));
+  tmp = fgets(test_buffer, sizeof(test_buffer), read_from);
   FO_ASSERT_PTR_NOT_NULL(tmp);
-  FO_ASSERT_STRING_EQUAL(buffer, COMMIT_HASH);
+  FO_ASSERT_STRING_EQUAL(test_buffer, COMMIT_HASH);
 
-  tmp = fgets(buffer, sizeof(buffer), read_from);
+  tmp = fgets(test_buffer, sizeof(test_buffer), read_from);
   FO_ASSERT_PTR_NOT_NULL(tmp);
   FO_ASSERT_STRING_EQUAL(tmp, "OK\n");
 
@@ -235,7 +235,7 @@ void test_scheduler_connect()
   usleep(20);
 
   FO_ASSERT_STRING_EQUAL(
-    fgets(buffer, sizeof(buffer), read_from),
+    fgets(test_buffer, sizeof(test_buffer), read_from),
     "HEART: 0\n");
 }
 
@@ -366,7 +366,7 @@ void test_scheduler_disconnect()
   sscheduler = 1;
 
   fo_scheduler_disconnect(2);
-  FO_ASSERT_STRING_EQUAL(fgets(buffer, sizeof(buffer), read_from), "BYE 2\n");
+  FO_ASSERT_STRING_EQUAL(fgets(test_buffer, sizeof(test_buffer), read_from), "BYE 2\n");
   FO_ASSERT_FALSE(valid);
   FO_ASSERT_FALSE(sscheduler);
 }
@@ -395,7 +395,7 @@ void test_scheduler_heart()
   usleep(20);
 
   FO_ASSERT_STRING_EQUAL(
-    fgets(buffer, sizeof(buffer), read_from),
+    fgets(test_buffer, sizeof(test_buffer), read_from),
     "HEART: 11\n");
 }
 

@@ -7,7 +7,10 @@ endif()
 if(NOT TARGET focunit)
     add_subdirectory(${FO_TESTDIR}/lib/c ctestlib EXCLUDE_FROM_ALL)
 endif()
-set(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} ${FO_C_FLAGS} -std=c99 -Wextra -fopenmp")
+if(NOT TARGET phpunit)
+    prepare_phpunit()
+endif()
+set(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} ${FO_C_FLAGS} -Wextra -fopenmp")
 
 add_executable(test_pkgagent "")
 target_sources(test_pkgagent 
@@ -27,4 +30,7 @@ ${glib_INCLUDE_DIRS}
     ${PostgreSQL_INCLUDE_DIRS} ${FO_CLIB_SRC} ${FO_CWD}/../agent /usr/include/rpm)
 target_link_libraries(test_pkgagent PRIVATE
     fossology cunit focunit rpmio fodbreposysconf pthread rpm)
-add_test(pkgagent_unit_test test_pkgagent)
+# add_test(pkgagent_unit_test test_pkgagent)
+add_test(NAME pkgagent_functional_test
+    COMMAND ${PHPUNIT} --log-junit pkgagent-Xunit.xml ${CMAKE_CURRENT_LIST_DIR}/Functional/ft_cliPkgagentTest.php
+    WORKING_DIRECTORY ${FO_CWD})

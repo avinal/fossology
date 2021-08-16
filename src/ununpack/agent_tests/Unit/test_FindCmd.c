@@ -28,7 +28,7 @@ with this program; if not, write to the Free Software Foundation, Inc.,
  */
 void testFindCmdNormal()
 {
-  char *Filename = "../testdata/test.7z";
+  char *Filename = "testdata/test.7z";
   int result = 0;
   result = FindCmd(Filename);
   //FO_ASSERT_EQUAL(result, 15);
@@ -50,7 +50,7 @@ void testFindCmdNormal()
  */
 void testFindCmd4DscFile()
 {
-  char *Filename = "../testdata/test_1-1.dsc";
+  char *Filename = "testdata/test_1-1.dsc";
   int result = 0;
   result = FindCmd(Filename);
   FO_ASSERT_EQUAL(result, 28);
@@ -64,7 +64,7 @@ void testFindCmd4DscFile()
  */
 void testFindCmd4CabFile()
 {
-  char *Filename = "../testdata/test.cab";
+  char *Filename = "testdata/test.cab";
   int result = 0;
   result = FindCmd(Filename);
   FO_ASSERT_EQUAL(result, 17);
@@ -78,7 +78,7 @@ void testFindCmd4CabFile()
  */
 void testFindCmd4MsiFile()
 {
-  char *Filename = "../testdata/test.msi";
+  char *Filename = "testdata/test.msi";
   int result = 0;
   result = FindCmd(Filename);
   FO_ASSERT_EQUAL(result, 17);
@@ -92,11 +92,11 @@ void testFindCmd4MsiFile()
  */
 void testFindCmd4RpmFile()
 {
-  char *Filename = "../testdata/test.rpm";
+  char *Filename = "testdata/test.rpm";
   int result = 0;
   result = FindCmd(Filename);
   FO_ASSERT_EQUAL(result, 18);
-  Filename = "../testdata/test.rpm";
+  Filename = "testdata/test.rpm";
   result = FindCmd(Filename);
   FO_ASSERT_EQUAL(result, 18);
 }
@@ -109,7 +109,7 @@ void testFindCmd4RpmFile()
  */
 void testFindCmd4IsoFile()
 {
-  char *Filename = "../testdata/test.iso";
+  char *Filename = "testdata/test.iso";
   int result = 0;
   result = FindCmd(Filename);
   FO_ASSERT_EQUAL(result, 21);  // let isoinfo handle the isos
@@ -123,7 +123,7 @@ void testFindCmd4IsoFile()
  */
 void testFindCmd4ZipFile()
 {
-  char *Filename = "../testdata/test.zip";
+  char *Filename = "testdata/test.zip";
   int result = 0;
   result = FindCmd(Filename);
   FO_ASSERT_EQUAL(result, 10);
@@ -137,7 +137,7 @@ void testFindCmd4ZipFile()
  */
 void testFindCmd4RarFile()
 {
-  char *Filename = "../testdata/test.rar";
+  char *Filename = "testdata/test.rar";
   int result = 0;
   result = FindCmd(Filename);
   FO_ASSERT_EQUAL(result, 14);
@@ -151,7 +151,7 @@ void testFindCmd4RarFile()
  */
 void testFindCmd4CpioFile()
 {
-  char *Filename = "../testdata/test.cpio";
+  char *Filename = "testdata/test.cpio";
   int result = 0;
   result = FindCmd(Filename);
   FO_ASSERT_EQUAL(result, 13);
@@ -166,7 +166,7 @@ void testFindCmd4CpioFile()
  */
 void testFindCmd4DebFile()
 {
-  char *Filename = "../testdata/test.deb";
+  char *Filename = "testdata/test.deb";
   int result = 0;
   result = FindCmd(Filename);
   FO_ASSERT_EQUAL(result, 20);  /* let ar handle udeb */
@@ -180,7 +180,7 @@ void testFindCmd4DebFile()
  */
 void testFindCmd4ArchiveLibFile()
 {
-  char *Filename = "../testdata/test.ar";
+  char *Filename = "testdata/test.ar";
   int result = 0;
   result = FindCmd(Filename);
   FO_ASSERT_EQUAL(result, 19);
@@ -195,7 +195,7 @@ void testFindCmd4ArchiveLibFile()
  */
 void testFindCmd4TarFile()
 {
-  char *Filename = "../testdata/emptydirs.tar";
+  char *Filename = "testdata/emptydirs.tar";
   int result = 0;
   result = FindCmd(Filename);
   FO_ASSERT_EQUAL(result, 11);
@@ -210,7 +210,7 @@ void testFindCmd4TarFile()
  */
 void testFindCmd4ZFile()
 {
-  char *Filename = "../testdata/test.z";
+  char *Filename = "testdata/test.z";
   int result = 0;
   result = FindCmd(Filename);
   FO_ASSERT_EQUAL(result, 3);
@@ -224,7 +224,7 @@ void testFindCmd4ZFile()
  */
 void testFindCmd4ExeFile()
 {
-  char *Filename = "../testdata/test.exe";
+  char *Filename = "testdata/test.exe";
   int result = 0;
   result = FindCmd(Filename);
   FO_ASSERT_EQUAL(result, 31);  /* this can be unpacked by 7z */
@@ -238,7 +238,7 @@ void testFindCmd4ExeFile()
  */
 void testFindCmd4Bz2File()
 {
-  char *Filename = "../testdata/fossI16L335U29.tar.bz2";
+  char *Filename = "testdata/fossI16L335U29.tar.bz2";
   int result = 0;
   result = FindCmd(Filename);
   FO_ASSERT_EQUAL(result, 5);
@@ -252,7 +252,7 @@ void testFindCmd4Bz2File()
  */
 void testFindCmd4Ext3File()
 {
-  char *Filename = "../testdata/ext3test-image";
+  char *Filename = "testdata/ext3test-image";
   int result = 0;
   result = FindCmd(Filename);
   FO_ASSERT_EQUAL(result, 26);
@@ -266,7 +266,7 @@ void testFindCmd4Ext3File()
  */
 void testFindCmd4Ext2File()
 {
-  char *Filename = "../testdata/ext2file.fs";
+  char *Filename = "testdata/ext2file.fs";
   int result = 0;
   result = FindCmd(Filename);
   FO_ASSERT_EQUAL(result, 25);
@@ -280,7 +280,7 @@ void testFindCmd4Ext2File()
  */
 void testFindCmd4FatFile()
 {
-  char *Filename = "../testdata/fatfile.fs";
+  char *Filename = "testdata/fatfile.fs";
   int result = 0;
   result = FindCmd(Filename);
   //FO_ASSERT_EQUAL(result, 22);
@@ -301,7 +301,7 @@ void testFindCmd4FatFile()
  */
 void testFindCmd4NtfsFile()
 {
-  char *Filename = "../testdata/ntfsfile.fs";
+  char *Filename = "testdata/ntfsfile.fs";
   int result = 0;
   result = FindCmd(Filename);
   FO_ASSERT_EQUAL(result, 24);
@@ -316,7 +316,7 @@ void testFindCmd4NtfsFile()
  */
 void testFindCmd4PartitionFile()
 {
-  char *Filename = "../testdata/vmlinuz-2.6.26-2-686";
+  char *Filename = "testdata/vmlinuz-2.6.26-2-686";
   int result = 0;
   result = FindCmd(Filename);
   FO_ASSERT_EQUAL(result, 27);

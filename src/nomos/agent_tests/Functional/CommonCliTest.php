@@ -56,7 +56,7 @@ class CommonCliTest extends \PHPUnit\Framework\TestCase
   protected function setUp()
   {
     $this->testDb = new TestPgDb("nomosfun" . time());
-    $this->agentDir = dirname(dirname(__DIR__));
+    $this->agentDir = dirname(__DIR__, 4).'/build/src/nomos';
     $this->testdir = dirname(dirname(__DIR__)) .
       "/agent_tests/testdata/NomosTestfiles/";
 
@@ -143,7 +143,7 @@ class CommonCliTest extends \PHPUnit\Framework\TestCase
    */
   public function testHelp()
   {
-    $nomos = dirname(dirname(__DIR__)) . '/agent/nomos';
+    $nomos = dirname(__DIR__, 4) . '/build/src/nomos/agent/nomos';
     list ($output,) = $this->runNomos($args = "-h"); // exec("$nomos -h 2>&1",
                                                      // $out, $rtn);
     $out = explode("\n", $output);

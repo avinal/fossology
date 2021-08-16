@@ -35,7 +35,7 @@ void testRunCommand4ZcatTesting()
   deleteTmpFiles("./test-result/");
   Cmd = "zcat";
   CmdPre = "-q -l";
-  File = "../testdata/test.tar.Z";
+  File = "testdata/test.tar.Z";
   CmdPost = ">/dev/null 2>&1";
   Out = 0x0;
   Where = 0x0;
@@ -53,7 +53,7 @@ void testRunCommand4Zcat()
   deleteTmpFiles("./test-result/");
   Cmd = "zcat";
   CmdPre = "";
-  File = "../testdata/test.tar.Z";
+  File = "testdata/test.tar.Z";
   CmdPost = "> '%s' 2>/dev/null";
   Out = "test.tar.Z.unpacked";
   Where = "./test-result";
@@ -71,7 +71,7 @@ void testRunCommand4Pdf()
   deleteTmpFiles("./test-result/");
   Cmd = "pdftotext";
   CmdPre = "-htmlmeta";
-  File = "../testdata/test.pdf";
+  File = "testdata/test.pdf";
   CmdPost = "> '%s' 2>/dev/null";
   Out = "test.pdf.text";
   Where = "./test-result";
@@ -89,7 +89,7 @@ void testRunCommand4Rpm1()
   deleteTmpFiles("./test-result/");
   Cmd = "rpm2cpio";
   CmdPre = "";
-  File = "../testdata/test.rpm";
+  File = "testdata/test.rpm";
   CmdPost = "> '%s' 2> /dev/null";
   Out = "test.rpm.unpacked";
   Where = "./test-result";

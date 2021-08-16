@@ -33,7 +33,7 @@ void testExtractISO()
   deleteTmpFiles("./test-result/");
   exists = file_dir_exists("./test-result/");
   FO_ASSERT_EQUAL(exists, 0); // not existing
-  Filename = "../testdata/test.iso";
+  Filename = "testdata/test.iso";
   MkDirs("./test-result/test.iso.dir");
   Result = ExtractISO(Filename, "./test-result/test.iso.dir");
   FO_ASSERT_EQUAL(Result, 0);
@@ -68,7 +68,7 @@ void testExtractISO4ErrorParameters()
   deleteTmpFiles("./test-result/");
   exists = file_dir_exists("./test-result/");
   FO_ASSERT_EQUAL(exists, 0); // not existing
-  Filename = "../testdata/test_1.orig.tar.gz";
+  Filename = "testdata/test_1.orig.tar.gz";
   MkDirs("./test-result/test_1.orig.tar.gz.dir");
   Result = ExtractISO(Filename, "./test-result/test_1.orig.tar.gz.dir");
   FO_ASSERT_EQUAL(Result, 0); // fail to Extract

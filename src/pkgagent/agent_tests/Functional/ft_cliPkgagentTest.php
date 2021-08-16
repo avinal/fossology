@@ -26,7 +26,7 @@
  * Test cli parameter i and v and rpm file and no parameters.
  */
 
-require_once (__DIR__ . "/../../../testing/db/createEmptyTestEnvironment.php");
+require_once (dirname(__DIR__, 3) . "/testing/db/createEmptyTestEnvironment.php");
 
 /**
  * @class ft_cliPkgagentTest
@@ -36,7 +36,7 @@ class ft_cliPkgagentTest extends \PHPUnit\Framework\TestCase {
 
   public $agentDir;
   public $pkgagent;
-  protected $testfile = '../testdata/fossology-1.2.0-1.el5.i386.rpm';
+  protected $testfile = __DIR__.'../testdata/fossology-1.2.0-1.el5.i386.rpm';
   private $db_conf;
 
   /**
@@ -70,7 +70,7 @@ class ft_cliPkgagentTest extends \PHPUnit\Framework\TestCase {
     $cwd = getcwd();
     list($test_name, $this->db_conf, $DB_NAME, $PG_CONN) = setupTestEnv($cwd, "pkgagent");
 
-    $this->agentDir = '../../agent';
+    $this->agentDir = dirname(__DIR__, 4).'/build/src/pkgagent/agent';
     $this->pkgagent = $this->agentDir .'/pkgagent -c ' . $this->db_conf;
     return;
   } // setUP

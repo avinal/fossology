@@ -22,7 +22,8 @@ project(ojo LANGUAGES CXX)
 include(${CMAKE_CURRENT_SOURCE_DIR}/../../cmake/SetDefaults.cmake)
 
 add_subdirectory(${CMAKE_CURRENT_SOURCE_DIR}/agent)
-
+configure_file(${FO_CMAKEDIR}/Makefile.in ${CMAKE_CURRENT_BINARY_DIR}/Makefile
+    NEWLINE_STYLE LF @ONLY)
 generate_version()
 
 install(DIRECTORY ui

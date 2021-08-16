@@ -24,7 +24,7 @@
  *
  * @group ununpack
  */
-require_once './utility.php';
+require_once __DIR__.'/utility.php';
 
 use Fossology\Lib\Test\TestPgDb;
 use Fossology\Lib\Test\TestInstaller;

@@ -5,7 +5,7 @@ name: Static checks and analysis
 
 on:
   push:
-    branches: [ master ]
+    branches: [ avinal/feat/testing ]
   pull_request:
     branches: [ master ]
 
@@ -86,3 +86,55 @@ jobs:
       uses: vaibhav-jain/spectral-action/@v2.6
       with:
         file_path: src/www/ui/api/documentation/openapi.yaml
+
+  build_test:
+    runs-on: ubuntu-20.04
+    services:
+      # Label used to access the service container
+      postgres:
+        # Docker Hub image
+        image: postgres
+        # Provide the password for postgres
+        env:
+          POSTGRES_PASSWORD: fossy
+          POSTGRES_USER: fossy
+          POSTGRES_DB: fossology
+        # Set health checks to wait until postgres has started
+        options: >-
+          --health-cmd pg_isready
+          --health-interval 10s
+          --health-timeout 5s
+          --health-retries 5
+        ports:
+          # Maps tcp port 5432 on service container to the host
+          - 5432:5432
+    steps:
+    - uses: actions/checkout@v2
+      with:
+        fetch-depth: 50
+    - name: Install Dependencies
+      run: |
+        sudo apt update
+        sudo apt install -y libboost-system-dev libboost-filesystem-dev libcppunit-dev libcunit1-dev libdbd-sqlite3-perl libjsoncpp-dev libjson-c-dev liblocal-lib-perl libspreadsheet-writeexcel-perl libtext-template-perl libgcrypt20-dev
+        sudo ./utils/fo-installdeps --everything
+        export PATH="/usr/lib/ccache/:$PATH"
+        export COMPOSER_HOME="$HOME/.composer/"
+
+    - name: Configure CMake
+      run: |
+        mkdir build
+        cd build
+        cmake -DCMAKE_BUILD_TYPE=Debug -GNinja ..
+        
+    - name: Build Project
+      run: cmake --build build --config Debug --parallel 10
+
+    - name: Prepare And Tests
+      run: |
+        sudo ./utils/prepare-test
+        cd build
+        ctest --output-on-failure --parallel 10
+      env:
+        POSTGRES_HOST: localhost
+        POSTGRES_PORT: 5432
+        

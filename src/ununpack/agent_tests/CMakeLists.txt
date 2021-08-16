@@ -8,6 +8,13 @@ endif()
 if(NOT TARGET focunit)
     add_subdirectory(${FO_TESTDIR}/lib/c ctestlib EXCLUDE_FROM_ALL)
 endif()
+if(NOT TARGET phpunit)
+    prepare_phpunit()
+endif()
+file(COPY testdata DESTINATION ${CMAKE_CURRENT_BINARY_DIR})
+foreach(TEST_FILES "fossI16L335U29.tar.bz2" "fossI16L518.7z")
+	file(COPY ${FO_TESTDIR}/dataFiles/TestData/archives/${TEST_FILES} DESTINATION ${CMAKE_CURRENT_BINARY_DIR}/testdata/)
+endforeach()
 
 include_directories(
 ${FO_TESTDIR}/lib/c ${FO_TESTDIR}/db/c ${FO_CWD}/../agent ${glib_INCLUDE_DIRS}
@@ -37,4 +44,12 @@ target_compile_definitions(test_ununpack PRIVATE CU_VERSION_P=213)
 
 target_link_libraries(test_ununpack PRIVATE
     cunit fodbreposysconf focunit ununpack magic)
+
+add_custom_target(testUnpack ALL
+	COMMAND tar -xvjf testdata.tar.bz2
+	COMMENT "Unpacking archive for test"
+	WORKING_DIRECTORY ${CMAKE_CURRENT_BINARY_DIR}/testdata)
 add_test(ununpack_unit_test test_ununpack)
+add_test(NAME ununpack_functional_test
+    COMMAND ${PHPUNIT} --log-junit ${CMAKE_CURRENT_BINARY_DIR}/ununpack-Xunit.xml --configuration ${CMAKE_CURRENT_LIST_DIR}/Functional/tests.xml
+    WORKING_DIRECTORY ${FO_CWD})

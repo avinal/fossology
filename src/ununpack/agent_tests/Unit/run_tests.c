@@ -23,7 +23,7 @@ with this program; if not, write to the Free Software Foundation, Inc.,
 #include "run_tests.h"
 #include "../agent/ununpack_globals.h"
 
-#define AGENT_DIR "../../"
+#define AGENT_DIR "../"
 /* globals that mostly shouldn't be globals */
 char *Filename = "";              ///< Filename
 char *NewDir = "./test-result";   ///< Test result directory

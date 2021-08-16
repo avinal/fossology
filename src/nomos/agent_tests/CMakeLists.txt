@@ -25,3 +25,5 @@ ${glib_INCLUDE_DIRS} $<TARGET_FILE_DIR:encode>
     ${PostgreSQL_INCLUDE_DIRS} ${FO_CLIB_SRC} ${FO_CWD}/../agent)
 target_link_libraries(test_nomos PRIVATE cunit focunit nomos)
 add_test(nomos_unit_test test_nomos)
+add_test(NAME nomos_functional_test
+    COMMAND ${PHPUNIT} --log-junit nomos-Xunit.xml --configuration ${FO_CWD}/Functional/tests.xml)

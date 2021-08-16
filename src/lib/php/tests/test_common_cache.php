@@ -21,8 +21,8 @@
  * \brief unit tests for common-cache.php
  */
 
-require_once(dirname(__FILE__) . '/../common-cache.php');
-require_once(dirname(__FILE__) . '/../common-db.php');
+require_once(dirname(__FILE__, 2) . '/common-cache.php');
+require_once(dirname(__FILE__, 2) . '/common-db.php');
 
 /**
  * \class test_common_cache

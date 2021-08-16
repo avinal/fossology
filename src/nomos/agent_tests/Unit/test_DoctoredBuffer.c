@@ -84,7 +84,7 @@ void test_doctorBuffer_uncollapse()
   doctorBuffer(fer, 0, 0, 0);
   printf("Before %d, after %d", (int) strlen(cfer), (int) strlen(fer));
 
-  for (int i = 0; i < strlen(fer); i++)
+  for (size_t i = 0; i < strlen(fer); i++)
   {
     CU_ASSERT_EQUAL(*(fer + i), *(cfer + uncollapsePosition(i, cur.docBufferPositionsAndOffsets)));
   }
@@ -99,10 +99,10 @@ void test_doctorBuffer_uncollapse()
 static void report_Match(char* buf)
 {
   printf("I have %i matches \n", cur.theMatches->len);
-  for (int i = 0; i < cur.theMatches->len; ++i)
+  for (guint i = 0; i < cur.theMatches->len; ++i)
   {
     LicenceAndMatchPositions* licenceAndMatch =  getLicenceAndMatchPositions(cur.theMatches, i);
-    for (int k=0; k < licenceAndMatch->matchPositions->len; ++k) {
+    for (guint k=0; k < licenceAndMatch->matchPositions->len; ++k) {
       MatchPositionAndType* PaT = getMatchfromHighlightInfo(
           licenceAndMatch->matchPositions, k);
       printf("Match from %d to %d: ", PaT->start, PaT->end);

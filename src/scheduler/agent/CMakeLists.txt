@@ -53,6 +53,9 @@ foreach(FO_SCH_TARGET scheduler fo_scheduler scheduler_cov)
             PRIVATE "-DPROCESS_NAME=${FO_SCH_TARGET}")
     else()
         set(SCH_XSRC "")
+        target_link_libraries(${FO_SCH_TARGET}
+            PRIVATE fossology ${gobject_LIBRARIES} 
+                ${gthread_LIBRARIES} ${gio_LIBRARIES})
     endif() 
     target_sources(${FO_SCH_TARGET}
         PRIVATE

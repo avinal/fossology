@@ -53,9 +53,9 @@ foreach(FO_OJO_TARGET ojo ojo_exec ojo_cov ojo_cov_exec)
     if(${FO_OJO_TARGET} MATCHES "^ojo_cov")
         target_compile_options(${FO_OJO_TARGET} PRIVATE ${FO_COV_FLAGS})
     endif()
+    target_link_libraries(${FO_OJO_TARGET} 
+        PRIVATE fossologyCPP icuuc ${Boost_LIBRARIES} ${jsoncpp_LIBRARIES})
     if(${FO_OJO_TARGET} MATCHES "_exec$")
-        target_link_libraries(${FO_OJO_TARGET} 
-            PRIVATE fossologyCPP icuuc ${Boost_LIBRARIES} ${jsoncpp_LIBRARIES})
         string(REPLACE "_exec" "" FO_OJO_TARGET_R ${FO_OJO_TARGET})
         set_target_properties(${FO_OJO_TARGET}
             PROPERTIES OUTPUT_NAME ${FO_OJO_TARGET_R})

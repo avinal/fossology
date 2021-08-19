@@ -47,3 +47,8 @@ foreach(SPDX_INSTALL spdx2 spdx2tv dep5)
         COMPONENT spdx2)
     add_symlink(${SPDX_INSTALL} ${FO_MODDIR}/${SPDX_INSTALL})
 endforeach()
+
+if(TESTING)
+    enable_testing()
+    add_subdirectory(agent_tests)
+endif(TESTING)

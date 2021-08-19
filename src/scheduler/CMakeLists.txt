@@ -28,4 +28,10 @@ generate_version()
 install(FILES mod_deps "${CMAKE_CURRENT_BINARY_DIR}/VERSION"
     DESTINATION ${FO_MODDIR}/${PROJECT_NAME}
     COMPONENT scheduler)
-    
+
+# FIXME: Tests not working
+# if(TESTING)
+#     file(COPY TestInstall.make DESTINATION ${CMAKE_CURRENT_BINARY_DIR})    
+#     enable_testing()
+#     add_subdirectory(agent_tests)
+# endif()

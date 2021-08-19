@@ -148,7 +148,8 @@ macro(generate_version_php)
             -P ${FO_CMAKEDIR}/FoVersionFile.cmake
             BYPRODUCTS "${CMAKE_CURRENT_BINARY_DIR}/gen/version.php"
             COMMENT "Generating version.php for ${FO_PROJECT_NAME}"
-            DEPENDS "${CMAKE_CURRENT_SOURCE_DIR}/version.php.in")
+            DEPENDS "${CMAKE_CURRENT_SOURCE_DIR}/version.php.in"
+            WORKING_DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR})
 endmacro(generate_version_php)
 
 #[[ generate symbolic links and install them
@@ -179,3 +180,21 @@ macro(add_symlink)
             WORKING_DIRECTORY \"\$ENV{DESTDIR}${LINK_DESTINATION}\")"
         COMPONENT ${PROJECT_NAME})
 endmacro(add_symlink)
+
+#[[ prepare phpunit for tests
+    adds symbolic links for autoload.php
+    adds PHPUnit location to cmake cache
+]]
+macro(prepare_phpunit)
+    file(COPY ${FO_SOURCEDIR}/composer.lock DESTINATION ${CMAKE_BINARY_DIR})
+    configure_file(${FO_SOURCEDIR}/composer.json.in ${CMAKE_BINARY_DIR}/composer.json @ONLY)
+    add_custom_target(phpunit ALL
+        COMMENT "Generating PHPunit"
+        COMMAND composer install --prefer-dist --working-dir=.
+        COMMAND mkdir -p ${FO_SOURCEDIR}/vendor
+        COMMAND ln -sf -T ${CMAKE_BINARY_DIR}/vendor/autoload.php ${FO_SOURCEDIR}/vendor/autoload.php
+        WORKING_DIRECTORY ${CMAKE_BINARY_DIR}
+        BYPRODUCTS ${CMAKE_BINARY_DIR}/vendor)
+    set(PHPUNIT ${CMAKE_BINARY_DIR}/vendor/bin/phpunit CACHE PATH "phpunit location")
+    set(PHPUNIT_BOOTSTRAP ${FO_SOURCEDIR}/phpunit-bootstrap.php CACHE PATH "phpunit bootstrap file")
+endmacro()

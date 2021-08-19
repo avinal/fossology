@@ -16,8 +16,8 @@ with this program; if not, write to the Free Software Foundation, Inc.,
 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 #]=======================================================================]
 
-cmake_minimum_required(VERSION 3.10)
-project(libcpp LANGUAGES CXX)
+cmake_minimum_required(VERSION 3.10 FATAL_ERROR)
+project(libcpp LANGUAGES CXX C)
 
 set(FO_CWD ${CMAKE_CURRENT_SOURCE_DIR})
 
@@ -52,10 +52,6 @@ target_link_libraries(fossologyCPP PRIVATE fossology)
 
 target_include_directories(fossologyCPP 
     PUBLIC $<BUILD_INTERFACE:${CMAKE_CURRENT_LIST_DIR}>)
-if(TESTING)
-    enable_testing()
-    add_subdirectory(tests EXCLUDE_FROM_ALL)
-endif()
 install(TARGETS fossologyCPP
     ARCHIVE
     DESTINATION ${FO_LIBEXECDIR}
@@ -64,3 +60,8 @@ install(TARGETS fossologyCPP
 install(FILES ${FO_CWD}/libfossologyCPP.hpp 
     DESTINATION ${FO_INCLUDEDIR}
     COMPONENT lib)
+
+if(TESTING)    
+    enable_testing()
+    add_subdirectory(tests)
+endif()

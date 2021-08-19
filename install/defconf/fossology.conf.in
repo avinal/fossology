@@ -43,6 +43,7 @@ localhost[] = * 00 ff
 ; Use PREFIX to install multiple copies of FOSSology.
 PROJECT=@FO_PROJECT@
 PROJECTGROUP=@FO_PROJECTGROUP@
+PROJECTUSER=@FO_PROJECTUSER@
 
 ; base of the program data tree
 PREFIX=@FO_PREFIX@

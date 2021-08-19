@@ -49,11 +49,12 @@ foreach(FO_WGET_TARGET wget_agent wget_agent_exec wget_agent_cov)
             PROPERTIES OUTPUT_NAME wget_agent)
         set(WGET_XSRC "main.c")
     else()
+        target_link_libraries(${FO_WGET_TARGET} 
+            PRIVATE fossology gcrypt checksum)
         set(WGET_XSRC "")
     endif()
     target_sources(${FO_WGET_TARGET}
-        PRIVATE ${FO_CWD}/wget_agent.c ${FO_CWD}/${WGET_XSRC}
-    )
+        PRIVATE ${FO_CWD}/wget_agent.c ${FO_CWD}/${WGET_XSRC})
     if(${FO_WGET_TARGET} STREQUAL "wget_agent_cov")
         target_compile_options(${FO_WGET_TARGET} PRIVATE ${FO_COV_FLAGS})
     endif()

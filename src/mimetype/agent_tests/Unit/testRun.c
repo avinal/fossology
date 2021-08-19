@@ -31,6 +31,7 @@ with this program; if not, write to the Free Software Foundation, Inc.,
  */
 
 char *DBConfFile = NULL;
+fo_dbManager* dbManager = NULL;
 
 /**
  * \brief all test suites for mimetype
@@ -151,26 +152,37 @@ void createTables()
  */
 int main( int argc, char *argv[] )
 {
-  char cwd[2048];
-  char* confDir = NULL;
-  char CMD[2048];
-  int rc;
+  // char cwd[2048];
+  // char* confDir = NULL;
+  // char CMD[2048];
+  // int rc;
 
-  if(getcwd(cwd, sizeof(cwd)) != NULL)
-  {
-    confDir = createTestConfDir(cwd, "mimetype");
-  }
+  // if(getcwd(cwd, sizeof(cwd)) != NULL)
+  // {
+  //   confDir = createTestConfDir(cwd, "mimetype");
+  // }
 
-  create_db_repo_sysconf(0, "mimetype", confDir);
+  // create_db_repo_sysconf(0, "mimetype", confDir);
+  // DBConfFile = get_dbconf();
+
+  // createTables();
+  // sprintf(CMD,"rm -rf %s", confDir);
+  // rc = system(CMD);
+
+  // rc = focunit_main(argc, argv, "mimetype_Tests", suites) ;
+  // drop_db_repo_sysconf(get_db_name());
+
+  // return rc;
+
+  dbManager = createTestEnvironment(AGENT_DIR, "mimetype", 0);
   DBConfFile = get_dbconf();
-
   createTables();
-  sprintf(CMD,"rm -rf %s", confDir);
-  rc = system(CMD);
-
-  rc = focunit_main(argc, argv, "mimetype_Tests", suites) ;
-  drop_db_repo_sysconf(get_db_name());
-
-  return rc;
+  const int returnValue = focunit_main(argc, argv, "mimetype_Tests", suites);
+  if (returnValue == 0) {
+    dropTestEnvironment(dbManager, AGENT_DIR, "mimetype");
+  } else {
+    printf("preserving test environment in '%s'\n", get_sysconfdir());
+  }
+  return returnValue;
 }
 

@@ -35,3 +35,8 @@ install(FILES deciderjob.conf "${CMAKE_CURRENT_BINARY_DIR}/VERSION"
     COMPONENT deciderjob)
 
 add_symlink()
+
+if(TESTING)
+    enable_testing()
+    add_subdirectory(agent_tests)
+endif()

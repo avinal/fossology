@@ -22,7 +22,8 @@ project(ojo LANGUAGES CXX)
 include(${CMAKE_CURRENT_SOURCE_DIR}/../../cmake/SetDefaults.cmake)
 
 add_subdirectory(${CMAKE_CURRENT_SOURCE_DIR}/agent)
-
+configure_file(${FO_CMAKEDIR}/TestInstall.make.in ${CMAKE_CURRENT_BINARY_DIR}/TestInstall.make
+    NEWLINE_STYLE LF @ONLY)
 generate_version()
 
 install(DIRECTORY ui
@@ -36,3 +37,8 @@ install(FILES ojo.conf "${CMAKE_CURRENT_BINARY_DIR}/VERSION"
     COMPONENT ojo)
 
 add_symlink()
+
+if(TESTING)
+    enable_testing()
+    add_subdirectory(agent_tests)
+endif()

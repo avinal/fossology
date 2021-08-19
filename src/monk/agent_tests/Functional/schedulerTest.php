@@ -62,7 +62,7 @@ class MonkScheduledTest extends \PHPUnit\Framework\TestCase
     $this->highlightDao = new HighlightDao($this->dbManager);
     $this->clearingDao = new ClearingDao($this->dbManager, $this->uploadDao);
 
-    $this->agentDir = dirname(dirname(__DIR__));
+    $this->agentDir = dirname(__DIR__, 4).'/build/src/monk';
   }
 
   protected function tearDown()
@@ -80,7 +80,7 @@ class MonkScheduledTest extends \PHPUnit\Framework\TestCase
     $sysConf = $this->testDb->getFossSysConf();
 
     $agentName = "monk";
-    $execDir = __DIR__;
+    $execDir = dirname(__DIR__,4).'/build/src/monk/agent';
 
     $pipeFd = popen("echo $uploadId | $execDir/$agentName -c $sysConf --userID=$userId --groupID=$groupId --jobId=$jobId --scheduler_start $args", "r");
     $this->assertTrue($pipeFd !== false, 'running monk failed');

@@ -1,0 +1,59 @@
+#[=======================================================================[
+SPDX-License-Identifier: GPL-2.0
+SPDX-FileCopyrightText: 2021 Avinal Kumar <avinal.xlvii@gmail.com>
+
+This program is free software; you can redistribute it and/or
+modify it under the terms of the GNU General Public License
+version 2 as published by the Free Software Foundation.
+
+This program is distributed in the hope that it will be useful,
+but WITHOUT ANY WARRANTY; without even the implied warranty of
+MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+GNU General Public License for more details.
+
+You should have received a copy of the GNU General Public License along
+with this program; if not, write to the Free Software Foundation, Inc.,
+51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
+#]=======================================================================]
+
+set(FO_CWD ${CMAKE_CURRENT_SOURCE_DIR})
+
+if(NOT TARGET fodbreposysconf)
+    add_subdirectory(${FO_TESTDIR}/db/c ctestdb EXCLUDE_FROM_ALL)
+endif()
+
+if(NOT TARGET focunit)
+    add_subdirectory(${FO_TESTDIR}/lib/c ctestlib EXCLUDE_FROM_ALL)
+endif()
+
+if(NOT TARGET phpunit)
+    prepare_phpunit()
+endif()
+
+file(COPY ${FO_CWD}/testdata DESTINATION ${CMAKE_CURRENT_BINARY_DIR})
+
+set(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} ${FO_C_FLAGS} -Wextra -fopenmp")
+
+add_executable(test_pkgagent "")
+target_sources(test_pkgagent 
+    PRIVATE 
+    ${FO_CWD}/Unit/testRun.c
+    ${FO_CWD}/Unit/testGetFieldValue.c
+    ${FO_CWD}/Unit/testGetMetadata.c
+    ${FO_CWD}/Unit/testRecordMetadataRPM.c
+    ${FO_CWD}/Unit/testRecordMetadataDEB.c
+    ${FO_CWD}/Unit/testGetMetadataDebSource.c
+    ${FO_CWD}/Unit/testGetMetadataDebBinary.c
+    ${FO_CWD}/../agent/pkgagent.c)
+target_compile_definitions(test_pkgagent PRIVATE _FILE_OFFSET_BITS=64 CU_VERSION_P=213)
+target_include_directories(test_pkgagent 
+    PRIVATE ${FO_TESTDIR}/lib/c ${FO_TESTDIR}/db/c ${glib_INCLUDE_DIRS}
+        ${PostgreSQL_INCLUDE_DIRS} ${FO_CLIB_SRC} ${FO_CWD}/../agent /usr/include/rpm)
+target_link_libraries(test_pkgagent 
+    PRIVATE fossology cunit focunit rpmio fodbreposysconf pthread rpm)
+
+add_test(pkgagent_unit_test test_pkgagent)
+
+add_test(NAME pkgagent_functional_cli_test
+    COMMAND ${PHPUNIT} --log-junit pkgagent-Xunit.xml ${FO_CWD}/Functional/ft_cliPkgagentTest.php
+    WORKING_DIRECTORY ${FO_CWD})

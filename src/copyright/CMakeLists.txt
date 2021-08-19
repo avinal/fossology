@@ -17,7 +17,7 @@ with this program; if not, write to the Free Software Foundation, Inc.,
 #]=======================================================================]
 
 cmake_minimum_required(VERSION 3.10 FATAL_ERROR)
-project(copyright LANGUAGES CXX)
+project(copyright LANGUAGES CXX C)
 include(${CMAKE_CURRENT_SOURCE_DIR}/../../cmake/SetDefaults.cmake)
 
 add_subdirectory(${CMAKE_CURRENT_SOURCE_DIR}/agent)
@@ -46,3 +46,11 @@ foreach(COP ecc keyword copyright)
         COMPONENT ${COP})
     add_symlink(${COP})
 endforeach()
+
+if(TESTING)
+    set(VERSIONFILE "VERSION-copyright")
+    configure_file(${FO_CMAKEDIR}/TestInstall.make.in ${CMAKE_CURRENT_BINARY_DIR}/TestInstall.make
+    NEWLINE_STYLE LF @ONLY)
+    enable_testing()
+    add_subdirectory(agent_tests)
+endif(TESTING)

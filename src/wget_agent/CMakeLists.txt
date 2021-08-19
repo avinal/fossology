@@ -35,3 +35,10 @@ install(FILES wget_agent.conf mod_deps "${CMAKE_CURRENT_BINARY_DIR}/VERSION"
     COMPONENT wget_agent)
 
 add_symlink()
+
+if(TESTING)
+    set(VERSIONFILE "VERSION")
+    configure_file(${FO_CMAKEDIR}/TestInstall.make.in ${CMAKE_CURRENT_BINARY_DIR}/TestInstall.make NEWLINE_STYLE LF @ONLY)
+    enable_testing()
+    add_subdirectory(agent_tests)
+endif(TESTING)

@@ -106,6 +106,8 @@ set(FO_WEBDIR "${FO_MODDIR}/www" CACHE PATH "webroot")
 
 set(FO_PHPDIR "${FO_MODDIR}/php" CACHE PATH "php root")
 
+set(FO_WRAPPER "${CMAKE_BINARY_DIR}/src/cli/gen/fo_wrapper.php" CACHE PATH "fo wrapper for testing")
+
 ## Build variables
 
 set(FO_APACHE_CTL "/usr/sbin/apachectl" CACHE PATH "apache ctl")

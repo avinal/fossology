@@ -38,4 +38,12 @@ install(FILES delagent.conf mod_deps "${CMAKE_CURRENT_BINARY_DIR}/VERSION"
 
 add_symlink()
 add_symlink(${PROJECT_NAME}-page ${FO_MODDIR}/${PROJECT_NAME}/ui/Page)
-   
+
+# FIXME: Tests not working
+# if(TESTING)
+#     set(VERSIONFILE "VERSION")
+#     configure_file(${FO_CMAKEDIR}/TestInstall.make.in 
+#         ${CMAKE_CURRENT_BINARY_DIR}/TestInstall.make NEWLINE_STYLE LF @ONLY)
+#     enable_testing()
+#     add_subdirectory(agent_tests)
+# endif(TESTING)

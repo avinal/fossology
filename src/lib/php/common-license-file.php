@@ -110,7 +110,7 @@ function GetFileLicenses_string($agent_pk, $pfile_pk, $uploadtree_pk, $uploadtre
 {
   $LicStr = "";
   $LicArray = GetFileLicenses($agent_pk, $pfile_pk, $uploadtree_pk, $uploadtree_tablename);
-  return implode($LicArray,', ');
+  return implode(', ', $LicArray);
 }
 
 /**

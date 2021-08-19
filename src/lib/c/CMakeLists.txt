@@ -69,3 +69,8 @@ install(TARGETS fossology sqlCopyTest fossconfigTest reppath
 install(FILES ${FO_CWD}/libfossology.h 
     DESTINATION ${FO_INCLUDEDIR}
     COMPONENT lib)
+
+if(TESTING)    
+    enable_testing()
+    add_subdirectory(tests)
+endif()

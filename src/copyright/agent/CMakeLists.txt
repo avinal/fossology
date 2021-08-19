@@ -99,3 +99,7 @@ foreach(COP ecc keyword copyright)
         DESTINATION ${FO_MODDIR}/${COP}/agent
         COMPONENT ${COP})
 endforeach()
+
+if(TESTING)
+    file(COPY copyright.conf DESTINATION ${CMAKE_CURRENT_BINARY_DIR})
+endif()

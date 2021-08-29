@@ -72,6 +72,10 @@ jobs:
         with:
           fetch-depth: 50
 
+      - name: Add additional PPA for ubuntu-18.04
+        if: ${{ matrix.config.os == 'ubuntu-18.04' }}
+        run: sudo add-apt-repository ppa:ubuntu-toolchain-r/test
+
       - name: Install Dependencies
         run: |
           sudo apt update
